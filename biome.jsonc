@@ -1,0 +1,12 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "extends": ["ultracite"],
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 4,
+    "lineWidth": 120,
+    "lineEnding": "lf"
+  }
+}
