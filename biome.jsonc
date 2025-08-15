@@ -8,5 +8,20 @@
     "indentWidth": 4,
     "lineWidth": 120,
     "lineEnding": "lf"
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["assert", "error", "info", "warn"]
+          }
+        }
+      },
+      "style": {
+        "useFilenamingConvention": "off"
+      }
+    }
   }
 }
