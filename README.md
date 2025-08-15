@@ -1,135 +1,139 @@
-# Turborepo starter
+# Dreamstream Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A Turborepo-powered monorepo using Bun for package management. It currently contains a React Native app built with Expo Router.
 
-## Using this example
+## Overview
 
-Run the following command:
+- Monorepo tool: Turborepo
+- Package manager: Bun (bun.lock)
+- Runtime: Node.js >= 22
+- Lint/Format: Biome via Ultracite (biome.jsonc)
+- TypeScript across the repo (tsconfig.json)
 
-```sh
-npx create-turbo@latest
-```
+## Repository Structure
 
-## What's inside?
+- apps/
+  - dreamstream/ — Expo + React Native application (Expo Router)
+- packages/ — shared packages (reserved; may be empty)
+- turbo.json — Turborepo task pipeline configuration
+- biome.jsonc — Biome configuration (lint/format)
+- tsconfig.json — TypeScript config
+- package.json — workspace and scripts
 
-This Turborepo includes the following packages/apps:
+## Prerequisites
 
-### Apps and Packages
+- Node.js >= 22
+- Bun >= 1.2.20 (this repo is configured with "packageManager": "bun@1.2.20")
+- For running the mobile app:
+  - iOS: Xcode + iOS Simulator (macOS)
+  - Android: Android Studio + Android Emulator or a physical device with USB debugging enabled
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Install
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+At the repo root:
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+bun install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+This installs dependencies across all workspaces (apps and packages).
+
+## Common Scripts (run at repo root)
+
+- Develop all: `bun run dev`
+- Build all: `bun run build`
+- Lint all: `bun run lint`
+- Format all: `bun run format`
+- Type-check all: `bun run check-types`
+
+These scripts fan out to each workspace via Turborepo.
+
+You can target a specific app/package using Turborepo filters. Examples:
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+# Dev only the dreamstream app
+bun x turbo run dev --filter=dreamstream
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+# Build only the dreamstream app
+bun x turbo run build --filter=dreamstream
 ```
 
-### Develop
+## App: apps/dreamstream (Expo)
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Navigate into the app to use Expo convenience scripts:
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+cd apps/dreamstream
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Start Expo (interactive dev tools)
+bun run dev
+
+# Platform-specific entry points
+bun run ios
+bun run android
+bun run web
 ```
 
-### Remote Caching
+Notes:
+- The app uses Expo Router and React Native 0.79 with React 19.
+- When running on devices/emulators, ensure the proper tooling (Xcode/Android Studio) is installed.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## Environment Variables
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- Turborepo is configured to consider `.env*` files as task inputs (see turbo.json). Place environment files at the appropriate workspace root.
+- Example files: `.env`, `.env.local`, `.env.development`, etc.
+- Restart processes after changing env files.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## Linting and Formatting
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- Biome is configured at the root (biome.jsonc) and run via Ultracite wrappers.
+- Run across the monorepo:
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+bun run lint
+bun run format
 ```
 
-## Useful Links
+- Some workspaces (like apps/dreamstream) also expose `bun ultracite` directly via their own scripts.
 
-Learn more about the power of Turborepo:
+## Type Checking
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+TypeScript is used across the repo. To run type checks:
+
+```
+bun run check-types
+```
+
+## Remote Caching (optional)
+
+Turborepo supports remote caching via Vercel. To enable:
+
+```
+# Authenticate turbo
+bun x turbo login
+
+# Link this repo to a remote cache project
+bun x turbo link
+```
+
+Remote caching can speed up CI and team development by sharing build artifacts.
+
+## Commit Conventions
+
+Conventional commits are supported via Commitizen:
+
+```
+bun run cmt
+```
+
+This opens an interactive prompt to craft a conventional commit message.
+
+## Troubleshooting
+
+- If Turborepo commands are not found globally, always prefer `bun x turbo ...` from the repo root.
+- Ensure Bun and Node versions match the required versions listed above.
+- Clear caches if you see inconsistent builds: `rm -rf node_modules .turbo` and then `bun install`.
+
+## License
+
+This repository is part of the Dreamstream project. Unless otherwise specified, it is provided under the project’s license.
