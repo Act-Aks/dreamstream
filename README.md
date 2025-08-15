@@ -1,8 +1,19 @@
-# Dreamstream Monorepo
+# ✨ Dreamstream Monorepo
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+![Node](https://img.shields.io/badge/node-%3E%3D22-339933?logo=node.js&logoColor=white)
+![Bun](https://img.shields.io/badge/bun-1.2.20-%23231F20?logo=bun&logoColor=white)
+![TurboRepo](https://img.shields.io/badge/turborepo-2.5.6-%23000000?logo=turborepo&logoColor=white)
+![TypeScript](https://img.shields.io/badge/types-TS-3178C6?logo=typescript&logoColor=white)
+![Biome](https://img.shields.io/badge/lint-Biome-60A5FA)
 
 A Turborepo-powered monorepo using Bun for package management. It currently contains a React Native app built with Expo Router.
 
-## Overview
+> Welcome! We love contributions. Please review our [Code of Conduct](./CODE_OF_CONDUCT.md) and [License](./LICENSE) before getting started. 🙌
+
+---
+
+## 🧭 Overview
 
 - Monorepo tool: Turborepo
 - Package manager: Bun (bun.lock)
@@ -10,7 +21,7 @@ A Turborepo-powered monorepo using Bun for package management. It currently cont
 - Lint/Format: Biome via Ultracite (biome.jsonc)
 - TypeScript across the repo (tsconfig.json)
 
-## Repository Structure
+## 🗂️ Repository Structure
 
 - apps/
   - dreamstream/ — Expo + React Native application (Expo Router)
@@ -20,7 +31,7 @@ A Turborepo-powered monorepo using Bun for package management. It currently cont
 - tsconfig.json — TypeScript config
 - package.json — workspace and scripts
 
-## Prerequisites
+## ✅ Prerequisites
 
 - Node.js >= 22
 - Bun >= 1.2.20 (this repo is configured with "packageManager": "bun@1.2.20")
@@ -28,7 +39,7 @@ A Turborepo-powered monorepo using Bun for package management. It currently cont
   - iOS: Xcode + iOS Simulator (macOS)
   - Android: Android Studio + Android Emulator or a physical device with USB debugging enabled
 
-## Install
+## 🚀 Install
 
 At the repo root:
 
@@ -38,7 +49,7 @@ bun install
 
 This installs dependencies across all workspaces (apps and packages).
 
-## Common Scripts (run at repo root)
+## 🧪 Common Scripts (run at repo root)
 
 - Develop all: `bun run dev`
 - Build all: `bun run build`
@@ -58,7 +69,7 @@ bun x turbo run dev --filter=dreamstream
 bun x turbo run build --filter=dreamstream
 ```
 
-## App: apps/dreamstream (Expo)
+## 📱 App: apps/dreamstream (Expo)
 
 Navigate into the app to use Expo convenience scripts:
 
@@ -78,13 +89,13 @@ Notes:
 - The app uses Expo Router and React Native 0.79 with React 19.
 - When running on devices/emulators, ensure the proper tooling (Xcode/Android Studio) is installed.
 
-## Environment Variables
+## 🔐 Environment Variables
 
 - Turborepo is configured to consider `.env*` files as task inputs (see turbo.json). Place environment files at the appropriate workspace root.
 - Example files: `.env`, `.env.local`, `.env.development`, etc.
 - Restart processes after changing env files.
 
-## Linting and Formatting
+## 🧹 Linting and Formatting
 
 - Biome is configured at the root (biome.jsonc) and run via Ultracite wrappers.
 - Run across the monorepo:
@@ -96,7 +107,7 @@ bun run format
 
 - Some workspaces (like apps/dreamstream) also expose `bun ultracite` directly via their own scripts.
 
-## Type Checking
+## 🔎 Type Checking
 
 TypeScript is used across the repo. To run type checks:
 
@@ -104,7 +115,7 @@ TypeScript is used across the repo. To run type checks:
 bun run check-types
 ```
 
-## Remote Caching (optional)
+## ⚡ Remote Caching (optional)
 
 Turborepo supports remote caching via Vercel. To enable:
 
@@ -118,7 +129,7 @@ bun x turbo link
 
 Remote caching can speed up CI and team development by sharing build artifacts.
 
-## Commit Conventions
+## 📝 Commit Conventions
 
 Conventional commits are supported via Commitizen:
 
@@ -128,12 +139,13 @@ bun run cmt
 
 This opens an interactive prompt to craft a conventional commit message.
 
-## Troubleshooting
+## 🤝 Contributing
 
-- If Turborepo commands are not found globally, always prefer `bun x turbo ...` from the repo root.
-- Ensure Bun and Node versions match the required versions listed above.
-- Clear caches if you see inconsistent builds: `rm -rf node_modules .turbo` and then `bun install`.
+Contributions are welcome! Please:
+- Read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+- Use conventional commits when possible (`bun run cmt`).
+- Open a discussion/issue before large changes when in doubt.
 
-## License
+## 🧾 License
 
-This repository is part of the Dreamstream project. Unless otherwise specified, it is provided under the project’s license.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
