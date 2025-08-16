@@ -10,7 +10,7 @@
     "cmt": "git-cz"
   },
   "devDependencies": {
-    "@babel/core": "7.26.0",
+    "@babel/core": "7.28.3",
     "@biomejs/biome": "2.2.0",
     "@types/react": "19.0.10",
     "git-cz": "4.9.0",
