@@ -1,0 +1,127 @@
+name: PR Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+env:
+  NODE_ENV: test
+
+jobs:
+  quick-quality-check:
+    name: Quick Quality Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run essential quality checks
+        uses: ./.github/actions/code-quality-check
+        with:
+          check-formatting: 'true'
+          check-types: 'true'
+          security-audit: 'true'
+          fail-on-warnings: 'true'  # Strict mode for PRs
+          cache-prefix: 'pr-quality-v1-'
+
+      - name: Check changed files only (if possible)
+        continue-on-error: true
+        run: |
+          echo "🔍 Analyzing changed files in this PR..."
+          
+          # Get list of changed files
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt
+          
+          if [ -s changed_files.txt ]; then
+            echo "📝 Files changed in this PR:"
+            cat changed_files.txt
+            
+            # Count different file types
+            js_ts_files=$(grep -E '\.(js|jsx|ts|tsx)$' changed_files.txt | wc -l || echo "0")
+            json_files=$(grep -E '\.json$' changed_files.txt | wc -l || echo "0")
+            md_files=$(grep -E '\.md$' changed_files.txt | wc -l || echo "0")
+            
+            echo "📊 Changed files summary:"
+            echo "  JavaScript/TypeScript: $js_ts_files"
+            echo "  JSON: $json_files"
+            echo "  Markdown: $md_files"
+            
+            # Run targeted linting on changed files only
+            if [ "$js_ts_files" -gt 0 ]; then
+              echo "🔍 Running targeted linting on changed JS/TS files..."
+              grep -E '\.(js|jsx|ts|tsx)$' changed_files.txt | head -20 | while read -r file; do
+                if [ -f "$file" ]; then
+                  echo "Checking $file..."
+                  npx @biomejs/biome check "$file" || true
+                fi
+              done
+            fi
+          else
+            echo "ℹ️ No changed files detected or unable to determine changes"
+          fi
+
+      - name: Comment PR with quality summary
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let summary = `## 🔍 Code Quality Summary\n\n`;
+            summary += `✅ All essential quality checks passed!\n\n`;
+            summary += `### Checks Performed:\n`;
+            summary += `- ✅ Linting (Biome)\n`;
+            summary += `- ✅ Code Formatting\n`;
+            summary += `- ✅ Type Checking\n`;
+            summary += `- ✅ Security Audit\n\n`;
+            
+            // Try to read changed files info
+            try {
+              if (fs.existsSync('changed_files.txt')) {
+                const changedFiles = fs.readFileSync('changed_files.txt', 'utf8').trim();
+                if (changedFiles) {
+                  const files = changedFiles.split('\n');
+                  summary += `### Files Changed: ${files.length}\n`;
+                  summary += files.slice(0, 10).map(f => `- \`${f}\``).join('\n');
+                  if (files.length > 10) {
+                    summary += `\n- ... and ${files.length - 10} more files`;
+                  }
+                }
+              }
+            } catch (error) {
+              console.log('Could not read changed files info');
+            }
+            
+            summary += `\n\n*Quality gate passed! 🚀*`;
+            
+            // Find existing comment and update it, or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const existingComment = comments.find(comment => 
+              comment.user.type === 'Bot' && comment.body.includes('Code Quality Summary')
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: summary
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: summary
+              });
+            }

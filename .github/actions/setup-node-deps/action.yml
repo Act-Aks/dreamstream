@@ -1,0 +1,421 @@
+name: 'Node.js Dependencies Cache Setup'
+description: 'Setup Node.js environment and efficiently cache dependencies with support for npm, yarn, pnpm, and bun'
+author: 'Act-Aks'
+
+inputs:
+    node-version-file:
+        description: 'Path to the .nvmrc file'
+        required: false
+        default: '.nvmrc'
+    cache-prefix:
+        description: 'Custom prefix for cache keys'
+        required: false
+        default: ''
+    registry-url:
+        description: 'Custom registry URL'
+        required: false
+        default: 'https://registry.npmjs.org/'
+    package-manager:
+        description: 'Package manager to use (auto, npm, yarn, pnpm, bun)'
+        required: false
+        default: 'auto'
+    install-command:
+        description: 'Custom install command (overrides default for package manager)'
+        required: false
+        default: ''
+    frozen-lockfile:
+        description: 'Use frozen/immutable lockfile for installation'
+        required: false
+        default: 'true'
+
+outputs:
+    cache-hit:
+        description: 'Indicates if a cache hit occurred'
+        value: ${{ steps.deps-cache.outputs.cache-hit }}
+    package-manager:
+        description: 'The detected or specified package manager'
+        value: ${{ steps.detect-pm.outputs.package-manager }}
+
+branding:
+    icon: 'package'
+    color: 'purple'
+
+runs:
+    using: composite
+    steps:
+        - name: Detect package manager
+          id: detect-pm
+          shell: bash
+          run: |
+              set -e
+
+              DETECTED_PM="${{ inputs.package-manager }}"
+
+              # Validate input package manager
+              if [[ "$DETECTED_PM" != "auto" && "$DETECTED_PM" != "npm" && "$DETECTED_PM" != "yarn" && "$DETECTED_PM" != "pnpm" && "$DETECTED_PM" != "bun" ]]; then
+                echo "❌ Error: Invalid package manager '$DETECTED_PM'. Supported: auto, npm, yarn, pnpm, bun"
+                exit 1
+              fi
+
+              if [[ "$DETECTED_PM" == "auto" ]]; then
+                echo "🔍 Auto-detecting package manager..."
+
+                if [[ -f "bun.lockb" ]] || [[ -f "bun.lock" ]]; then
+                  DETECTED_PM="bun"
+                  if [[ -f "bun.lockb" ]]; then
+                    echo "📦 Found bun.lockb"
+                  else
+                    echo "📦 Found bun.lock"
+                  fi
+                elif [[ -f "pnpm-lock.yaml" ]]; then
+                  DETECTED_PM="pnpm"
+                  echo "📦 Found pnpm-lock.yaml"
+                elif [[ -f "yarn.lock" ]]; then
+                  if [[ -f ".yarnrc.yml" ]] || [[ -f ".yarnrc.yaml" ]]; then
+                    DETECTED_PM="yarn"
+                    echo "📦 Found yarn.lock with .yarnrc.yml (Yarn Modern)"
+                  else
+                    # Check if it's Yarn 1.x or Yarn 2+
+                    if command -v yarn >/dev/null 2>&1; then
+                      YARN_VERSION=$(yarn --version 2>/dev/null || echo "1.0.0")
+                      if [[ "${YARN_VERSION%%.*}" -ge "2" ]]; then
+                        DETECTED_PM="yarn"
+                        echo "📦 Found yarn.lock with Yarn ${YARN_VERSION}"
+                      else
+                        DETECTED_PM="yarn-classic"
+                        echo "📦 Found yarn.lock with Yarn Classic ${YARN_VERSION}"
+                      fi
+                    else
+                      DETECTED_PM="yarn-classic"
+                      echo "📦 Found yarn.lock (assuming Yarn Classic)"
+                    fi
+                  fi
+                elif [[ -f "package-lock.json" ]]; then
+                  DETECTED_PM="npm"
+                  echo "📦 Found package-lock.json"
+                else
+                  # Check for package.json
+                  if [[ ! -f "package.json" ]]; then
+                    echo "❌ Error: No package.json found in current directory"
+                    exit 1
+                  fi
+
+                  echo "⚠️  No lockfile found, defaulting to npm"
+                  echo "💡 Consider running your package manager install command to generate a lockfile for better caching"
+                  DETECTED_PM="npm"
+                fi
+              else
+                echo "🎯 Using specified package manager: $DETECTED_PM"
+
+                # Validate that package.json exists
+                if [[ ! -f "package.json" ]]; then
+                  echo "❌ Error: No package.json found in current directory"
+                  exit 1
+                fi
+              fi
+
+              echo "package-manager=$DETECTED_PM" >> $GITHUB_OUTPUT
+              echo "✅ Package manager: $DETECTED_PM"
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+              node-version-file: ${{ inputs.node-version-file }}
+              registry-url: ${{ inputs.registry-url }}
+
+        - name: Validate Node.js setup
+          shell: bash
+          run: |
+              set -e
+
+              echo "🔍 Validating Node.js installation..."
+
+              if ! command -v node >/dev/null 2>&1; then
+                echo "❌ Error: Node.js not found in PATH"
+                exit 1
+              fi
+
+              NODE_VERSION=$(node --version)
+              echo "✅ Node.js version: $NODE_VERSION"
+
+              if ! command -v npm >/dev/null 2>&1; then
+                echo "❌ Error: npm not found in PATH"
+                exit 1
+              fi
+
+              NPM_VERSION=$(npm --version)
+              echo "✅ npm version: $NPM_VERSION"
+
+        - name: Setup pnpm
+          if: steps.detect-pm.outputs.package-manager == 'pnpm'
+          uses: pnpm/action-setup@v4
+          with:
+              version: latest
+
+        - name: Validate pnpm setup
+          if: steps.detect-pm.outputs.package-manager == 'pnpm'
+          shell: bash
+          run: |
+              set -e
+
+              if ! command -v pnpm >/dev/null 2>&1; then
+                echo "❌ Error: pnpm not found in PATH after setup"
+                exit 1
+              fi
+
+              PNPM_VERSION=$(pnpm --version)
+              echo "✅ pnpm version: $PNPM_VERSION"
+
+        - name: Setup Bun
+          if: steps.detect-pm.outputs.package-manager == 'bun'
+          uses: oven-sh/setup-bun@v2
+
+        - name: Validate Bun setup
+          if: steps.detect-pm.outputs.package-manager == 'bun'
+          shell: bash
+          run: |
+              set -e
+
+              if ! command -v bun >/dev/null 2>&1; then
+                echo "❌ Error: bun not found in PATH after setup"
+                exit 1
+              fi
+
+              BUN_VERSION=$(bun --version)
+              echo "✅ bun version: $BUN_VERSION"
+
+        - name: Get cache paths and keys
+          id: cache-config
+          shell: bash
+          run: |
+              set -e
+
+              PM="${{ steps.detect-pm.outputs.package-manager }}"
+              PREFIX="${{ inputs.cache-prefix }}"
+
+              echo "🔧 Configuring cache for package manager: $PM"
+
+              case $PM in
+                npm)
+                  CACHE_PATHS="~/.npm
+                  node_modules"
+                  LOCKFILE="package-lock.json"
+                  ;;
+                yarn|yarn-classic)
+                  if [[ "$PM" == "yarn" ]]; then
+                    CACHE_PATHS="**/node_modules
+                    .yarn/install-state.gz
+                    .yarn/cache"
+                  else
+                    CACHE_PATHS="**/node_modules
+                    ~/.cache/yarn"
+                  fi
+                  LOCKFILE="yarn.lock"
+                  ;;
+                pnpm)
+                  CACHE_PATHS="**/node_modules
+                  ~/.pnpm-store"
+                  LOCKFILE="pnpm-lock.yaml"
+                  ;;
+                bun)
+                  CACHE_PATHS="**/node_modules
+                  ~/.bun/install/cache"
+                  if [[ -f "bun.lockb" ]]; then
+                    LOCKFILE="bun.lockb"
+                  elif [[ -f "bun.lock" ]]; then
+                    LOCKFILE="bun.lock"
+                  else
+                    LOCKFILE="bun.lockb"  # Default
+                  fi
+                  ;;
+                *)
+                  echo "❌ Error: Unsupported package manager: $PM"
+                  exit 1
+                  ;;
+              esac
+
+              echo "📂 Cache paths configured for $PM"
+
+              # Generate cache key
+              LOCKFILE_HASH=""
+              if [[ -f "$LOCKFILE" ]]; then
+                if command -v sha256sum >/dev/null 2>&1; then
+                  LOCKFILE_HASH=$(sha256sum "$LOCKFILE" | cut -d' ' -f1)
+                elif command -v shasum >/dev/null 2>&1; then
+                  LOCKFILE_HASH=$(shasum -a 256 "$LOCKFILE" | cut -d' ' -f1)
+                else
+                  echo "⚠️  Warning: No SHA256 utility found, using file modification time"
+                  LOCKFILE_HASH=$(stat -c %Y "$LOCKFILE" 2>/dev/null || stat -f %m "$LOCKFILE" 2>/dev/null || echo "no-hash")
+                fi
+                echo "🔑 Lockfile hash: ${LOCKFILE_HASH:0:12}..."
+              else
+                echo "⚠️  Warning: Lockfile $LOCKFILE not found, cache may not be optimal"
+                LOCKFILE_HASH="no-lockfile"
+              fi
+
+              # Hash all package.json files
+              PACKAGE_JSON_FILES=$(find . -name "package.json" -not -path "./node_modules/*" 2>/dev/null || true)
+              if [[ -z "$PACKAGE_JSON_FILES" ]]; then
+                echo "❌ Error: No package.json files found"
+                exit 1
+              fi
+
+              if command -v sha256sum >/dev/null 2>&1; then
+                PACKAGE_JSON_HASH=$(echo "$PACKAGE_JSON_FILES" | xargs sha256sum | sort | sha256sum | cut -d' ' -f1)
+              elif command -v shasum >/dev/null 2>&1; then
+                PACKAGE_JSON_HASH=$(echo "$PACKAGE_JSON_FILES" | xargs shasum -a 256 | sort | shasum -a 256 | cut -d' ' -f1)
+              else
+                PACKAGE_JSON_HASH="no-hash-$(date +%s)"
+              fi
+
+              echo "🔑 Package files hash: ${PACKAGE_JSON_HASH:0:12}..."
+
+              CACHE_KEY="${PREFIX}${{ runner.os }}-${PM}-${LOCKFILE_HASH}-${PACKAGE_JSON_HASH}"
+              echo "🏷️  Cache key: $CACHE_KEY"
+
+              # Multi-line output handling
+              {
+                echo "cache-paths<<EOF"
+                echo "$CACHE_PATHS"
+                echo "EOF"
+                echo "cache-key=$CACHE_KEY"
+                echo "lockfile=$LOCKFILE"
+                echo "restore-keys<<EOF"
+                echo "${PREFIX}${{ runner.os }}-${PM}-${LOCKFILE_HASH}"
+                echo "${PREFIX}${{ runner.os }}-${PM}-"
+                echo "EOF"
+              } >> $GITHUB_OUTPUT
+
+        - name: Restore dependencies
+          id: deps-cache
+          uses: actions/cache/restore@v4
+          with:
+              path: ${{ steps.cache-config.outputs.cache-paths }}
+              key: ${{ steps.cache-config.outputs.cache-key }}
+              restore-keys: ${{ steps.cache-config.outputs.restore-keys }}
+
+        - name: Install dependencies
+          if: steps.deps-cache.outputs.cache-hit != 'true'
+          shell: bash
+          run: |
+              set -e
+
+              PM="${{ steps.detect-pm.outputs.package-manager }}"
+              CUSTOM_CMD="${{ inputs.install-command }}"
+              FROZEN="${{ inputs.frozen-lockfile }}"
+
+              echo "📦 Installing dependencies with $PM..."
+
+              # Record start time
+              START_TIME=$(date +%s)
+
+              if [[ -n "$CUSTOM_CMD" ]]; then
+                echo "🔧 Using custom install command: $CUSTOM_CMD"
+
+                # Validate custom command doesn't contain dangerous operations
+                if [[ "$CUSTOM_CMD" =~ (rm\s+-rf|sudo|curl.*\|.*sh) ]]; then
+                  echo "❌ Error: Custom command contains potentially dangerous operations"
+                  exit 1
+                fi
+
+                eval "$CUSTOM_CMD"
+              else
+                case $PM in
+                  npm)
+                    if [[ "$FROZEN" == "true" ]]; then
+                      echo "🔒 Running npm ci (frozen lockfile)"
+                      npm ci --no-audit --prefer-offline
+                    else
+                      echo "📥 Running npm install"
+                      npm install --no-audit --prefer-offline
+                    fi
+                    ;;
+                  yarn)
+                    if [[ "$FROZEN" == "true" ]]; then
+                      echo "🔒 Running yarn install --immutable"
+                      yarn install --immutable --inline-builds
+                    else
+                      echo "📥 Running yarn install"
+                      yarn install --inline-builds
+                    fi
+                    ;;
+                  yarn-classic)
+                    if [[ "$FROZEN" == "true" ]]; then
+                      echo "🔒 Running yarn install --frozen-lockfile"
+                      yarn install --frozen-lockfile --prefer-offline --silent
+                    else
+                      echo "📥 Running yarn install"
+                      yarn install --prefer-offline --silent
+                    fi
+                    ;;
+                  pnpm)
+                    if [[ "$FROZEN" == "true" ]]; then
+                      echo "🔒 Running pnpm install --frozen-lockfile"
+                      pnpm install --frozen-lockfile --prefer-offline
+                    else
+                      echo "📥 Running pnpm install"
+                      pnpm install --prefer-offline
+                    fi
+                    ;;
+                  bun)
+                    if [[ "$FROZEN" == "true" ]]; then
+                      echo "🔒 Running bun install --frozen-lockfile"
+                      bun install --frozen-lockfile
+                    else
+                      echo "📥 Running bun install"
+                      bun install
+                    fi
+                    ;;
+                  *)
+                    echo "❌ Error: Unsupported package manager: $PM"
+                    exit 1
+                    ;;
+                esac
+              fi
+
+              # Calculate and display installation time
+              END_TIME=$(date +%s)
+              DURATION=$((END_TIME - START_TIME))
+              echo "⏱️  Installation completed in ${DURATION}s"
+
+              # Validate installation
+              if [[ ! -d "node_modules" ]]; then
+                echo "❌ Error: node_modules directory not created"
+                exit 1
+              fi
+
+              # Count installed packages
+              if command -v find >/dev/null 2>&1; then
+                PACKAGE_COUNT=$(find node_modules -maxdepth 1 -type d | wc -l)
+                echo "✅ Successfully installed $((PACKAGE_COUNT - 1)) packages"
+              fi
+
+        - name: Cache dependencies
+          if: steps.deps-cache.outputs.cache-hit != 'true'
+          uses: actions/cache/save@v4
+          with:
+              path: ${{ steps.cache-config.outputs.cache-paths }}
+              key: ${{ steps.deps-cache.outputs.cache-primary-key }}
+
+        - name: Installation summary
+          shell: bash
+          run: |
+              echo "📋 Installation Summary"
+              echo "======================="
+              echo "Package Manager: ${{ steps.detect-pm.outputs.package-manager }}"
+              echo "Cache Hit: ${{ steps.deps-cache.outputs.cache-hit }}"
+              echo "Node.js: $(node --version)"
+
+              case "${{ steps.detect-pm.outputs.package-manager }}" in
+                npm) echo "npm: $(npm --version)" ;;
+                yarn*) echo "Yarn: $(yarn --version)" ;;
+                pnpm) echo "pnpm: $(pnpm --version)" ;;
+                bun) echo "Bun: $(bun --version)" ;;
+              esac
+
+              if [[ -d "node_modules" ]]; then
+                echo "✅ Dependencies installed successfully"
+              else
+                echo "❌ Installation may have failed - no node_modules found"
+                exit 1
+              fi

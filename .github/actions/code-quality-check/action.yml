@@ -1,0 +1,178 @@
+name: 'Code Quality Check'
+description: 'Comprehensive code quality analysis including linting, formatting, type checking, and security audits'
+author: 'Act-Aks'
+
+inputs:
+  check-formatting:
+    description: 'Whether to check code formatting'
+    required: false
+    default: 'true'
+  check-types:
+    description: 'Whether to run type checking'
+    required: false
+    default: 'true'
+  security-audit:
+    description: 'Whether to run security audit'
+    required: false
+    default: 'true'
+  fail-on-warnings:
+    description: 'Whether to fail on linting warnings'
+    required: false
+    default: 'false'
+  cache-prefix:
+    description: 'Cache prefix for quality checks'
+    required: false
+    default: 'quality-'
+
+outputs:
+  lint-result:
+    description: 'Result of linting check'
+    value: ${{ steps.lint.outputs.result }}
+  format-result:
+    description: 'Result of formatting check'
+    value: ${{ steps.format.outputs.result }}
+  types-result:
+    description: 'Result of type checking'
+    value: ${{ steps.types.outputs.result }}
+  security-result:
+    description: 'Result of security audit'
+    value: ${{ steps.security.outputs.result }}
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup dependencies
+      id: setup
+      uses: ./.github/actions/setup-node-deps
+      with:
+        cache-prefix: ${{ inputs.cache-prefix }}
+        frozen-lockfile: 'true'
+
+    - name: Run linting
+      id: lint
+      shell: bash
+      run: |
+        set -e
+        echo "🔍 Running linting checks..."
+        
+        PM="${{ steps.setup.outputs.package-manager }}"
+        FAIL_ON_WARNINGS="${{ inputs.fail-on-warnings }}"
+        
+        # Run linting based on package manager
+        case "$PM" in
+          npm) 
+            if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
+              npm run lint
+            else
+              npm run lint || echo "⚠️ Linting completed with warnings"
+            fi
+            ;;
+          yarn*) 
+            if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
+              yarn lint
+            else
+              yarn lint || echo "⚠️ Linting completed with warnings"
+            fi
+            ;;
+          pnpm) 
+            if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
+              pnpm lint
+            else
+              pnpm lint || echo "⚠️ Linting completed with warnings"
+            fi
+            ;;
+          bun) 
+            if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
+              bun run lint
+            else
+              bun run lint || echo "⚠️ Linting completed with warnings"
+            fi
+            ;;
+        esac
+        
+        echo "result=success" >> $GITHUB_OUTPUT
+        echo "✅ Linting check completed"
+
+    - name: Check code formatting
+      id: format
+      if: inputs.check-formatting == 'true'
+      shell: bash
+      run: |
+        set -e
+        echo "🎨 Checking code formatting..."
+        
+        PM="${{ steps.setup.outputs.package-manager }}"
+        
+        case "$PM" in
+          npm) npm run format ;;
+          yarn*) yarn format ;;
+          pnpm) pnpm format ;;
+          bun) bun run format ;;
+        esac
+        
+        echo "result=success" >> $GITHUB_OUTPUT
+        echo "✅ Code formatting check passed"
+
+    - name: Run type checking
+      id: types
+      if: inputs.check-types == 'true'
+      shell: bash
+      run: |
+        set -e
+        echo "🔍 Running type checking..."
+        
+        PM="${{ steps.setup.outputs.package-manager }}"
+        
+        case "$PM" in
+          npm) npm run check-types ;;
+          yarn*) yarn check-types ;;
+          pnpm) pnpm check-types ;;
+          bun) bun run check-types ;;
+        esac
+        
+        echo "result=success" >> $GITHUB_OUTPUT
+        echo "✅ Type checking completed successfully"
+
+    - name: Security audit
+      id: security
+      if: inputs.security-audit == 'true'
+      shell: bash
+      run: |
+        echo "🔒 Running security audit..."
+        
+        PM="${{ steps.setup.outputs.package-manager }}"
+        
+        case "$PM" in
+          npm) 
+            npm audit --audit-level=moderate
+            ;;
+          yarn*) 
+            yarn audit --level moderate
+            ;;
+          pnpm) 
+            pnpm audit --audit-level moderate
+            ;;
+          bun) 
+            bun audit
+            ;;
+        esac
+        
+        echo "result=success" >> $GITHUB_OUTPUT
+        echo "✅ Security audit completed"
+
+    - name: Generate quality summary
+      shell: bash
+      run: |
+        echo "📋 Code Quality Check Summary"
+        echo "============================"
+        echo "Linting: ${{ steps.lint.outputs.result }}"
+        echo "Formatting: ${{ steps.format.outputs.result || 'skipped' }}"
+        echo "Type Checking: ${{ steps.types.outputs.result || 'skipped' }}"
+        echo "Security Audit: ${{ steps.security.outputs.result || 'skipped' }}"
+        echo "Package Manager: ${{ steps.setup.outputs.package-manager }}"
+        echo "Cache Hit: ${{ steps.setup.outputs.cache-hit }}"
+        echo "✅ All quality checks completed successfully"

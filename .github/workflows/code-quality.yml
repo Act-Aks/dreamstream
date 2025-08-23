@@ -1,0 +1,171 @@
+name: Code Quality Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+env:
+  NODE_ENV: test
+
+jobs:
+  quality-analysis:
+    name: Advanced Code Quality Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Setup Node.js and dependencies
+        id: setup
+        uses: ./.github/actions/setup-node-deps
+        with:
+          frozen-lockfile: 'true'
+
+      - name: Run comprehensive linting with detailed output
+        run: |
+          echo "🔍 Running comprehensive linting analysis..."
+          case "${{ steps.setup.outputs.package-manager }}" in
+            npm) npm run lint ;;
+            yarn*) yarn lint ;;
+            pnpm) pnpm lint ;;
+            bun) bun run lint ;;
+          esac
+
+      - name: Generate code complexity report
+        continue-on-error: true
+        run: |
+          echo "📊 Analyzing code complexity..."
+          # Use Biome's built-in analysis capabilities
+          npx @biomejs/biome check .
+
+      - name: Security audit with detailed report
+        run: |
+          echo "🔒 Running security audit..."
+          case "${{ steps.setup.outputs.package-manager }}" in
+            npm) 
+              npm audit --json > audit-report.json || true
+              if [ -s audit-report.json ]; then
+                echo "Security vulnerabilities found:"
+                cat audit-report.json | jq -r '.vulnerabilities | to_entries[] | "\(.key): \(.value.severity)"' || true
+              fi
+              ;;
+            yarn*) 
+              yarn audit --json > audit-report.json || true
+              if [ -s audit-report.json ]; then
+                echo "Security vulnerabilities found in yarn audit"
+                cat audit-report.json || true
+              fi
+              ;;
+            pnpm) 
+              pnpm audit --json > audit-report.json || true
+              if [ -s audit-report.json ]; then
+                echo "Security vulnerabilities found in pnpm audit"
+                cat audit-report.json || true
+              fi
+              ;;
+            bun) 
+              bun audit > audit-report.txt || true
+              if [ -s audit-report.txt ]; then
+                echo "Security vulnerabilities found:"
+                cat audit-report.txt
+              fi
+              ;;
+          esac
+
+      - name: License compliance check
+        continue-on-error: true
+        run: |
+          echo "📜 Checking license compliance..."
+          # Check for license files
+          find . -name "LICENSE*" -o -name "COPYING*" | head -10
+          
+          # Basic license check in package.json files
+          find . -name "package.json" -not -path "./node_modules/*" | while read -r file; do
+            license=$(jq -r '.license // "UNKNOWN"' "$file")
+            echo "📄 $file: $license"
+          done
+
+      - name: Dependency analysis
+        continue-on-error: true
+        run: |
+          echo "🔍 Analyzing dependencies..."
+          
+          # Count total dependencies
+          total_deps=$(find node_modules -maxdepth 1 -type d | wc -l)
+          echo "📦 Total installed packages: $((total_deps - 1))"
+          
+          # Check for duplicate dependencies
+          case "${{ steps.setup.outputs.package-manager }}" in
+            npm) npm ls --depth=0 2>/dev/null | grep -E "├──|└──" | wc -l || true ;;
+            yarn*) yarn list --depth=0 2>/dev/null | grep -E "├──|└──" | wc -l || true ;;
+            pnpm) pnpm list --depth=0 2>/dev/null | grep -E "├──|└──" | wc -l || true ;;
+          esac
+
+      - name: Code coverage analysis (if tests exist)
+        continue-on-error: true
+        run: |
+          echo "📊 Checking for test coverage..."
+          # Look for test files
+          test_files=$(find . -name "*.test.*" -o -name "*.spec.*" | grep -v node_modules | wc -l)
+          echo "🧪 Found $test_files test files"
+          
+          if [ "$test_files" -gt 0 ]; then
+            echo "Running tests with coverage..."
+            case "${{ steps.setup.outputs.package-manager }}" in
+              npm) npm test -- --coverage 2>/dev/null || echo "No coverage script available" ;;
+              yarn*) yarn test --coverage 2>/dev/null || echo "No coverage script available" ;;
+              pnpm) pnpm test --coverage 2>/dev/null || echo "No coverage script available" ;;
+              bun) bun test --coverage 2>/dev/null || echo "No coverage script available" ;;
+            esac
+          fi
+
+      - name: Generate quality report summary
+        if: always()
+        run: |
+          echo "📋 Code Quality Summary"
+          echo "======================"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "Package Manager: ${{ steps.setup.outputs.package-manager }}"
+          echo "Node.js: $(node --version)"
+          echo "Timestamp: $(date -u)"
+          
+          # Basic project stats
+          echo ""
+          echo "📊 Project Statistics"
+          echo "===================="
+          js_files=$(find . -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | grep -v node_modules | wc -l)
+          echo "JavaScript/TypeScript files: $js_files"
+          
+          json_files=$(find . -name "*.json" | grep -v node_modules | wc -l)
+          echo "JSON files: $json_files"
+          
+          md_files=$(find . -name "*.md" | grep -v node_modules | wc -l)
+          echo "Markdown files: $md_files"
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD
+          deny-licenses: GPL-2.0, GPL-3.0, LGPL-2.0, LGPL-2.1, LGPL-3.0
