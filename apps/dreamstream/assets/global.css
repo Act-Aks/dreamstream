@@ -1,4 +1,0 @@
-/** biome-ignore-all lint/suspicious/noUnknownAtRules: For now not enough fine grained control */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
