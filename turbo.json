@@ -8,8 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "format": {
-      "dependsOn": ["^format"],
-      "cache": false
+      "dependsOn": ["^format"]
     },
     "lint": {
       "dependsOn": ["^lint"]

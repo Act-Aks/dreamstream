@@ -1,9 +1,9 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
   "extends": ["ultracite"],
   "formatter": {
     "enabled": true,
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 4,
     "lineWidth": 120,
@@ -21,6 +21,9 @@
       },
       "style": {
         "useFilenamingConvention": "off"
+      },
+      "performance": {
+        "noBarrelFile": "error"
       }
     }
   }

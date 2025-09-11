@@ -18,11 +18,11 @@
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": true,
-    "baseUrl": "",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["assets/*"]
+      "@/*": ["./src/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
-  "include": ["src", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@dreamstream/common",
+  "name": "@dreamstream/providers",
   "version": "1.0.0",
   "type": "module",
   "exports": {

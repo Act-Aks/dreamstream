@@ -1,30 +1,32 @@
 {
   "name": "dreamstream",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "format": "turbo run format",
-    "lint": "turbo run lint",
+    "cq:fix": "turbo run format",
+    "cq:check": "turbo run lint",
     "check-types": "turbo run check-types",
     "cmt": "git-cz"
   },
   "dependencies": {
-    "axios": "1.11.0"
+    "axios": "1.11.0",
+    "cheerio": "1.1.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.2",
+    "@biomejs/biome": "2.2.4",
     "git-cz": "4.9.0",
     "husky": "9.1.7",
-    "lint-staged": "16.1.5",
+    "lint-staged": "16.1.6",
     "turbo": "2.5.6",
     "typescript": "5.9.2",
-    "ultracite": "5.2.5"
+    "ultracite": "5.3.4"
   },
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "bun@1.2.20",
+  "packageManager": "bun@1.2.21",
   "workspaces": [
     "apps/*",
     "packages/*"
