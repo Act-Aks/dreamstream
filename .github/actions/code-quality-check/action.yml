@@ -66,30 +66,30 @@ runs:
         case "$PM" in
           npm) 
             if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
-              npm run lint
+              npm run cq:check
             else
-              npm run lint || echo "⚠️ Linting completed with warnings"
+              npm run cq:check || echo "⚠️ Linting completed with warnings"
             fi
             ;;
           yarn*) 
             if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
-              yarn lint
+              yarn cq:check
             else
-              yarn lint || echo "⚠️ Linting completed with warnings"
+              yarn cq:check || echo "⚠️ Linting completed with warnings"
             fi
             ;;
           pnpm) 
             if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
-              pnpm lint
+              pnpm cq:check
             else
-              pnpm lint || echo "⚠️ Linting completed with warnings"
+              pnpm cq:check || echo "⚠️ Linting completed with warnings"
             fi
             ;;
           bun) 
             if [[ "$FAIL_ON_WARNINGS" == "true" ]]; then
-              bun run lint
+              bun run cq:check
             else
-              bun run lint || echo "⚠️ Linting completed with warnings"
+              bun run cq:check || echo "⚠️ Linting completed with warnings"
             fi
             ;;
         esac
@@ -108,10 +108,10 @@ runs:
         PM="${{ steps.setup.outputs.package-manager }}"
         
         case "$PM" in
-          npm) npm run format ;;
-          yarn*) yarn format ;;
-          pnpm) pnpm format ;;
-          bun) bun run format ;;
+          npm) npm run cq:fix ;;
+          yarn*) yarn cq:fix ;;
+          pnpm) pnpm cq:fix ;;
+          bun) bun run cq:fix ;;
         esac
         
         echo "result=success" >> $GITHUB_OUTPUT

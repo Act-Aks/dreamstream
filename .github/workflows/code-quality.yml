@@ -34,10 +34,10 @@ jobs:
         run: |
           echo "🔍 Running comprehensive linting analysis..."
           case "${{ steps.setup.outputs.package-manager }}" in
-            npm) npm run lint ;;
-            yarn*) yarn lint ;;
-            pnpm) pnpm lint ;;
-            bun) bun run lint ;;
+            npm) npm run cq:check ;;
+            yarn*) yarn cq:check ;;
+            pnpm) pnpm cq:check ;;
+            bun) bun run cq:check ;;
           esac
 
       - name: Generate code complexity report
