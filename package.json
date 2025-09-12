@@ -8,10 +8,11 @@
     "cq:fix": "turbo run format",
     "cq:check": "turbo run lint",
     "check-types": "turbo run check-types",
+    "update:all": "turbo run update --concurrency 1",
     "cmt": "git-cz"
   },
   "dependencies": {
-    "axios": "1.11.0",
+    "axios": "1.12.0",
     "cheerio": "1.1.2"
   },
   "devDependencies": {
