@@ -27,7 +27,7 @@
     },
     "apps/dreamstream": {
       "name": "@dreamstream/app",
-      "version": "1.0.0",
+      "version": "1.3.5",
       "dependencies": {
         "@dreamstream/common": "workspace:*",
         "@dreamstream/providers": "workspace:*",
