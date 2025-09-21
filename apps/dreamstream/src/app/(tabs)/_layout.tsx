@@ -7,29 +7,29 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name={"index"}
                 options={{
-                    title: "Home",
                     tabBarIcon: ({ color, size }) => <Ionicons color={color} name="home" size={size} />,
+                    title: "Home",
                 }}
             />
             <Tabs.Screen
                 name={"search"}
                 options={{
-                    title: "Search",
                     tabBarIcon: ({ color, size }) => <Ionicons color={color} name="search" size={size} />,
+                    title: "Search",
                 }}
             />
             <Tabs.Screen
                 name={"downloads"}
                 options={{
-                    title: "Downloads",
                     tabBarIcon: ({ color, size }) => <Ionicons color={color} name="download" size={size} />,
+                    title: "Downloads",
                 }}
             />
             <Tabs.Screen
                 name={"settings"}
                 options={{
-                    title: "Settings",
                     tabBarIcon: ({ color, size }) => <Ionicons color={color} name="settings" size={size} />,
+                    title: "Settings",
                 }}
             />
         </Tabs>

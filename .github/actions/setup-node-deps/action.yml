@@ -118,7 +118,7 @@ runs:
               echo "✅ Package manager: $DETECTED_PM"
 
         - name: Setup Node.js
-          uses: actions/setup-node@v4
+          uses: actions/setup-node@v5
           with:
               node-version-file: ${{ inputs.node-version-file }}
               registry-url: ${{ inputs.registry-url }}

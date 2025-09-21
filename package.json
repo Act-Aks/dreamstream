@@ -1,5 +1,5 @@
 {
-  "name": "dreamstream",
+  "name": "@dreamstream/source",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -8,26 +8,35 @@
     "cq:fix": "turbo run format",
     "cq:check": "turbo run lint",
     "check-types": "turbo run check-types",
-    "update:all": "turbo run update --concurrency 1",
+    "up": "turbo run update --concurrency 1",
+    "up:self": "bun update --latest && bun i",
     "cmt": "git-cz"
   },
   "dependencies": {
-    "axios": "1.12.0",
+    "axios": "1.12.2",
     "cheerio": "1.1.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "eas-cli": "^16.19.3",
     "git-cz": "4.9.0",
     "husky": "9.1.7",
     "lint-staged": "16.1.6",
+    "semantic-release": "^24.2.9",
     "turbo": "2.5.6",
     "typescript": "5.9.2",
-    "ultracite": "5.3.4"
+    "ultracite": "5.4.4"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
-  "packageManager": "bun@1.2.21",
+  "packageManager": "bun@1.2.22",
   "workspaces": [
     "apps/*",
     "packages/*"

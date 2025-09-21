@@ -26,5 +26,12 @@
         "noBarrelFile": "error"
       }
     }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "useSortedKeys": "on"
+      }
+    }
   }
 }

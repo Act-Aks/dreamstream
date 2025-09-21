@@ -1,0 +1,162 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.FULL_TOKEN }}
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    outputs:
+      released: ${{ steps.check-release.outputs.released }}
+      version: ${{ steps.check-release.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+
+      - name: Setup Node.js and dependencies
+        uses: ./.github/actions/setup-node-deps
+        with:
+          frozen-lockfile: 'true'
+
+      - name: Setup Expo CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          packager: 'bun'
+          token: ${{ env.EXPO_TOKEN }}
+
+      - name: Run semantic-release
+        id: semantic-release
+        env:
+          GH_TOKEN: ${{ env.GH_TOKEN }}
+        run: |
+          cd apps/dreamstream
+          bun run release
+
+      - name: Check release
+        id: check-release
+        run: |
+          # New released version
+          RELEASE_VERSION=${{ steps.semantic-release.outputs.next-release-version }}
+
+          echo $RELEASE_VERSION
+          echo ${{ steps.semantic-release.outputs.next-release-version }}
+
+          if [ -n "${{ steps.semantic-release.outputs.next-release-version }}" ]; then
+            echo "released=true" >> $GITHUB_OUTPUT
+            echo "version=${{ steps.semantic-release.outputs.next-release-version }}" >> $GITHUB_OUTPUT
+            echo "✅ New version ${{ steps.semantic-release.outputs.next-release-version }} was released"
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+            echo "version=${{ steps.semantic-release.outputs.next-release-version }}" >> $GITHUB_OUTPUT
+            echo "ℹ️ No new release was created"
+          fi
+         
+
+  build:
+    needs: release
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.FULL_TOKEN }}
+
+      - name: Setup Node.js and dependencies
+        uses: ./.github/actions/setup-node-deps
+        with:
+          frozen-lockfile: 'true'
+
+      - name: Setup Expo CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          packager: 'bun'
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Verify version consistency
+        run: |
+          cd apps/dreamstream
+          APP_VERSION=$(node -e "console.log(require('./app.json').expo.version)")
+          echo "App version: $APP_VERSION"
+          echo "Release version: ${{ needs.release.outputs.version }}"
+          if [ "$APP_VERSION" != "${{ needs.release.outputs.version }}" ]; then
+            echo "Warning: Version mismatch. Expected: ${{ needs.release.outputs.version }}, Got: $APP_VERSION"
+          fi
+
+      - name: Build Android APK
+        run: |
+          cd apps/dreamstream
+          bun run build:android:release
+          mv DreamStream.apk DreamStream-v${{ needs.release.outputs.version }}.apk
+
+      - name: Generate QR code for release
+        run: |
+          sudo apt-get update && sudo apt-get install -y qrencode
+          qrencode -o DreamStream-qr.png "https://github.com/${{ github.repository }}/releases/tag/v${{ needs.release.outputs.version }}"
+
+      - name: Upload APK to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
+        run: |
+          gh release upload v${{ needs.release.outputs.version }} \
+            apps/dreamstream/DreamStream-v${{ needs.release.outputs.version }}.apk \
+            DreamStream-qr.png \
+            --clobber
+
+      - name: Update release description with build info
+        env:
+          GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
+        run: |
+          CURRENT_BODY=$(gh release view v${{ needs.release.outputs.version }} --json body --jq .body)
+          NEW_BODY="$CURRENT_BODY
+
+          ## 📱 Android Build
+          
+          - **APK**: [DreamStream-v${{ needs.release.outputs.version }}.apk](https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk)
+          - **QR Code**: Scan the QR code image to quickly access this release
+          
+          ### Installation
+          1. Download the APK file above
+          2. Enable \"Install from unknown sources\" in your Android settings
+          3. Install the APK file
+          
+          Or scan the QR code to access this release page on your mobile device."
+          
+          gh release edit v${{ needs.release.outputs.version }} --notes "$NEW_BODY"

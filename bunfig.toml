@@ -1,0 +1,11 @@
+[workspace]
+packages = ["packages/*"]
+apps = ["apps/*"]
+
+[install.cache]
+dir = ".bun/cache"
+disable = false
+disableManifest = false
+
+[install.lockfile]
+save = true

@@ -2,7 +2,7 @@
   "expo": {
     "name": "DreamStream",
     "slug": "DreamStream",
-    "version": "1.0.0",
+    "version": "1.3.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "dreamstream",
@@ -36,11 +36,25 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8f9b2549-8352-42ef-a108-78c49aa6fdf7"
+      }
+    },
+    "owner": "act-aks"
   }
 }

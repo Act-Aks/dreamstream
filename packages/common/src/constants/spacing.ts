@@ -1,46 +1,24 @@
-export type Spacing = {
-    xs: number;
-    sm: number;
-    md: number;
-    base: number;
-    lg: number;
-    xl: number;
-    "2xl": number;
-    "3xl": number;
-    "4xl": number;
-};
-
-export const spacing: Spacing = {
-    xs: 4,
-    sm: 8,
-    md: 12,
-    base: 16,
-    lg: 24,
-    xl: 32,
+export const spacing = {
     "2xl": 48,
     "3xl": 64,
     "4xl": 96,
-};
+    base: 16,
+    lg: 24,
+    md: 12,
+    sm: 8,
+    xl: 32,
+    xs: 4,
+} as const;
 
-export type BorderRadius = {
-    none: number;
-    sm: number;
-    md: number;
-    base: number;
-    lg: number;
-    xl: number;
-    full: number;
-};
-
-export const borderRadius: BorderRadius = {
+export const borderRadius = {
+    base: 16,
+    full: 9999,
+    lg: 12,
+    md: 8,
     none: 0,
     sm: 4,
-    md: 8,
-    lg: 12,
-    base: 16,
     xl: 20,
-    full: 9999,
-};
+} as const;
 
 type Elevation = {
     shadowOpacity: number;
@@ -48,137 +26,98 @@ type Elevation = {
     shadowOffset: { width: number; height: number };
     elevation: number;
 };
+export type Shadow = Record<"none" | "sm" | "md" | "base" | "lg" | "xl" | "2xl", Elevation>;
 
-export const shadowElevation: Record<"none" | "sm" | "md" | "base" | "lg" | "xl" | "2xl", Elevation> = {
-    none: {
-        shadowOpacity: 0,
-        shadowRadius: 0,
-        shadowOffset: { width: 0, height: 0 },
-        elevation: 0,
-    },
-    sm: {
-        shadowOpacity: 0.1,
-        shadowRadius: 1,
-        shadowOffset: { width: 0, height: 1 },
-        elevation: 1,
-    },
-    md: {
-        shadowOpacity: 0.15,
-        shadowRadius: 3,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 3,
-    },
-    base: {
-        shadowOpacity: 0.2,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 3,
-    },
-    lg: {
-        shadowOpacity: 0.25,
-        shadowRadius: 9,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 6,
-    },
-    xl: {
-        shadowOpacity: 0.3,
-        shadowRadius: 14,
-        shadowOffset: { width: 0, height: 8 },
-        elevation: 10,
-    },
+export const shadow: Shadow = {
     "2xl": {
+        elevation: 15,
+        shadowOffset: { height: 12, width: 0 },
         shadowOpacity: 0.35,
         shadowRadius: 20,
-        shadowOffset: { width: 0, height: 12 },
-        elevation: 15,
+    },
+    base: {
+        elevation: 3,
+        shadowOffset: { height: 2, width: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+    },
+    lg: {
+        elevation: 6,
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.25,
+        shadowRadius: 9,
+    },
+    md: {
+        elevation: 3,
+        shadowOffset: { height: 2, width: 0 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+    },
+    none: {
+        elevation: 0,
+        shadowOffset: { height: 0, width: 0 },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+    },
+    sm: {
+        elevation: 1,
+        shadowOffset: { height: 1, width: 0 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+    },
+    xl: {
+        elevation: 10,
+        shadowOffset: { height: 8, width: 0 },
+        shadowOpacity: 0.3,
+        shadowRadius: 14,
     },
 };
 
-// Animation Duration Constants
-export type AnimationDuration = {
-    fastest: number;
-    fast: number;
-    normal: number;
-    slow: number;
-    slowest: number;
-};
-
-export const animationDuration: AnimationDuration = {
-    fastest: 100,
+export const animationDuration = {
     fast: 200,
+    fastest: 100,
     normal: 300,
     slow: 500,
     slowest: 800,
-};
+} as const;
 
-// Z-Index Constants
-export type ZIndex = {
-    behind: number;
-    base: number;
-    overlay: number;
-    modal: number;
-    popover: number;
-    tooltip: number;
-    toast: number;
-    loading: number;
-    max: number;
-};
-
-export const zIndex: ZIndex = {
-    behind: -1,
+export const zIndex = {
     base: 0,
-    overlay: 1000,
-    modal: 1100,
-    popover: 1200,
-    tooltip: 1300,
-    toast: 1400,
+    behind: -1,
     loading: 1500,
     max: 9999,
-};
+    modal: 1100,
+    overlay: 1000,
+    popover: 1200,
+    toast: 1400,
+    tooltip: 1300,
+} as const;
 
 export const opacity = {
-    transparent: 0,
+    backdrop: 0.8,
+    disabled: 0.4,
+    high: 0.75,
+    loading: 0.6,
     low: 0.25,
     medium: 0.5,
-    high: 0.75,
     opaque: 1,
-    disabled: 0.4,
     overlay: 0.6,
-    backdrop: 0.8,
     pressed: 0.7,
-    loading: 0.6,
-};
+    transparent: 0,
+} as const;
 
-// Utility functions for React Native
-export const spacingUtils = {
-    // Get spacing value by key
+export type AnimationDuration = typeof animationDuration;
+export type BorderRadius = typeof borderRadius;
+export type Opacity = typeof opacity;
+export type Spacing = typeof spacing;
+export type Zindex = typeof zIndex;
+
+export const spacingPresets = {
     get: (key: keyof Spacing) => spacing[key],
-
-    // Get horizontal padding/margin
-    horizontal: (key: keyof Spacing) => ({
-        paddingHorizontal: spacing[key],
-    }),
-
-    // Get vertical padding/margin
-    vertical: (key: keyof Spacing) => ({
-        paddingVertical: spacing[key],
-    }),
-
-    // Get all-around padding
-    padding: (key: keyof Spacing) => ({
-        padding: spacing[key],
-    }),
-
-    // Get all-around margin
-    margin: (key: keyof Spacing) => ({
-        margin: spacing[key],
-    }),
-
-    // Get shadow style
-    shadow: (key: keyof typeof shadowElevation) => shadowElevation[key],
-
-    // Get border radius
-    radius: (key: keyof BorderRadius) => ({
-        borderRadius: borderRadius[key],
-    }),
+    horizontal: (key: keyof Spacing) => ({ paddingHorizontal: spacing[key] }),
+    margin: (key: keyof Spacing) => ({ margin: spacing[key] }),
+    padding: (key: keyof Spacing) => ({ padding: spacing[key] }),
+    radius: (key: keyof BorderRadius) => ({ borderRadius: borderRadius[key] }),
+    shadow: (key: keyof Shadow) => shadow[key],
+    vertical: (key: keyof Spacing) => ({ paddingVertical: spacing[key] }),
 };
