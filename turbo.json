@@ -17,8 +17,7 @@
       "dependsOn": ["^check-types"]
     },
     "update": {
-      "dependsOn": ["^update"],
-      "cache": true
+      "dependsOn": ["^update"]
     },
     "dev": {
       "cache": false,
