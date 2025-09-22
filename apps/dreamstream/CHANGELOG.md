@@ -1,3 +1,24 @@
+# 1.0.0 (2025-09-22)
+
+
+### Bug Fixes
+
+* 🐛 lint staged ([448bb3c](https://github.com/Act-Aks/dreamstream/commit/448bb3ced4ec2c21fe54af871c455ad45cdabe63))
+* 🐛 Standardize code quality script names ([a560e1e](https://github.com/Act-Aks/dreamstream/commit/a560e1eca16b588032c6dc1af544100c196635c2))
+* 🐛 update lock file ([c2d8e8f](https://github.com/Act-Aks/dreamstream/commit/c2d8e8f3e59963b66be3d8d6888653586c135074))
+
+
+### Features
+
+* 🎸 added app icon ([4cf5d69](https://github.com/Act-Aks/dreamstream/commit/4cf5d69d822926a2b05c0b0d35f418f3ee28b3fe))
+* 🎸 added semantic release ([fe45d4c](https://github.com/Act-Aks/dreamstream/commit/fe45d4cd361e1ee83a0d4c8395fc673bf85b9a68))
+* 🎸 added tabs for the app ([348c987](https://github.com/Act-Aks/dreamstream/commit/348c9878488ca505be40e0e20db46d7c9ac274e0))
+* 🎸 added the app ([3148d6e](https://github.com/Act-Aks/dreamstream/commit/3148d6eb934bc1c8b6e8ea35ad82a4ee0979309e))
+* 🎸 Init commit ([e0e052c](https://github.com/Act-Aks/dreamstream/commit/e0e052c57fff7967d05a8400c3e534b17e68def4))
+* 🎸 update expo to latest version and added packages ([d9a8265](https://github.com/Act-Aks/dreamstream/commit/d9a8265dee6ab595de390a470f393b8b36d7732d))
+* 🎸 updates deps ([330987b](https://github.com/Act-Aks/dreamstream/commit/330987b493a9954cdda11ee19823c96434e5d2e3))
+* ci workflows added ([a6b6f11](https://github.com/Act-Aks/dreamstream/commit/a6b6f1178e195b8747753f75eb2b9dbfef6ab6ad))
+
 # 1.0.0 (2025-09-21)
 
 
