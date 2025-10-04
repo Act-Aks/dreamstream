@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Act-Aks/dreamstream/compare/v1.2.0...v1.3.0) (2025-10-04)
+
+
+### Features
+
+* Update TypeScript and project dependencies to latest versions ([f22bbf3](https://github.com/Act-Aks/dreamstream/commit/f22bbf3259e6bdf703e43676e7ae436b2726d90b))
+
 # [1.2.0](https://github.com/Act-Aks/dreamstream/compare/v1.1.0...v1.2.0) (2025-10-04)
 
 
