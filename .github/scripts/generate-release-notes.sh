@@ -23,42 +23,63 @@ for var in "${required_vars[@]}"; do
 done
 
 # Get additional variables
-PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "HEAD~10")
-BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+export PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "HEAD~10")
+export BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
-# Create temporary file for processing
-cp .github/release-template.md /tmp/release_notes.md
+echo "📝 Processing template with Python..."
+echo "🔍 Debug info:"
+echo "  VERSION: $VERSION"
+echo "  REPOSITORY: $REPOSITORY"
+echo "  APP_NAME: $APP_NAME"
+echo "  APK_SIZE: $APK_SIZE"
+echo "  COMMIT_COUNT: $COMMIT_COUNT"
+echo "  QR_BASE64 length: ${#QR_BASE64}"
+echo "  CONTRIBUTORS lines: $(echo "$CONTRIBUTORS" | wc -l)"
+echo "  CHANGELOG lines: $(echo "$CHANGELOG" | wc -l)"
 
-# Function to safely replace text in file
-safe_replace() {
-    local placeholder="$1"
-    local value="$2"
-    local file="$3"
-    
-    # Escape special characters for sed
-    escaped_value=$(printf '%s\n' "$value" | sed 's/[[\.*^$()+?{|]/\\&/g')
-    
-    # Use a different delimiter to avoid conflicts
-    sed -i "s|$placeholder|$escaped_value|g" "$file"
+# Use Python for robust text replacement
+python3 << 'EOF'
+import os
+import sys
+
+# Read template
+try:
+    with open('.github/release-template.md', 'r', encoding='utf-8') as f:
+        template = f.read()
+except Exception as e:
+    print(f"❌ Error reading template: {e}")
+    sys.exit(1)
+
+# Get environment variables
+replacements = {
+    '{{CURRENT_BODY}}': os.getenv('CURRENT_BODY', ''),
+    '{{QR_BASE64}}': os.getenv('QR_BASE64', ''),
+    '{{APP_NAME}}': os.getenv('APP_NAME', ''),
+    '{{VERSION}}': os.getenv('VERSION', ''),
+    '{{REPOSITORY}}': os.getenv('REPOSITORY', ''),
+    '{{APK_SIZE}}': os.getenv('APK_SIZE', ''),
+    '{{CHANGELOG}}': os.getenv('CHANGELOG', ''),
+    '{{CONTRIBUTORS}}': os.getenv('CONTRIBUTORS', ''),
+    '{{PREVIOUS_TAG}}': os.getenv('PREVIOUS_TAG', ''),
+    '{{BUILD_DATE}}': os.getenv('BUILD_DATE', ''),
+    '{{COMMIT_COUNT}}': os.getenv('COMMIT_COUNT', ''),
 }
 
-echo "📝 Replacing template variables..."
+# Replace all placeholders
+content = template
+for placeholder, value in replacements.items():
+    if value is None:
+        value = ''
+    content = content.replace(placeholder, str(value))
 
-# Replace all template variables
-safe_replace "{{CURRENT_BODY}}" "$CURRENT_BODY" "/tmp/release_notes.md"
-safe_replace "{{QR_BASE64}}" "$QR_BASE64" "/tmp/release_notes.md"
-safe_replace "{{APP_NAME}}" "$APP_NAME" "/tmp/release_notes.md"
-safe_replace "{{VERSION}}" "$VERSION" "/tmp/release_notes.md"
-safe_replace "{{REPOSITORY}}" "$REPOSITORY" "/tmp/release_notes.md"
-safe_replace "{{APK_SIZE}}" "$APK_SIZE" "/tmp/release_notes.md"
-safe_replace "{{CHANGELOG}}" "$CHANGELOG" "/tmp/release_notes.md"
-safe_replace "{{CONTRIBUTORS}}" "$CONTRIBUTORS" "/tmp/release_notes.md"
-safe_replace "{{PREVIOUS_TAG}}" "$PREVIOUS_TAG" "/tmp/release_notes.md"
-safe_replace "{{BUILD_DATE}}" "$BUILD_DATE" "/tmp/release_notes.md"
-safe_replace "{{COMMIT_COUNT}}" "$COMMIT_COUNT" "/tmp/release_notes.md"
+# Write output
+try:
+    with open('release_notes.md', 'w', encoding='utf-8') as f:
+        f.write(content)
+    print("✅ Release notes generated successfully!")
+except Exception as e:
+    print(f"❌ Error writing output: {e}")
+    sys.exit(1)
+EOF
 
-# Copy final result
-cp /tmp/release_notes.md release_notes.md
-
-echo "✅ Release notes generated successfully!"
 echo "📄 Output file: release_notes.md"
