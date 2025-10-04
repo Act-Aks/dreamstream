@@ -72,6 +72,9 @@ jobs:
     needs: release
     if: needs.release.outputs.released == 'true'
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.FULL_TOKEN }}
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -155,7 +158,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
         run: |
           # Get the previous release tag
-          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""')
+          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""' 2>/dev/null || echo "")
           
           if [ -z "$PREVIOUS_TAG" ]; then
             echo "No previous release found, using last 20 commits"
@@ -165,31 +168,57 @@ jobs:
             COMMIT_RANGE="${PREVIOUS_TAG}..HEAD"
           fi
           
-          # Get unique contributors with their GitHub profiles
-          CONTRIBUTORS_JSON=$(git log $COMMIT_RANGE --format='%ae|%an' | sort -u | while IFS='|' read -r email name; do
-            if [ ! -z "$email" ] && [ "$email" != "noreply@github.com" ]; then
-              # Try to get GitHub username from email
-              GITHUB_USER=$(gh api search/users -q "q=$email in:email" --jq '.items[0].login // empty' 2>/dev/null || echo "")
+          # Get unique contributors
+          CONTRIBUTORS_LIST=""
+          
+          # Get contributors from git log
+          git log $COMMIT_RANGE --format='%ae|%an' | sort -u | while IFS='|' read -r email name; do
+            if [ ! -z "$email" ] && [ "$email" != "noreply@github.com" ] && [ "$name" != "dependabot[bot]" ]; then
+              # Clean email for search (remove special characters)
+              CLEAN_EMAIL=$(echo "$email" | sed 's/[^a-zA-Z0-9@._-]//g')
               
-              if [ ! -z "$GITHUB_USER" ]; then
-                AVATAR_URL=$(gh api users/$GITHUB_USER --jq '.avatar_url' 2>/dev/null || echo "")
-                echo "- <img src=\"$AVATAR_URL\" width=\"20\" height=\"20\" style=\"border-radius: 50%; vertical-align: middle;\"> **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)"
+              # Try to get GitHub username from email (with proper error handling)
+              if [ ! -z "$CLEAN_EMAIL" ]; then
+                GITHUB_USER=$(gh api "search/users?q=${CLEAN_EMAIL}+in:email" --jq '.items[0].login // empty' 2>/dev/null || echo "")
+                
+                if [ ! -z "$GITHUB_USER" ] && [ "$GITHUB_USER" != "null" ]; then
+                  AVATAR_URL=$(gh api "users/$GITHUB_USER" --jq '.avatar_url // empty' 2>/dev/null || echo "")
+                  if [ ! -z "$AVATAR_URL" ] && [ "$AVATAR_URL" != "null" ]; then
+                    echo "- <img src=\"$AVATAR_URL\" width=\"20\" height=\"20\" style=\"border-radius: 50%; vertical-align: middle;\"> **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)" >> /tmp/contributors.txt
+                  else
+                    echo "- **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)" >> /tmp/contributors.txt
+                  fi
+                else
+                  echo "- **$name** ($email)" >> /tmp/contributors.txt
+                fi
               else
-                echo "- **$name**"
+                echo "- **$name**" >> /tmp/contributors.txt
               fi
             fi
-          done)
+          done
           
-          if [ -z "$CONTRIBUTORS_JSON" ]; then
+          # Read contributors from temp file
+          if [ -f "/tmp/contributors.txt" ]; then
+            CONTRIBUTORS_JSON=$(cat /tmp/contributors.txt)
+          else
             CONTRIBUTORS_JSON="- **No contributors found for this release**"
+          fi
+          
+          # Fallback if still empty
+          if [ -z "$CONTRIBUTORS_JSON" ]; then
+            CONTRIBUTORS_JSON=$(git log $COMMIT_RANGE --format='- **%an**' | sort -u | head -10)
           fi
           
           # Save contributors to environment
           echo "CONTRIBUTORS<<EOF" >> $GITHUB_ENV
           echo "$CONTRIBUTORS_JSON" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          
+          echo "✅ Found contributors for release"
 
       - name: Get app metadata and build info
+        env:
+          GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
         run: |
           cd apps/dreamstream
           APP_NAME=$(node -e "console.log(require('./app.json').expo.name)")
@@ -209,7 +238,12 @@ jobs:
           fi
           
           # Generate a simple visual changelog
-          CHANGELOG=$(git log $COMMIT_RANGE --oneline --pretty=format:"- %s" | head -10)
+          CHANGELOG=$(git log $COMMIT_RANGE --oneline --pretty=format:"- %s" | head -10 2>/dev/null || echo "- Initial release")
+          
+          # Fallback if changelog is empty
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="- Initial release"
+          fi
           
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "APP_DESCRIPTION=$APP_DESCRIPTION" >> $GITHUB_ENV
