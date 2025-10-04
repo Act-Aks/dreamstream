@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Act-Aks/dreamstream/compare/v1.3.0...v1.4.0) (2025-10-04)
+
+
+### Features
+
+* **release:** Enhance release management and documentation infrastructure ([df0b549](https://github.com/Act-Aks/dreamstream/commit/df0b5494c4bcd4f59c528ea33b96d12cc8299971))
+
 # [1.3.0](https://github.com/Act-Aks/dreamstream/compare/v1.2.0...v1.3.0) (2025-10-04)
 
 
