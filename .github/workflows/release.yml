@@ -126,10 +126,98 @@ jobs:
           bun run build:android:release
           mv DreamStream.apk DreamStream-v${{ needs.release.outputs.version }}.apk
 
-      - name: Generate QR code for release
+      - name: Generate QR code for APK download
         run: |
           sudo apt-get update && sudo apt-get install -y qrencode
-          qrencode -o DreamStream-qr.png "https://github.com/${{ github.repository }}/releases/tag/v${{ needs.release.outputs.version }}"
+          
+          # Generate QR code for direct APK download
+          APK_URL="https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk"
+          echo "Generating QR code for: $APK_URL"
+          
+          qrencode -s 8 -m 2 -o DreamStream-qr.png "$APK_URL"
+          
+          # Verify QR code was created
+          if [ ! -f "DreamStream-qr.png" ]; then
+            echo "❌ Failed to generate QR code"
+            exit 1
+          fi
+          
+          echo "✅ QR code generated successfully"
+          ls -la DreamStream-qr.png
+          
+          # Convert QR code to base64 for embedding in release notes
+          QR_BASE64=$(base64 -w 0 DreamStream-qr.png)
+          echo "QR_BASE64=$QR_BASE64" >> $GITHUB_ENV
+          echo "✅ QR code converted to base64 (${#QR_BASE64} characters)"
+
+      - name: Get contributors for this release
+        env:
+          GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
+        run: |
+          # Get the previous release tag
+          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""')
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous release found, using last 20 commits"
+            COMMIT_RANGE="HEAD~20..HEAD"
+          else
+            echo "Previous tag: $PREVIOUS_TAG"
+            COMMIT_RANGE="${PREVIOUS_TAG}..HEAD"
+          fi
+          
+          # Get unique contributors with their GitHub profiles
+          CONTRIBUTORS_JSON=$(git log $COMMIT_RANGE --format='%ae|%an' | sort -u | while IFS='|' read -r email name; do
+            if [ ! -z "$email" ] && [ "$email" != "noreply@github.com" ]; then
+              # Try to get GitHub username from email
+              GITHUB_USER=$(gh api search/users -q "q=$email in:email" --jq '.items[0].login // empty' 2>/dev/null || echo "")
+              
+              if [ ! -z "$GITHUB_USER" ]; then
+                AVATAR_URL=$(gh api users/$GITHUB_USER --jq '.avatar_url' 2>/dev/null || echo "")
+                echo "- <img src=\"$AVATAR_URL\" width=\"20\" height=\"20\" style=\"border-radius: 50%; vertical-align: middle;\"> **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)"
+              else
+                echo "- **$name**"
+              fi
+            fi
+          done)
+          
+          if [ -z "$CONTRIBUTORS_JSON" ]; then
+            CONTRIBUTORS_JSON="- **No contributors found for this release**"
+          fi
+          
+          # Save contributors to environment
+          echo "CONTRIBUTORS<<EOF" >> $GITHUB_ENV
+          echo "$CONTRIBUTORS_JSON" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Get app metadata and build info
+        run: |
+          cd apps/dreamstream
+          APP_NAME=$(node -e "console.log(require('./app.json').expo.name)")
+          APP_DESCRIPTION=$(node -e "console.log(require('./app.json').expo.description || 'DreamStream - Your entertainment companion')")
+          
+          # Get APK size
+          APK_SIZE=$(du -h DreamStream-v${{ needs.release.outputs.version }}.apk | cut -f1)
+          
+          # Get commit count since last release
+          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""')
+          if [ ! -z "$PREVIOUS_TAG" ]; then
+            COMMIT_COUNT=$(git rev-list --count ${PREVIOUS_TAG}..HEAD)
+            COMMIT_RANGE="${PREVIOUS_TAG}..HEAD"
+          else
+            COMMIT_COUNT=$(git rev-list --count HEAD~20..HEAD)
+            COMMIT_RANGE="HEAD~20..HEAD"
+          fi
+          
+          # Generate a simple visual changelog
+          CHANGELOG=$(git log $COMMIT_RANGE --oneline --pretty=format:"- %s" | head -10)
+          
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          echo "APP_DESCRIPTION=$APP_DESCRIPTION" >> $GITHUB_ENV
+          echo "APK_SIZE=$APK_SIZE" >> $GITHUB_ENV
+          echo "COMMIT_COUNT=$COMMIT_COUNT" >> $GITHUB_ENV
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Upload APK to GitHub Release
         env:
@@ -137,26 +225,177 @@ jobs:
         run: |
           gh release upload v${{ needs.release.outputs.version }} \
             apps/dreamstream/DreamStream-v${{ needs.release.outputs.version }}.apk \
-            DreamStream-qr.png \
             --clobber
 
-      - name: Update release description with build info
+      - name: Update release description with enhanced info
         env:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
         run: |
           CURRENT_BODY=$(gh release view v${{ needs.release.outputs.version }} --json body --jq .body)
-          NEW_BODY="$CURRENT_BODY
+          
+          # Create enhanced release notes
+          cat > release_notes.md << 'EOF'
+          $CURRENT_BODY
 
-          ## 📱 Android Build
+          ---
+
+          ## 📱 Download & Install
+
+          <div align="center">
+
+          ### 🚀 Quick Install - Scan QR Code
           
-          - **APK**: [DreamStream-v${{ needs.release.outputs.version }}.apk](https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk)
-          - **QR Code**: Scan the QR code image to quickly access this release
+          **Point your Android camera at this QR code to download instantly:**
           
-          ### Installation
-          1. Download the APK file above
-          2. Enable \"Install from unknown sources\" in your Android settings
-          3. Install the APK file
+          <img src="data:image/png;base64,$QR_BASE64" alt="QR Code for Direct APK Download" width="200" height="200" style="border: 2px solid #e1e4e8; border-radius: 8px; padding: 10px; background: white;">
           
-          Or scan the QR code to access this release page on your mobile device."
+          *📲 QR Code links directly to APK download - No browser needed!*
           
-          gh release edit v${{ needs.release.outputs.version }} --notes "$NEW_BODY"
+          </div>
+
+          ### 📦 Manual Download
+
+          <table>
+          <tr>
+          <td align="center">
+          
+          **📱 Android APK**
+          
+          [`DreamStream-v${{ needs.release.outputs.version }}.apk`](https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk)
+          
+          *Size: $APK_SIZE*
+          
+          </td>
+          </tr>
+          </table>
+
+          ### 🔧 Installation Guide
+
+          <details>
+          <summary><strong>📋 Step-by-step installation (click to expand)</strong></summary>
+
+          #### Method 1: QR Code (Recommended)
+          1. **Open Camera**: Use your Android device's camera app
+          2. **Scan QR Code**: Point camera at the QR code above
+          3. **Tap Notification**: Tap the download notification that appears
+          4. **Install**: Follow the installation prompts
+
+          #### Method 2: Manual Download
+          1. **Enable Unknown Sources**: 
+             - Go to `Settings` → `Security` → Enable `Unknown Sources`
+             - Or `Settings` → `Apps` → `Special Access` → `Install Unknown Apps`
+          2. **Download APK**: Click the download link above
+          3. **Install**: Tap the downloaded file and follow prompts
+          4. **Launch**: Find "$APP_NAME" in your app drawer
+
+          #### ⚠️ Security Note
+          This APK is built and signed by our automated CI/CD pipeline. Always download from official GitHub releases.
+
+          </details>
+
+          ---
+
+          ## 📝 What's Changed
+
+          <details>
+          <summary><strong>🔍 Recent Changes (click to expand)</strong></summary>
+
+          $CHANGELOG
+
+          *[View full changelog](https://github.com/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "HEAD~10")...v${{ needs.release.outputs.version }})*
+
+          </details>
+
+          ---
+
+          ## 👥 Contributors
+
+          <div align="center">
+
+          **🙏 Special thanks to everyone who made this release possible:**
+
+          </div>
+
+          $CONTRIBUTORS
+
+          <div align="center">
+          
+          *Want to contribute? Check out our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)*
+          
+          </div>
+
+          ---
+
+          ## 📊 Release Information
+
+          <table>
+          <tr>
+          <td><strong>📦 Version</strong></td>
+          <td><code>v${{ needs.release.outputs.version }}</code></td>
+          </tr>
+          <tr>
+          <td><strong>🗓️ Build Date</strong></td>
+          <td><code>$(date -u +"%Y-%m-%d %H:%M:%S UTC")</code></td>
+          </tr>
+          <tr>
+          <td><strong>📱 Platform</strong></td>
+          <td>Android (API 21+)</td>
+          </tr>
+          <tr>
+          <td><strong>🏗️ Architecture</strong></td>
+          <td>Universal APK</td>
+          </tr>
+          <tr>
+          <td><strong>📏 File Size</strong></td>
+          <td>$APK_SIZE</td>
+          </tr>
+          <tr>
+          <td><strong>🔄 Commits</strong></td>
+          <td>$COMMIT_COUNT new commits</td>
+          </tr>
+          </table>
+
+          ---
+
+          <div align="center">
+
+          ## 🌟 Enjoying DreamStream?
+
+          <a href="https://github.com/${{ github.repository }}">
+            <img src="https://img.shields.io/github/stars/${{ github.repository }}?style=social" alt="GitHub stars">
+          </a>
+          <a href="https://github.com/${{ github.repository }}/issues">
+            <img src="https://img.shields.io/github/issues/${{ github.repository }}" alt="GitHub issues">
+          </a>
+          <a href="https://github.com/${{ github.repository }}/releases">
+            <img src="https://img.shields.io/github/v/release/${{ github.repository }}" alt="GitHub release">
+          </a>
+
+          **Help us improve!**
+
+          [⭐ Star this repo](https://github.com/${{ github.repository }}) • [🐛 Report Issues](https://github.com/${{ github.repository }}/issues) • [💬 Join Discussions](https://github.com/${{ github.repository }}/discussions) • [📖 Documentation](https://github.com/${{ github.repository }}/wiki)
+
+          </div>
+          EOF
+
+          # Replace environment variables in the markdown
+          envsubst < release_notes.md > final_notes.md
+          
+          # Update the release with enhanced notes
+          gh release edit v${{ needs.release.outputs.version }} --notes-file final_notes.md
+
+      - name: Release Summary
+        run: |
+          echo "🎉 Release v${{ needs.release.outputs.version }} has been enhanced with:"
+          echo "✅ QR Code embedded directly in release notes"
+          echo "✅ Contributors list with GitHub profiles"
+          echo "✅ Enhanced installation guide"
+          echo "✅ Build statistics and metadata"
+          echo "✅ Visual changelog"
+          echo "✅ User-friendly formatting"
+          echo ""
+          echo "📱 APK Size: $APK_SIZE"
+          echo "👥 Contributors: $(echo "$CONTRIBUTORS" | wc -l) people"
+          echo "🔄 Commits: $COMMIT_COUNT new commits"
+          echo ""
+          echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.release.outputs.version }}"
