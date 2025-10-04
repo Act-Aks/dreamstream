@@ -10,6 +10,11 @@
       "import": "./src/constants/index.ts",
       "require": "./src/constants/index.ts"
     },
+    "./net": {
+      "types": "./src/net/index.ts",
+      "import": "./src/net/index.ts",
+      "require": "./src/net/index.ts"
+    },
     "./types": {
       "types": "./src/types/index.ts",
       "import": "./src/types/index.ts",

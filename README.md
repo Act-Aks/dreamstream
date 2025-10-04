@@ -12,7 +12,7 @@
 
 <!-- Enhanced Badge Collection -->
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge">
+  <img alt="Version" src="https://img.shields.io/github/v/release/Act-Aks/dreamstream?style=for-the-badge&label=version&color=brightgreen">
   <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge">
   <img alt="Platform" src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-lightgrey?style=for-the-badge">
   <img alt="React Native" src="https://img.shields.io/badge/React_Native-0.81.1-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
@@ -29,8 +29,8 @@
 
 <!-- Performance & Quality Badges -->
 <p align="center">
-  <img alt="Build Status" src="https://img.shields.io/badge/Build-Passing-success?style=flat-square">
-  <img alt="Code Coverage" src="https://img.shields.io/badge/Coverage-85%25-green?style=flat-square">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Act-Aks/dreamstream/release.yml?style=flat-square&label=build">
+  <img alt="Last Commit" src="https://img.shields.io/github/last-commit/Act-Aks/dreamstream?style=flat-square">
   <img alt="Bundle Size" src="https://img.shields.io/badge/Bundle%20Size-Optimized-brightgreen?style=flat-square">
   <img alt="Performance" src="https://img.shields.io/badge/Performance-95%2B-brightgreen?style=flat-square">
   <img alt="Accessibility" src="https://img.shields.io/badge/A11y-WCAG%202.1-blue?style=flat-square">
@@ -639,7 +639,7 @@ sequenceDiagram
 
 ```bash
 # 🚀 Clone and setup everything in one go
-curl -fsSL https://raw.githubusercontent.com/your-username/dreamstream/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Act-Aks/dreamstream/main/scripts/install.sh | bash
 ```
 
 <details>
@@ -647,7 +647,7 @@ curl -fsSL https://raw.githubusercontent.com/your-username/dreamstream/main/scri
 
 #### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/your-username/dreamstream.git
+git clone https://github.com/Act-Aks/dreamstream.git
 cd dreamstream
 ```
 
@@ -949,9 +949,31 @@ Cmd/Ctrl + Shift + P -> "TypeScript: Restart TS Server"
 <p>Design system, components, and style guide</p>
 </td>
 <td align="center" width="33%">
-<img src="https://via.placeholder.com/80x80/EF4444/FFFFFF?text=🧪" alt="Testing">
-<h4><a href="docs/TESTING.md">🧪 Testing Strategy</a></h4>
-<p>Testing frameworks, patterns, and best practices</p>
+<img src="https://via.placeholder.com/80x80/06B6D4/FFFFFF?text=⚙️" alt="GitHub Workflows">
+<h4><a href="docs/GITHUB_WORKFLOWS.md">⚙️ GitHub Workflows</a></h4>
+<p>CI/CD workflows, release automation, and GitHub templates</p>
+</td>
+</tr>
+<tr>
+<td align="center" width="25%">
+<img src="https://via.placeholder.com/80x80/EF4444/FFFFFF?text=📋" alt="Changelog">
+<h4><a href="docs/CHANGELOG.md">📋 Changelog</a></h4>
+<p>Release history, version notes, and project evolution</p>
+</td>
+<td align="center" width="25%">
+<img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=🤝" alt="Contributing">
+<h4><a href="docs/CONTRIBUTING.md">🤝 Contributing</a></h4>
+<p>How to contribute, development workflow, and guidelines</p>
+</td>
+<td align="center" width="25%">
+<img src="https://via.placeholder.com/80x80/8B5CF6/FFFFFF?text=🛡️" alt="Code of Conduct">
+<h4><a href="docs/CODE_OF_CONDUCT.md">🛡️ Code of Conduct</a></h4>
+<p>Community standards and behavioral guidelines</p>
+</td>
+<td align="center" width="25%">
+<img src="https://via.placeholder.com/80x80/F59E0B/FFFFFF?text=🏷️" alt="Version Management">
+<h4><a href="docs/VERSION_MANAGEMENT.md">🏷️ Version Management</a></h4>
+<p>Dynamic versioning, release workflow, and badge management</p>
 </td>
 </tr>
 </table>
@@ -969,11 +991,11 @@ Cmd/Ctrl + Shift + P -> "TypeScript: Restart TS Server"
 </p>
 
 <p>
-<img alt="Contributors" src="https://img.shields.io/github/contributors/your-username/dreamstream?style=for-the-badge">
-<img alt="Forks" src="https://img.shields.io/github/forks/your-username/dreamstream?style=for-the-badge">
-<img alt="Stars" src="https://img.shields.io/github/stars/your-username/dreamstream?style=for-the-badge">
-<img alt="Issues" src="https://img.shields.io/github/issues/your-username/dreamstream?style=for-the-badge">
-<img alt="Pull Requests" src="https://img.shields.io/github/issues-pr/your-username/dreamstream?style=for-the-badge">
+<img alt="Contributors" src="https://img.shields.io/github/contributors/Act-Aks/dreamstream?style=for-the-badge">
+<img alt="Forks" src="https://img.shields.io/github/forks/Act-Aks/dreamstream?style=for-the-badge">
+<img alt="Stars" src="https://img.shields.io/github/stars/Act-Aks/dreamstream?style=for-the-badge">
+<img alt="Issues" src="https://img.shields.io/github/issues/Act-Aks/dreamstream?style=for-the-badge">
+<img alt="Pull Requests" src="https://img.shields.io/github/issues-pr/Act-Aks/dreamstream?style=for-the-badge">
 </p>
 
 </div>
@@ -985,28 +1007,28 @@ We welcome contributions from developers of all skill levels! Whether you're fix
 <table>
 <tr>
 <td align="center" width="25%">
-<a href="CONTRIBUTING.md">
+<a href="docs/CONTRIBUTING.md">
 <img src="https://via.placeholder.com/80x80/6366F1/FFFFFF?text=📝" alt="Contributing Guide">
 <br><strong>Contributing Guide</strong>
 </a>
 <br><small>Detailed contribution guidelines</small>
 </td>
 <td align="center" width="25%">
-<a href="CODE_OF_CONDUCT.md">
+<a href="docs/CODE_OF_CONDUCT.md">
 <img src="https://via.placeholder.com/80x80/8B5CF6/FFFFFF?text=🛡️" alt="Code of Conduct">
 <br><strong>Code of Conduct</strong>
 </a>
 <br><small>Community standards</small>
 </td>
 <td align="center" width="25%">
-<a href="https://github.com/your-username/dreamstream/issues/new?template=bug_report.md">
+<a href="https://github.com/Act-Aks/dreamstream/issues/new?template=bug_report.md">
 <img src="https://via.placeholder.com/80x80/EF4444/FFFFFF?text=🐛" alt="Bug Report">
 <br><strong>Report Bug</strong>
 </a>
 <br><small>Found an issue?</small>
 </td>
 <td align="center" width="25%">
-<a href="https://github.com/your-username/dreamstream/issues/new?template=feature_request.md">
+<a href="https://github.com/Act-Aks/dreamstream/issues/new?template=feature_request.md">
 <img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=💡" alt="Feature Request">
 <br><strong>Request Feature</strong>
 </a>
@@ -1046,7 +1068,7 @@ git clone https://github.com/YOUR_USERNAME/dreamstream.git
 cd dreamstream
 
 # Add upstream remote
-git remote add upstream https://github.com/your-username/dreamstream.git
+git remote add upstream https://github.com/Act-Aks/dreamstream.git
 
 # Install dependencies
 bun install
@@ -1112,7 +1134,7 @@ git push origin feature/amazing-feature
 <details>
 <summary><strong>5️⃣ Create Pull Request</strong></summary>
 
-1. Go to the [DreamStream repository](https://github.com/your-username/dreamstream)
+1. Go to the [DreamStream repository](https://github.com/Act-Aks/dreamstream)
 2. Click "New Pull Request"
 3. Select your branch
 4. Fill out the PR template
@@ -1190,14 +1212,14 @@ All contributors are recognized in our:
 <table>
 <tr>
 <td align="center" width="25%">
-<a href="https://github.com/your-username/dreamstream/discussions">
+<a href="https://github.com/Act-Aks/dreamstream/discussions">
 <img src="https://via.placeholder.com/60x60/6366F1/FFFFFF?text=💬" alt="Discussions">
 <br><strong>GitHub Discussions</strong>
 </a>
 <br><small>Ask questions & share ideas</small>
 </td>
 <td align="center" width="25%">
-<a href="https://github.com/your-username/dreamstream/issues">
+<a href="https://github.com/Act-Aks/dreamstream/issues">
 <img src="https://via.placeholder.com/60x60/EF4444/FFFFFF?text=📝" alt="Issues">
 <br><strong>Issues Tracker</strong>
 </a>
@@ -1412,7 +1434,7 @@ bun run profile:memory
 <h3>💬 <strong>Join the Conversation</strong></h3>
 
 <p>
-<a href="https://github.com/your-username/dreamstream/discussions"><img src="https://img.shields.io/badge/GitHub-Discussions-6366F1?style=flat-square&logo=github"></a>
+<a href="https://github.com/Act-Aks/dreamstream/discussions"><img src="https://img.shields.io/badge/GitHub-Discussions-6366F1?style=flat-square&logo=github"></a>
 <a href="https://discord.gg/dreamstream"><img src="https://img.shields.io/badge/Discord-Community-5865F2?style=flat-square&logo=discord&logoColor=white"></a>
 <a href="https://twitter.com/dreamstream_app"><img src="https://img.shields.io/badge/Twitter-Updates-1DA1F2?style=flat-square&logo=twitter&logoColor=white"></a>
 </p>

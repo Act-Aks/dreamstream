@@ -137,7 +137,8 @@ jobs:
           APK_URL="https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk"
           echo "Generating QR code for: $APK_URL"
           
-          qrencode -s 8 -m 2 -o DreamStream-qr.png "$APK_URL"
+          # Generate QR code with better settings for GitHub
+          qrencode -s 10 -m 4 -l M -o DreamStream-qr.png "$APK_URL"
           
           # Verify QR code was created
           if [ ! -f "DreamStream-qr.png" ]; then
@@ -253,12 +254,13 @@ jobs:
           echo "$CHANGELOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Upload APK to GitHub Release
+      - name: Upload APK and QR code to GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
         run: |
           gh release upload v${{ needs.release.outputs.version }} \
             apps/dreamstream/DreamStream-v${{ needs.release.outputs.version }}.apk \
+            DreamStream-qr.png \
             --clobber
 
       - name: Generate release notes from template
@@ -271,8 +273,7 @@ jobs:
           export CURRENT_BODY=$(gh release view v${{ needs.release.outputs.version }} --json body --jq .body)
           
           # Make script executable and run it
-          chmod +x .github/scripts/generate-release-notes.sh
-          ./.github/scripts/generate-release-notes.sh
+          ./scripts/generate-release-notes.sh
           
           # Update the release with enhanced notes
           gh release edit v${{ needs.release.outputs.version }} --notes-file release_notes.md

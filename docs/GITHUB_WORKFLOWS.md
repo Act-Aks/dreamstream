@@ -1,6 +1,6 @@
 # GitHub Workflows & Templates
 
-This directory contains GitHub Actions workflows and release templates for the DreamStream project.
+This document describes the GitHub Actions workflows and release templates for the DreamStream project.
 
 ## 📁 Structure
 
@@ -11,7 +11,7 @@ This directory contains GitHub Actions workflows and release templates for the D
 ├── scripts/
 │   └── generate-release-notes.sh  # Release notes generator script
 ├── release-template.md      # Release notes template
-└── README.md               # This file
+└── copilot-instructions.md  # GitHub Copilot instructions
 ```
 
 ## 🚀 Release Workflow
@@ -88,8 +88,7 @@ export COMMIT_COUNT="10"
 export CURRENT_BODY="Initial release notes"
 
 # Run the script
-chmod +x .github/scripts/generate-release-notes.sh
-./.github/scripts/generate-release-notes.sh
+./scripts/generate-release-notes.sh
 
 # Check the output
 cat release_notes.md

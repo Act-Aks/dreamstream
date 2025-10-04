@@ -10,7 +10,8 @@
     "check-types": "turbo run check-types",
     "up": "turbo run update --concurrency 1",
     "up:self": "bun update --latest && bun i",
-    "cmt": "git-cz"
+    "cmt": "git-cz",
+    "version:sync": "./scripts/update-readme-version.sh"
   },
   "dependencies": {
     "axios": "1.12.2",

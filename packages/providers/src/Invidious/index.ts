@@ -1,80 +1,65 @@
+import { AxiosClient } from "@dreamstream/common/net";
 import {
     BaseProvider,
     type DetailsResult,
     type MediaType,
     type SearchResult,
-    type SeriesEpisode,
     type StreamLink,
 } from "@dreamstream/common/types";
-import axios from "axios";
-import { load } from "cheerio";
 
-export class AnimeOnProvider extends BaseProvider {
-    static readonly id = "animeon";
-    static readonly name = "AnimeOn";
-    static readonly providerType = "anime";
-    static readonly supportedMediaTypes: MediaType[] = ["anime"];
-    static readonly description = "AnimeOn anime streaming";
-    static readonly icon = "https://animeon.club/favicon.ico";
+type InvidiousSearchResult = {
+    videoId: string;
+    title: string;
+};
 
-    override async search(query: string, _mediaType?: MediaType): Promise<SearchResult<"anime">[]> {
-        const url = `https://animeon.club/search?q=${encodeURIComponent(query)}`;
-        const { data } = await axios.get(url, { headers: { "User-Agent": "DreamStream/1.0" } });
-        const $ = load(data);
+type InvidiousVideoDetails = {
+    videoId: string;
+    title: string;
+    description: string;
+};
 
-        const results: SearchResult<"anime">[] = [];
-        $(".search-card").each((_, el) => {
-            results.push({
-                description: $(el).find(".search-description").text().trim() ?? "",
-                id: $(el).find("a").attr("href") ?? "",
-                mediaType: "anime",
-                poster: $(el).find("img").attr("src") ?? "",
-                title: $(el).find(".search-title").text().trim(),
-            });
-        });
+const axiosClient = new AxiosClient();
 
-        return results;
+export class InvidiousProvider extends BaseProvider {
+    static override readonly id = "invidious";
+    static override readonly name = "Invidious (YouTube)";
+    static override readonly providerType = "other";
+    static override readonly supportedMediaTypes: MediaType[] = ["other"];
+    static override readonly description = "YouTube videos via Invidious privacy-friendly API";
+    static override readonly icon = "https://iv.ggtyler.dev/favicon.ico";
+
+    readonly mainUrl = "https://iv.ggtyler.dev";
+
+    override async search(query: string, _mediaType?: MediaType): Promise<SearchResult<"other">[]> {
+        const url = `${this.mainUrl}/api/v1/search?q=${encodeURIComponent(query)}&page=1&type=video&fields=videoId,title`;
+        const { data } = await axiosClient.get<InvidiousSearchResult[]>(url);
+        return data.map((entry) => ({
+            id: entry.videoId,
+            mediaType: "other",
+            poster: `${this.mainUrl}/vi/${entry.videoId}/mqdefault.jpg`,
+            title: entry.title,
+        }));
     }
 
-    override async getDetails(id: string, _mediaType: MediaType): Promise<DetailsResult<"anime">> {
-        const url = id;
-        const { data } = await axios.get(url, { headers: { "User-Agent": "DreamStream/1.0" } });
-        const $ = load(data);
-
-        const episodes: SeriesEpisode[] = [];
-        $(".episode-item").each((_, el) => {
-            episodes.push({
-                episodeNumber: Number.parseInt($(el).find(".episode-number").text().trim(), 10),
-                id: $(el).find("a").attr("href") ?? "",
-                title: $(el).find(".episode-title").text().trim(),
-                url: $(el).find("a").attr("href") ?? "",
-            });
-        });
-
+    override async getDetails(id: string, _mediaType: MediaType): Promise<DetailsResult<"other">> {
+        const url = `${this.mainUrl}/api/v1/videos/${id}?fields=videoId,title,description`;
+        const { data: entry } = await axiosClient.get<InvidiousVideoDetails>(url);
         return {
-            description: $(".anime-description").text().trim(),
-            episodes,
-            id,
-            mediaType: "anime",
-            poster: $(".anime-poster img").attr("src") ?? "",
-            title: $("h1.anime-title").text().trim(),
+            description: entry.description,
+            id: entry.videoId,
+            mediaType: "other",
+            poster: `${this.mainUrl}/vi/${entry.videoId}/hqdefault.jpg`,
+            title: entry.title,
         };
     }
 
-    override async getStreams(id: string, _mediaType: MediaType): Promise<StreamLink[]> {
-        const url = id;
-        const { data } = await axios.get(url, { headers: { "User-Agent": "DreamStream/1.0" } });
-        const $ = load(data);
-
-        const links: StreamLink[] = $(".video-player source")
-            .map((_, el) => ({
-                language: undefined,
-                quality: $(el).attr("data-quality"),
-                subtitles: undefined,
-                url: $(el).attr("src") ?? "",
-            }))
-            .get();
-
-        return links;
+    override getStreams(id: string, _mediaType: MediaType): Promise<StreamLink[]> {
+        return Promise.resolve([
+            {
+                language: "original",
+                quality: "DASH",
+                url: `${this.mainUrl}/api/manifest/dash/id/${id}`,
+            },
+        ]);
     }
 }

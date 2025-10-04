@@ -12,6 +12,18 @@
 
 <img src="data:image/png;base64,{{QR_BASE64}}" alt="QR Code for Direct APK Download" width="200" height="200" style="border: 2px solid #e1e4e8; border-radius: 8px; padding: 10px; background: white;">
 
+<details>
+<summary>QR Code not showing? Click here for alternative</summary>
+
+**Direct QR Code Link:** [Download QR Code](https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-qr.png)
+
+**Or scan this URL directly:**
+```
+https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-v{{VERSION}}.apk
+```
+
+</details>
+
 *📲 QR Code links directly to APK download - No browser needed!*
 
 </div>

@@ -6,9 +6,9 @@
 
 *We welcome contributions from developers of all skill levels*
 
-[![Contributors](https://img.shields.io/github/contributors/your-username/dreamstream?style=for-the-badge)](https://github.com/your-username/dreamstream/graphs/contributors)
-[![Pull Requests](https://img.shields.io/github/issues-pr/your-username/dreamstream?style=for-the-badge)](https://github.com/your-username/dreamstream/pulls)
-[![Issues](https://img.shields.io/github/issues/your-username/dreamstream?style=for-the-badge)](https://github.com/your-username/dreamstream/issues)
+[![Contributors](https://img.shields.io/github/contributors/Act-Aks/dreamstream?style=for-the-badge)](https://github.com/Act-Aks/dreamstream/graphs/contributors)
+[![Pull Requests](https://img.shields.io/github/issues-pr/Act-Aks/dreamstream?style=for-the-badge)](https://github.com/Act-Aks/dreamstream/pulls)
+[![Issues](https://img.shields.io/github/issues/Act-Aks/dreamstream?style=for-the-badge)](https://github.com/Act-Aks/dreamstream/issues)
 
 </div>
 
@@ -113,7 +113,7 @@ Before contributing, make sure you have:
 
 ### 1. Choose an Issue
 
-- Browse [open issues](https://github.com/your-username/dreamstream/issues)
+- Browse [open issues](https://github.com/Act-Aks/dreamstream/issues)
 - Look for issues labeled `good first issue` for beginners
 - Comment on the issue to let others know you're working on it
 
@@ -493,12 +493,12 @@ export function formatDuration(minutes: number): string {
 - Add examples for new functionality
 
 #### API Documentation
-- Document new APIs in `docs/API.md`
+- Document new APIs in `API.md`
 - Include usage examples
 - Specify parameter types and return values
 
 #### Architecture Documentation
-- Update `docs/ARCHITECTURE.md` for structural changes
+- Update `ARCHITECTURE.md` for structural changes
 - Document design decisions
 - Explain complex systems
 
@@ -660,15 +660,15 @@ If you experience or witness unacceptable behavior:
 
 ### Getting Help
 
-- **📚 Documentation**: Check our [docs](docs/) first
-- **💬 Discussions**: Use [GitHub Discussions](https://github.com/your-username/dreamstream/discussions)
+- **📚 Documentation**: Check our documentation first
+- **💬 Discussions**: Use [GitHub Discussions](https://github.com/Act-Aks/dreamstream/discussions)
 - **💬 Discord**: Join our community chat
 - **📧 Email**: Contact maintainers directly
 
 ### FAQ
 
 #### Q: How do I set up the development environment?
-A: Follow the [Development Guide](docs/DEVELOPMENT.md) for detailed setup instructions.
+A: Follow the [Development Guide](DEVELOPMENT.md) for detailed setup instructions.
 
 #### Q: Can I work on multiple issues at once?
 A: We recommend focusing on one issue at a time to ensure quality work.
@@ -716,7 +716,7 @@ We recognize all types of contributions using the [All Contributors](https://all
 
 *Together, we're building the future of entertainment discovery*
 
-[![Contributors](https://contrib.rocks/image?repo=your-username/dreamstream)](https://github.com/your-username/dreamstream/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=Act-Aks/dreamstream)](https://github.com/Act-Aks/dreamstream/graphs/contributors)
 
 **[⬆ Back to Top](#-contributing-to-dreamstream)**
 
