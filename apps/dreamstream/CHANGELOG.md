@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Act-Aks/dreamstream/compare/v1.0.0...v1.1.0) (2025-10-04)
+
+
+### Features
+
+* Enhance GitHub release workflow with advanced features ([9bf1a4d](https://github.com/Act-Aks/dreamstream/commit/9bf1a4dfbe4194bcbfa2d621fabaa481f6bb9d7a))
+
 # 1.0.0 (2025-09-22)
 
 
