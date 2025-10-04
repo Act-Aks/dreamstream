@@ -1,4 +1,3 @@
-export * from "./constants/colors";
-export * from "./constants/spacing";
-export * from "./constants/typography";
-export * from "./utils/generic";
+export * from "./constants";
+export * from "./types";
+export * from "./utils";

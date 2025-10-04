@@ -12,6 +12,7 @@
     }
   },
   "dependencies": {
+    "@dreamstream/common": "workspace:*",
     "axios": "1.12.2"
   },
   "devDependencies": {
