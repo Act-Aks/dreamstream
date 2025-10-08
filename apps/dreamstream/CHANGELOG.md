@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Act-Aks/dreamstream/compare/v1.5.0...v1.6.0) (2025-10-08)
+
+
+### Features
+
+* **android:** Enhance APK build artifact discovery and processing ([81bfe18](https://github.com/Act-Aks/dreamstream/commit/81bfe1857d97d55a3135ac4f2e1c4f58bcbf0b0d))
+
 # [1.5.0](https://github.com/Act-Aks/dreamstream/compare/v1.4.0...v1.5.0) (2025-10-08)
 
 
