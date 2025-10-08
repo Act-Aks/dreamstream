@@ -6,10 +6,9 @@
  * Usage: tsx scripts/update-version.ts <version>
  */
 
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import appJson from "../app.json" with { type: "json" };
-import packageJson from "../package.json" with { type: "json" };
 
 const version = process.argv[2];
 
@@ -26,35 +25,23 @@ if (!semverRegex.test(version)) {
 }
 
 try {
-    // Update package.json with proper typing
-    const updatedPackageJson = {
-        ...packageJson,
-        version,
-    };
-
+    // Update package.json version line only
     const packageJsonPath = join(__dirname, "..", "package.json");
-    writeFileSync(packageJsonPath, `${JSON.stringify(updatedPackageJson, null, 2)}\n`);
+    const packageJsonContent = readFileSync(packageJsonPath, "utf8");
+    const updatedPackageJsonContent = packageJsonContent.replace(/"version":\s*"[^"]*"/, `"version": "${version}"`);
+    writeFileSync(packageJsonPath, updatedPackageJsonContent);
     console.log(`✅ Updated package.json version to ${version}`);
 
     // Increment versionCode for Android
     const currentVersionCode = appJson.expo.android?.versionCode || 1;
     const newVersionCode = currentVersionCode + 1;
 
-    // Update app.json with proper typing
-    const updatedAppJson = {
-        ...appJson,
-        expo: {
-            ...appJson.expo,
-            android: {
-                ...appJson.expo.android,
-                versionCode: newVersionCode,
-            },
-            version,
-        },
-    };
-
+    // Update app.json version and versionCode lines only
     const appJsonPath = join(__dirname, "..", "app.json");
-    writeFileSync(appJsonPath, `${JSON.stringify(updatedAppJson, null, 2)}\n`);
+    const appJsonContent = readFileSync(appJsonPath, "utf8");
+    let updatedAppJsonContent = appJsonContent.replace(/"version":\s*"[^"]*"/, `"version": "${version}"`);
+    updatedAppJsonContent = updatedAppJsonContent.replace(/"versionCode":\s*\d+/, `"versionCode": ${newVersionCode}`);
+    writeFileSync(appJsonPath, updatedAppJsonContent);
     console.log(`✅ Updated app.json version to ${version}`);
     console.log(`✅ Updated Android versionCode to ${newVersionCode}`);
 
