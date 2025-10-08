@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/Act-Aks/dreamstream/compare/v1.6.0...v1.7.0) (2025-10-08)
+
+
+### Features
+
+* Enhance version export in calculate-metadata script ([8c5fbf0](https://github.com/Act-Aks/dreamstream/commit/8c5fbf074645c2ac01e9b07737d04a6866316c23))
+
 # [1.6.0](https://github.com/Act-Aks/dreamstream/compare/v1.5.0...v1.6.0) (2025-10-08)
 
 
