@@ -18,7 +18,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": true,
-      "package": "com.actaks.dreamstream"
+      "package": "com.actaks.dreamstream",
+      "versionCode": 7
     },
     "web": {
       "output": "static"
@@ -42,6 +43,25 @@
         {
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "reactNativeArchitectures": [
+              "arm64-v8a",
+              "armeabi-v7a",
+              "x86",
+              "x86_64"
+            ]
+          }
+        }
+      ],
+      [
+        "./mods/plugins/withAbiSplits.js",
+        {
+          "abiFilters": ["arm64-v8a", "armeabi-v7a", "x86", "x86_64"]
         }
       ]
     ],

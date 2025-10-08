@@ -8,41 +8,89 @@
 
 ### 🚀 Quick Install - Scan QR Code
 
-**Point your Android camera at this QR code to download instantly:**
+**Point your Android camera at this QR code to visit the release page:**
 
-<img src="data:image/png;base64,{{QR_BASE64}}" alt="QR Code for Direct APK Download" width="200" height="200" style="border: 2px solid #e1e4e8; border-radius: 8px; padding: 10px; background: white;">
+<img src="data:image/png;base64,{{QR_BASE64}}" alt="QR Code for Release Page" width="200" height="200" style="border: 2px solid #e1e4e8; border-radius: 8px; padding: 10px; background: white;">
 
 <details>
 <summary>QR Code not showing? Click here for alternative</summary>
 
-**Direct QR Code Link:** [Download QR Code](https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-qr.png)
+**Direct QR Code Link:** [Download QR Code](https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-release-qr.png)
 
-**Or scan this URL directly:**
+**Or visit this URL directly:**
 ```
-https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-v{{VERSION}}.apk
+https://github.com/{{REPOSITORY}}/releases/tag/v{{VERSION}}
 ```
 
 </details>
 
-*📲 QR Code links directly to APK download - No browser needed!*
+*📲 QR Code links to this release page for easy mobile access!*
 
 </div>
 
-### 📦 Manual Download
+### 📦 APK Variants - Choose Your Architecture
+
+<div align="center">
+
+**🎯 Not sure which one to download? Choose Universal APK - it works on all devices!**
+
+</div>
 
 <table>
 <tr>
-<td align="center">
-
-**📱 Android APK**
-
-[`{{APP_NAME}}-v{{VERSION}}.apk`](https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-v{{VERSION}}.apk)
-
-*Size: {{APK_SIZE}}*
-
-</td>
+<th align="center">📱 APK Variant</th>
+<th align="center">🏗️ Architecture</th>
+<th align="center">📏 Size</th>
+<th align="center">📥 Download</th>
+<th align="center">🔗 QR Code</th>
+</tr>
+<tr>
+<td align="center"><strong>🌍 Universal</strong><br><em>Recommended</em></td>
+<td align="center">All Architectures<br><small>Works on any Android device</small></td>
+<td align="center"><code>{{UNIVERSAL_SIZE}}</code></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-universal-v{{VERSION}}.apk"><strong>Download</strong></a></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-universal-qr.png">📱 QR</a></td>
+</tr>
+<tr>
+<td align="center"><strong>🚀 ARM64</strong><br><em>Optimized</em></td>
+<td align="center">64-bit ARM<br><small>Modern phones (2017+)</small></td>
+<td align="center"><code>{{ARM64_SIZE}}</code></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-arm64-v{{VERSION}}.apk"><strong>Download</strong></a></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-arm64-qr.png">📱 QR</a></td>
+</tr>
+<tr>
+<td align="center"><strong>⚡ ARM32</strong><br><em>Legacy</em></td>
+<td align="center">32-bit ARM<br><small>Older phones (pre-2017)</small></td>
+<td align="center"><code>{{ARM32_SIZE}}</code></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-arm32-v{{VERSION}}.apk"><strong>Download</strong></a></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-arm32-qr.png">📱 QR</a></td>
+</tr>
+<tr>
+<td align="center"><strong>💻 x86_64</strong><br><em>Intel 64-bit</em></td>
+<td align="center">64-bit Intel<br><small>Emulators, Chromebooks</small></td>
+<td align="center"><code>{{X86_64_SIZE}}</code></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-x86_64-v{{VERSION}}.apk"><strong>Download</strong></a></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-x86_64-qr.png">📱 QR</a></td>
+</tr>
+<tr>
+<td align="center"><strong>🖥️ x86</strong><br><em>Intel 32-bit</em></td>
+<td align="center">32-bit Intel<br><small>Legacy emulators</small></td>
+<td align="center"><code>{{X86_SIZE}}</code></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-x86-v{{VERSION}}.apk"><strong>Download</strong></a></td>
+<td align="center"><a href="https://github.com/{{REPOSITORY}}/releases/download/v{{VERSION}}/DreamStream-x86-qr.png">📱 QR</a></td>
 </tr>
 </table>
+
+<div align="center">
+
+**💡 Architecture Guide:**
+- **Universal APK**: Largest file but works on all devices - choose this if unsure
+- **ARM64 APK**: Smaller, optimized for modern Android phones (recommended for newer devices)
+- **ARM32 APK**: For older Android devices or specific compatibility needs
+- **x86_64 APK**: For Intel-based devices, emulators, and some Chromebooks
+- **x86 APK**: For legacy Intel-based devices and older emulators
+
+</div>
 
 ### 🔧 Installation Guide
 
@@ -117,18 +165,34 @@ This APK is built and signed by our automated CI/CD pipeline. Always download fr
 <td>Android (API 21+)</td>
 </tr>
 <tr>
-<td><strong>🏗️ Architecture</strong></td>
-<td>Universal APK</td>
+<td><strong>🏗️ Architectures</strong></td>
+<td>Universal, ARM64, ARM32, x86_64, x86</td>
 </tr>
 <tr>
-<td><strong>📏 File Size</strong></td>
-<td>{{APK_SIZE}}</td>
+<td><strong>📏 Total Size</strong></td>
+<td>{{TOTAL_SIZE}} (all variants)</td>
 </tr>
 <tr>
 <td><strong>🔄 Commits</strong></td>
 <td>{{COMMIT_COUNT}} new commits</td>
 </tr>
 </table>
+
+### 📊 APK Variant Details
+
+<details>
+<summary><strong>📋 Size breakdown by architecture (click to expand)</strong></summary>
+
+{{APK_SIZES}}
+
+**Architecture Notes:**
+- **Universal**: Contains all architectures, largest file but maximum compatibility
+- **ARM64**: Optimized for 64-bit ARM processors (most modern Android devices)
+- **ARM32**: For 32-bit ARM processors (older devices or specific use cases)
+- **x86_64**: For 64-bit Intel processors (emulators, Chromebooks, Intel-based Android devices)
+- **x86**: For 32-bit Intel processors (legacy emulators and older Intel devices)
+
+</details>
 
 ---
 

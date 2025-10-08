@@ -45,7 +45,7 @@
 
 <table>
 <tr>
-<td align="center" width="33%">
+<td align="center" width="25%">
 <img src="https://via.placeholder.com/80x80/8B5CF6/FFFFFF?text=🚀" alt="Development">
 <h4><a href="DEVELOPMENT.md">🚀 Development Guide</a></h4>
 <p>Setup instructions, workflows, and best practices</p>
@@ -56,7 +56,7 @@
 <li>Debugging tips</li>
 </ul>
 </td>
-<td align="center" width="33%">
+<td align="center" width="25%">
 <img src="https://via.placeholder.com/80x80/EC4899/FFFFFF?text=📦" alt="Packages">
 <h4><a href="PACKAGES.md">📦 Package Documentation</a></h4>
 <p>Individual package APIs and implementation details</p>
@@ -67,7 +67,7 @@
 <li>Usage examples</li>
 </ul>
 </td>
-<td align="center" width="33%">
+<td align="center" width="25%">
 <img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=🏷️" alt="Version Management">
 <h4><a href="VERSION_MANAGEMENT.md">🏷️ Version Management</a></h4>
 <p>Versioning strategy, release workflow, and dynamic badges</p>
@@ -76,6 +76,17 @@
 <li>Release workflow</li>
 <li>Badge management</li>
 <li>Best practices</li>
+</ul>
+</td>
+<td align="center" width="25%">
+<img src="https://via.placeholder.com/80x80/F97316/FFFFFF?text=📱" alt="APK Variants">
+<h4><a href="APK_VARIANTS_IMPLEMENTATION.md">📱 APK Variants</a></h4>
+<p>Multi-architecture APK generation and optimization</p>
+<ul align="left">
+<li>expo-build-properties</li>
+<li>Size optimization</li>
+<li>CI/CD integration</li>
+<li><a href="APK_VARIANTS_QUICK_REFERENCE.md">Quick reference</a></li>
 </ul>
 </td>
 </tr>

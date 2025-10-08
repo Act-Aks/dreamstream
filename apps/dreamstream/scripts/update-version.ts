@@ -2,6 +2,7 @@
 
 /**
  * Script to update app version in app.json and package.json
+ * Also increments Android versionCode automatically
  * Usage: tsx scripts/update-version.ts <version>
  */
 
@@ -35,11 +36,19 @@ try {
     writeFileSync(packageJsonPath, `${JSON.stringify(updatedPackageJson, null, 2)}\n`);
     console.log(`✅ Updated package.json version to ${version}`);
 
+    // Increment versionCode for Android
+    const currentVersionCode = appJson.expo.android?.versionCode || 1;
+    const newVersionCode = currentVersionCode + 1;
+
     // Update app.json with proper typing
     const updatedAppJson = {
         ...appJson,
         expo: {
             ...appJson.expo,
+            android: {
+                ...appJson.expo.android,
+                versionCode: newVersionCode,
+            },
             version,
         },
     };
@@ -47,8 +56,9 @@ try {
     const appJsonPath = join(__dirname, "..", "app.json");
     writeFileSync(appJsonPath, `${JSON.stringify(updatedAppJson, null, 2)}\n`);
     console.log(`✅ Updated app.json version to ${version}`);
+    console.log(`✅ Updated Android versionCode to ${newVersionCode}`);
 
-    console.log(`🎉 Successfully updated version to ${version}`);
+    console.log(`🎉 Successfully updated version to ${version} and versionCode to ${newVersionCode}`);
 } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error("❌ Error updating version:", errorMessage);

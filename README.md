@@ -955,25 +955,30 @@ Cmd/Ctrl + Shift + P -> "TypeScript: Restart TS Server"
 </td>
 </tr>
 <tr>
-<td align="center" width="25%">
+<td align="center" width="20%">
 <img src="https://via.placeholder.com/80x80/EF4444/FFFFFF?text=📋" alt="Changelog">
 <h4><a href="docs/CHANGELOG.md">📋 Changelog</a></h4>
 <p>Release history, version notes, and project evolution</p>
 </td>
-<td align="center" width="25%">
+<td align="center" width="20%">
 <img src="https://via.placeholder.com/80x80/10B981/FFFFFF?text=🤝" alt="Contributing">
 <h4><a href="docs/CONTRIBUTING.md">🤝 Contributing</a></h4>
 <p>How to contribute, development workflow, and guidelines</p>
 </td>
-<td align="center" width="25%">
+<td align="center" width="20%">
 <img src="https://via.placeholder.com/80x80/8B5CF6/FFFFFF?text=🛡️" alt="Code of Conduct">
 <h4><a href="docs/CODE_OF_CONDUCT.md">🛡️ Code of Conduct</a></h4>
 <p>Community standards and behavioral guidelines</p>
 </td>
-<td align="center" width="25%">
+<td align="center" width="20%">
 <img src="https://via.placeholder.com/80x80/F59E0B/FFFFFF?text=🏷️" alt="Version Management">
 <h4><a href="docs/VERSION_MANAGEMENT.md">🏷️ Version Management</a></h4>
 <p>Dynamic versioning, release workflow, and badge management</p>
+</td>
+<td align="center" width="20%">
+<img src="https://via.placeholder.com/80x80/F97316/FFFFFF?text=📱" alt="APK Variants">
+<h4><a href="docs/APK_VARIANTS_IMPLEMENTATION.md">📱 APK Variants</a></h4>
+<p>Multi-architecture builds and size optimization</p>
 </td>
 </tr>
 </table>

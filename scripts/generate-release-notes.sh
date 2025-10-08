@@ -14,11 +14,19 @@ if [ ! -f ".github/release-template.md" ]; then
 fi
 
 # Check required environment variables
-required_vars=("VERSION" "REPOSITORY" "APP_NAME" "APK_SIZE" "QR_BASE64" "CONTRIBUTORS" "CHANGELOG" "COMMIT_COUNT")
+required_vars=("VERSION" "REPOSITORY" "APP_NAME" "QR_BASE64" "CONTRIBUTORS" "CHANGELOG" "COMMIT_COUNT")
 for var in "${required_vars[@]}"; do
     if [ -z "${!var}" ]; then
         echo "❌ Required environment variable $var is not set"
         exit 1
+    fi
+done
+
+# Optional variables (may not be set if APKs weren't built)
+optional_vars=("APK_SIZES" "TOTAL_SIZE" "UNIVERSAL_SIZE" "ARM64_SIZE" "ARM32_SIZE")
+for var in "${optional_vars[@]}"; do
+    if [ -z "${!var}" ]; then
+        echo "⚠️ Optional environment variable $var is not set"
     fi
 done
 
@@ -31,7 +39,11 @@ echo "🔍 Debug info:"
 echo "  VERSION: $VERSION"
 echo "  REPOSITORY: $REPOSITORY"
 echo "  APP_NAME: $APP_NAME"
-echo "  APK_SIZE: $APK_SIZE"
+echo "  APK_SIZES: $APK_SIZES"
+echo "  TOTAL_SIZE: $TOTAL_SIZE"
+echo "  UNIVERSAL_SIZE: $UNIVERSAL_SIZE"
+echo "  ARM64_SIZE: $ARM64_SIZE"
+echo "  ARM32_SIZE: $ARM32_SIZE"
 echo "  COMMIT_COUNT: $COMMIT_COUNT"
 echo "  QR_BASE64 length: ${#QR_BASE64}"
 echo "  CONTRIBUTORS lines: $(echo "$CONTRIBUTORS" | wc -l)"
@@ -57,7 +69,11 @@ replacements = {
     '{{APP_NAME}}': os.getenv('APP_NAME', ''),
     '{{VERSION}}': os.getenv('VERSION', ''),
     '{{REPOSITORY}}': os.getenv('REPOSITORY', ''),
-    '{{APK_SIZE}}': os.getenv('APK_SIZE', ''),
+    '{{APK_SIZES}}': os.getenv('APK_SIZES', ''),
+    '{{TOTAL_SIZE}}': os.getenv('TOTAL_SIZE', 'N/A'),
+    '{{UNIVERSAL_SIZE}}': os.getenv('UNIVERSAL_SIZE', 'N/A'),
+    '{{ARM64_SIZE}}': os.getenv('ARM64_SIZE', 'N/A'),
+    '{{ARM32_SIZE}}': os.getenv('ARM32_SIZE', 'N/A'),
     '{{CHANGELOG}}': os.getenv('CHANGELOG', ''),
     '{{CONTRIBUTORS}}': os.getenv('CONTRIBUTORS', ''),
     '{{PREVIOUS_TAG}}': os.getenv('PREVIOUS_TAG', ''),

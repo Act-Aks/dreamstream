@@ -50,22 +50,7 @@ jobs:
 
       - name: Check release
         id: check-release
-        run: |
-          # New released version
-          RELEASE_VERSION=${{ steps.semantic-release.outputs.next-release-version }}
-
-          echo $RELEASE_VERSION
-          echo ${{ steps.semantic-release.outputs.next-release-version }}
-
-          if [ -n "${{ steps.semantic-release.outputs.next-release-version }}" ]; then
-            echo "released=true" >> $GITHUB_OUTPUT
-            echo "version=${{ steps.semantic-release.outputs.next-release-version }}" >> $GITHUB_OUTPUT
-            echo "✅ New version ${{ steps.semantic-release.outputs.next-release-version }} was released"
-          else
-            echo "released=false" >> $GITHUB_OUTPUT
-            echo "version=${{ steps.semantic-release.outputs.next-release-version }}" >> $GITHUB_OUTPUT
-            echo "ℹ️ No new release was created"
-          fi
+        run: ./scripts/check-release.sh "${{ steps.semantic-release.outputs.next-release-version }}"
          
 
   build:
@@ -114,154 +99,28 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Verify version consistency
-        run: |
-          cd apps/dreamstream
-          APP_VERSION=$(node -e "console.log(require('./app.json').expo.version)")
-          echo "App version: $APP_VERSION"
-          echo "Release version: ${{ needs.release.outputs.version }}"
-          if [ "$APP_VERSION" != "${{ needs.release.outputs.version }}" ]; then
-            echo "Warning: Version mismatch. Expected: ${{ needs.release.outputs.version }}, Got: $APP_VERSION"
-          fi
+        run: ./scripts/verify-version.sh "${{ needs.release.outputs.version }}"
 
-      - name: Build Android APK
-        run: |
-          cd apps/dreamstream
-          bun run build:android:release
-          mv DreamStream.apk DreamStream-v${{ needs.release.outputs.version }}.apk
-
-      - name: Generate QR code for APK download
-        run: |
-          sudo apt-get update && sudo apt-get install -y qrencode
-          
-          # Generate QR code for direct APK download
-          APK_URL="https://github.com/${{ github.repository }}/releases/download/v${{ needs.release.outputs.version }}/DreamStream-v${{ needs.release.outputs.version }}.apk"
-          echo "Generating QR code for: $APK_URL"
-          
-          # Generate QR code with better settings for GitHub
-          qrencode -s 10 -m 4 -l M -o DreamStream-qr.png "$APK_URL"
-          
-          # Verify QR code was created
-          if [ ! -f "DreamStream-qr.png" ]; then
-            echo "❌ Failed to generate QR code"
-            exit 1
-          fi
-          
-          echo "✅ QR code generated successfully"
-          ls -la DreamStream-qr.png
-          
-          # Convert QR code to base64 for embedding in release notes
-          QR_BASE64=$(base64 -w 0 DreamStream-qr.png)
-          echo "QR_BASE64=$QR_BASE64" >> $GITHUB_ENV
-          echo "✅ QR code converted to base64 (${#QR_BASE64} characters)"
+      - name: Build and package APKs
+        env:
+          VERSION: ${{ needs.release.outputs.version }}
+          REPOSITORY: ${{ github.repository }}
+        run: ./scripts/build-and-package.sh "${{ needs.release.outputs.version }}"
 
       - name: Get contributors for this release
         env:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
-        run: |
-          # Get the previous release tag
-          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""' 2>/dev/null || echo "")
-          
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "No previous release found, using last 20 commits"
-            COMMIT_RANGE="HEAD~20..HEAD"
-          else
-            echo "Previous tag: $PREVIOUS_TAG"
-            COMMIT_RANGE="${PREVIOUS_TAG}..HEAD"
-          fi
-          
-          # Get unique contributors
-          CONTRIBUTORS_LIST=""
-          
-          # Get contributors from git log
-          git log $COMMIT_RANGE --format='%ae|%an' | sort -u | while IFS='|' read -r email name; do
-            if [ ! -z "$email" ] && [ "$email" != "noreply@github.com" ] && [ "$name" != "dependabot[bot]" ]; then
-              # Clean email for search (remove special characters)
-              CLEAN_EMAIL=$(echo "$email" | sed 's/[^a-zA-Z0-9@._-]//g')
-              
-              # Try to get GitHub username from email (with proper error handling)
-              if [ ! -z "$CLEAN_EMAIL" ]; then
-                GITHUB_USER=$(gh api "search/users?q=${CLEAN_EMAIL}+in:email" --jq '.items[0].login // empty' 2>/dev/null || echo "")
-                
-                if [ ! -z "$GITHUB_USER" ] && [ "$GITHUB_USER" != "null" ]; then
-                  AVATAR_URL=$(gh api "users/$GITHUB_USER" --jq '.avatar_url // empty' 2>/dev/null || echo "")
-                  if [ ! -z "$AVATAR_URL" ] && [ "$AVATAR_URL" != "null" ]; then
-                    echo "- <img src=\"$AVATAR_URL\" width=\"20\" height=\"20\" style=\"border-radius: 50%; vertical-align: middle;\"> **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)" >> /tmp/contributors.txt
-                  else
-                    echo "- **[@$GITHUB_USER](https://github.com/$GITHUB_USER)** ($name)" >> /tmp/contributors.txt
-                  fi
-                else
-                  echo "- **$name** ($email)" >> /tmp/contributors.txt
-                fi
-              else
-                echo "- **$name**" >> /tmp/contributors.txt
-              fi
-            fi
-          done
-          
-          # Read contributors from temp file
-          if [ -f "/tmp/contributors.txt" ]; then
-            CONTRIBUTORS_JSON=$(cat /tmp/contributors.txt)
-          else
-            CONTRIBUTORS_JSON="- **No contributors found for this release**"
-          fi
-          
-          # Fallback if still empty
-          if [ -z "$CONTRIBUTORS_JSON" ]; then
-            CONTRIBUTORS_JSON=$(git log $COMMIT_RANGE --format='- **%an**' | sort -u | head -10)
-          fi
-          
-          # Save contributors to environment
-          echo "CONTRIBUTORS<<EOF" >> $GITHUB_ENV
-          echo "$CONTRIBUTORS_JSON" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-          
-          echo "✅ Found contributors for release"
+        run: ./scripts/get-contributors.sh
 
-      - name: Get app metadata and build info
+      - name: Calculate APK sizes and metadata
         env:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
-        run: |
-          cd apps/dreamstream
-          APP_NAME=$(node -e "console.log(require('./app.json').expo.name)")
-          APP_DESCRIPTION=$(node -e "console.log(require('./app.json').expo.description || 'DreamStream - Your entertainment companion')")
-          
-          # Get APK size
-          APK_SIZE=$(du -h DreamStream-v${{ needs.release.outputs.version }}.apk | cut -f1)
-          
-          # Get commit count since last release
-          PREVIOUS_TAG=$(gh release list --limit 2 --json tagName --jq '.[1].tagName // ""')
-          if [ ! -z "$PREVIOUS_TAG" ]; then
-            COMMIT_COUNT=$(git rev-list --count ${PREVIOUS_TAG}..HEAD)
-            COMMIT_RANGE="${PREVIOUS_TAG}..HEAD"
-          else
-            COMMIT_COUNT=$(git rev-list --count HEAD~20..HEAD)
-            COMMIT_RANGE="HEAD~20..HEAD"
-          fi
-          
-          # Generate a simple visual changelog
-          CHANGELOG=$(git log $COMMIT_RANGE --oneline --pretty=format:"- %s" | head -10 2>/dev/null || echo "- Initial release")
-          
-          # Fallback if changelog is empty
-          if [ -z "$CHANGELOG" ]; then
-            CHANGELOG="- Initial release"
-          fi
-          
-          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
-          echo "APP_DESCRIPTION=$APP_DESCRIPTION" >> $GITHUB_ENV
-          echo "APK_SIZE=$APK_SIZE" >> $GITHUB_ENV
-          echo "COMMIT_COUNT=$COMMIT_COUNT" >> $GITHUB_ENV
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          echo "$CHANGELOG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+        run: ./scripts/calculate-metadata.sh "${{ needs.release.outputs.version }}"
 
-      - name: Upload APK and QR code to GitHub Release
+      - name: Upload APK variants and QR codes to release
         env:
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
-        run: |
-          gh release upload v${{ needs.release.outputs.version }} \
-            apps/dreamstream/DreamStream-v${{ needs.release.outputs.version }}.apk \
-            DreamStream-qr.png \
-            --clobber
+        run: ./scripts/upload-release-assets.sh "${{ needs.release.outputs.version }}"
 
       - name: Generate release notes from template
         env:
@@ -279,17 +138,4 @@ jobs:
           gh release edit v${{ needs.release.outputs.version }} --notes-file release_notes.md
 
       - name: Release Summary
-        run: |
-          echo "🎉 Release v${{ needs.release.outputs.version }} has been enhanced with:"
-          echo "✅ QR Code embedded directly in release notes"
-          echo "✅ Contributors list with GitHub profiles"
-          echo "✅ Enhanced installation guide"
-          echo "✅ Build statistics and metadata"
-          echo "✅ Visual changelog"
-          echo "✅ User-friendly formatting"
-          echo ""
-          echo "📱 APK Size: $APK_SIZE"
-          echo "👥 Contributors: $(echo "$CONTRIBUTORS" | wc -l) people"
-          echo "🔄 Commits: $COMMIT_COUNT new commits"
-          echo ""
-          echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.release.outputs.version }}"
+        run: ./scripts/release-summary.sh "${{ needs.release.outputs.version }}" "${{ github.repository }}"
