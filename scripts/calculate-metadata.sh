@@ -12,6 +12,9 @@ if [ -z "$VERSION" ]; then
     exit 1
 fi
 
+# Export VERSION so child processes can access it
+export VERSION
+
 cd apps/dreamstream
 
 echo "📊 Calculating APK metadata for version $VERSION..."
