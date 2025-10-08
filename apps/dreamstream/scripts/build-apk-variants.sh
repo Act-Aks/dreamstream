@@ -15,6 +15,47 @@ bun run build:android:release
 
 echo "📦 Organizing APK variants..."
 
+# Debug: Show current directory and look for build artifacts
+echo "🔍 Current directory: $(pwd)"
+echo "🔍 Looking for build artifacts..."
+
+# First, look for tar.gz build artifacts from EAS
+BUILD_ARCHIVE=$(find . -name "build-*.tar.gz" -type f | head -1)
+
+if [ -n "$BUILD_ARCHIVE" ]; then
+    echo "📦 Found build archive: $BUILD_ARCHIVE"
+    echo "📂 Extracting build artifacts..."
+    
+    # Create extraction directory
+    EXTRACT_DIR="extracted_build"
+    rm -rf "$EXTRACT_DIR"
+    mkdir -p "$EXTRACT_DIR"
+    
+    # Extract the archive
+    tar -xzf "$BUILD_ARCHIVE" -C "$EXTRACT_DIR"
+    
+    # Look for APKs in the extracted content
+    APK_SEARCH_PATH="$EXTRACT_DIR"
+    echo "🔍 Searching for APKs in extracted archive: $APK_SEARCH_PATH"
+else
+    # Fallback: look in standard Android build directory
+    APK_DIR="android/app/build/outputs/apk/release"
+    if [ -d "$APK_DIR" ]; then
+        APK_SEARCH_PATH="$APK_DIR"
+        echo "🔍 Searching for APKs in build directory: $APK_SEARCH_PATH"
+    else
+        # Final fallback: current directory
+        APK_SEARCH_PATH="."
+        echo "🔍 Searching for APKs in current directory: $APK_SEARCH_PATH"
+    fi
+fi
+
+# Debug: Show what APK files we found
+echo "🔍 APK files found:"
+find "$APK_SEARCH_PATH" -name "*.apk" -type f | head -10 | while read apk; do
+    echo "  Found: $apk ($(du -h "$apk" | cut -f1))"
+done
+
 # Initialize counters
 UNIVERSAL_FOUND=false
 ARM64_FOUND=false
@@ -22,8 +63,7 @@ ARM32_FOUND=false
 X86_64_FOUND=false
 X86_FOUND=false
 
-# Process each APK file found
-for apk in $(find . -name "*.apk" -type f); do
+for apk in $(find "$APK_SEARCH_PATH" -name "*.apk" -type f); do
     basename_apk=$(basename "$apk")
     
     if [[ "$basename_apk" == *"universal"* ]]; then
@@ -60,4 +100,12 @@ if [ "$UNIVERSAL_FOUND" = false ] && [ "$ARM64_FOUND" = false ] && [ "$ARM32_FOU
 fi
 
 echo "📋 Variants: Universal=$UNIVERSAL_FOUND, ARM64=$ARM64_FOUND, ARM32=$ARM32_FOUND, x86_64=$X86_64_FOUND, x86=$X86_FOUND"
+
+# Clean up extracted directory if it exists
+if [ -d "extracted_build" ]; then
+    echo "🧹 Cleaning up extracted build directory..."
+    rm -rf "extracted_build"
+fi
+
+echo "📱 Final APK variants:"
 ls -la DreamStream-*-v${VERSION}.apk
