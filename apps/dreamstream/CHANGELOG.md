@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Act-Aks/dreamstream/compare/v1.4.0...v1.5.0) (2025-10-08)
+
+
+### Features
+
+* **release:** Enhance APK release infrastructure with multi-architecture support ([daa8a13](https://github.com/Act-Aks/dreamstream/commit/daa8a132b8086be01b41a6273908494bf9d4dc1e))
+
 # [1.4.0](https://github.com/Act-Aks/dreamstream/compare/v1.3.0...v1.4.0) (2025-10-04)
 
 

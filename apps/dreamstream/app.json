@@ -2,7 +2,7 @@
   "expo": {
     "name": "DreamStream",
     "slug": "DreamStream",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "dreamstream",
@@ -19,7 +19,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": true,
       "package": "com.actaks.dreamstream",
-      "versionCode": 7
+      "versionCode": 8
     },
     "web": {
       "output": "static"
@@ -61,7 +61,12 @@
       [
         "./mods/plugins/withAbiSplits.js",
         {
-          "abiFilters": ["arm64-v8a", "armeabi-v7a", "x86", "x86_64"]
+          "abiFilters": [
+            "arm64-v8a",
+            "armeabi-v7a",
+            "x86",
+            "x86_64"
+          ]
         }
       ]
     ],
