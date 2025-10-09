@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/Act-Aks/dreamstream/compare/v1.7.0...v1.7.1) (2025-10-09)
+
+
+### Bug Fixes
+
+* **release:** Enhance release workflow and release notes generation ([0df4dd7](https://github.com/Act-Aks/dreamstream/commit/0df4dd731dfd40e27b18f4e48114cba385dbdbf2))
+
 # [1.7.0](https://github.com/Act-Aks/dreamstream/compare/v1.6.0...v1.7.0) (2025-10-08)
 
 
