@@ -67,6 +67,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.FULL_TOKEN }}
 
+      - name: Checkout release tag
+        run: |
+          echo "📄 Checking out to release tag: v${{ needs.release.outputs.version }}"
+          git fetch origin --tags
+          git checkout "v${{ needs.release.outputs.version }}"
+          echo "📄 Current commit: $(git rev-parse HEAD)"
+          echo "📄 Tag commit message: $(git log -1 --pretty=format:'%s')"
+
       - name: Setup Node.js and dependencies
         uses: ./.github/actions/setup-node-deps
         with:

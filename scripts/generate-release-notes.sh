@@ -23,7 +23,7 @@ for var in "${required_vars[@]}"; do
 done
 
 # Optional variables (may not be set if APKs weren't built)
-optional_vars=("APK_SIZES" "TOTAL_SIZE" "UNIVERSAL_SIZE" "ARM64_SIZE" "ARM32_SIZE")
+optional_vars=("APK_SIZES" "TOTAL_SIZE" "UNIVERSAL_SIZE" "ARM64_SIZE" "ARM32_SIZE" "X86_64_SIZE" "X86_SIZE")
 for var in "${optional_vars[@]}"; do
     if [ -z "${!var}" ]; then
         echo "⚠️ Optional environment variable $var is not set"
@@ -44,6 +44,8 @@ echo "  TOTAL_SIZE: $TOTAL_SIZE"
 echo "  UNIVERSAL_SIZE: $UNIVERSAL_SIZE"
 echo "  ARM64_SIZE: $ARM64_SIZE"
 echo "  ARM32_SIZE: $ARM32_SIZE"
+echo "  X86_64_SIZE: $X86_64_SIZE"
+echo "  X86_SIZE: $X86_SIZE"
 echo "  COMMIT_COUNT: $COMMIT_COUNT"
 echo "  QR_BASE64 length: ${#QR_BASE64}"
 echo "  CONTRIBUTORS lines: $(echo "$CONTRIBUTORS" | wc -l)"
@@ -74,6 +76,8 @@ replacements = {
     '{{UNIVERSAL_SIZE}}': os.getenv('UNIVERSAL_SIZE', 'N/A'),
     '{{ARM64_SIZE}}': os.getenv('ARM64_SIZE', 'N/A'),
     '{{ARM32_SIZE}}': os.getenv('ARM32_SIZE', 'N/A'),
+    '{{X86_64_SIZE}}': os.getenv('X86_64_SIZE', 'N/A'),
+    '{{X86_SIZE}}': os.getenv('X86_SIZE', 'N/A'),
     '{{CHANGELOG}}': os.getenv('CHANGELOG', ''),
     '{{CONTRIBUTORS}}': os.getenv('CONTRIBUTORS', ''),
     '{{PREVIOUS_TAG}}': os.getenv('PREVIOUS_TAG', ''),
