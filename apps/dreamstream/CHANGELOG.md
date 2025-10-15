@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/Act-Aks/dreamstream/compare/v1.7.1...v1.7.2) (2025-10-15)
+
+
+### Bug Fixes
+
+* **dependencies:** Update project dependencies and tooling ([85eed76](https://github.com/Act-Aks/dreamstream/commit/85eed7685ac21666912802d6f1d47dc839abf4b7))
+
 ## [1.7.1](https://github.com/Act-Aks/dreamstream/compare/v1.7.0...v1.7.1) (2025-10-09)
 
 
