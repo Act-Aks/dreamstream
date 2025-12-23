@@ -1,0 +1,40 @@
+{
+  "$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": "//",
+  "root": false,
+  "linter": {
+    "rules": {
+      "performance": {
+        "noBarrelFile": "off"
+      }
+    }
+  },
+  // "javascript": {
+  //   "globals": [
+  //     "jest",
+  //     "describe",
+  //     "it",
+  //     "expect",
+  //     "beforeEach",
+  //     "afterEach",
+  //     "__DEV__"
+  //   ]
+  // },
+  "overrides": [
+    {
+      "includes": ["*.test.ts", "*.test.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": {
+              "level": "error",
+              "options": {
+                "match": "/*.spec.ts(x)?/"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
