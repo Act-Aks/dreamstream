@@ -27,6 +27,7 @@
   "scripts": {
     "dev": "bun run --filter '*' dev",
     "build": "bun run --filter '*' build",
+    "cq:fix": "bun run --filter '*' cq:fix",
     "check-types": "bun run --filter '*' check-types",
     "dev:native": "bun run --filter @dreamstream/native dev",
     "dev:web": "bun run --filter @dreamstream/web dev",

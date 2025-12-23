@@ -11,7 +11,8 @@
     "ios": "expo run:ios",
     "prebuild": "expo prebuild --clean --no-install",
     "up:latest": "bun update --latest",
-    "fix:version": "expo install --fix"
+    "fix:version": "expo install --fix",
+    "cq:fix": "bun ultracite fix"
   },
   "dependencies": {
     "@expo/vector-icons": "15.0.3",
