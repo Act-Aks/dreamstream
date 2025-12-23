@@ -1,18 +1,17 @@
-# 🌊 DreamStream
-
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![Node](https://img.shields.io/badge/node-%3E%3D24-green.svg)
-![Bun](https://img.shields.io/badge/bun-1.3.5-orange.svg)
-![TypeScript](https://img.shields.io/badge/typescript-5.9.3-blue.svg)
-![React](https://img.shields.io/badge/react-19.2.3-61dafb.svg)
-![Expo](https://img.shields.io/badge/expo-54.0.30-000020.svg)
-![License](https://img.shields.io/badge/license-Proprietary-red.svg)
+# 🌊 DreamStream
 
-*A modern, type-safe mobile application built with cutting-edge technologies*
+![Version](https://img.shields.io/github/v/release/your-username/dreamstream?style=for-the-badge&color=blue)
+![License](https://img.shields.io/badge/license-Proprietary-red?style=for-the-badge)
+![Node](https://img.shields.io/badge/node-%E2%89%A524-green?style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/typescript-5.9.3-blue?style=for-the-badge)
 
-[Getting Started](#-getting-started) • [Features](#-features) • [Tech Stack](#-tech-stack) • [Project Structure](#-project-structure) • [Scripts](#-available-scripts)
+*A modern, type-safe mobile streaming application built with cutting-edge technologies*
+
+**React Native • Expo • TypeScript • TailwindCSS • Bun**
+
+[Getting Started](#-getting-started) • [Tech Stack](#-tech-stack) • [Development](#-development) • [License](#-license)
 
 </div>
 
@@ -23,22 +22,22 @@
 - 🎯 **Type Safety First** - Full TypeScript support with strict type checking
 - 📱 **Cross-Platform Mobile** - React Native with Expo for iOS and Android
 - 🎨 **Modern UI/UX** - TailwindCSS with HeroUI Native components
-- ⚡ **Lightning Fast** - Bun package manager and runtime
-- 🔧 **Developer Experience** - Hot reload, debugging tools, and more
-- 📦 **Monorepo Architecture** - Organized workspace with shared packages
-- 🛡️ **Code Quality** - Ultracite (Biome) for linting and formatting
+- ⚡ **Lightning Fast** - Bun package manager and runtime optimization
 - 🎬 **Rich Media** - Video playback capabilities with expo-video
-- 💾 **Local Storage** - Fast key-value storage with MMKV
-- 🎭 **Smooth Animations** - Reanimated for 60fps animations
+- 💾 **Efficient Storage** - Fast key-value storage with MMKV
+- 🎭 **Smooth Animations** - 60fps animations with Reanimated
+- 🛡️ **Code Quality** - Ultracite (Biome) for automated linting and formatting
 
-## 🚀 Getting Started
+## � Getting Started
 
 ### Prerequisites
 
-- **Node.js** >= 24.0.0
-- **Bun** >= 1.3.5
-- **iOS Simulator** (for iOS development)
-- **Android Studio** (for Android development)
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 24.0.0 ([Download](https://nodejs.org/))
+- **Bun** >= 1.3.5 ([Install Guide](https://bun.sh/docs/installation))
+- **iOS Simulator** (for iOS development) - Xcode required on macOS
+- **Android Studio** (for Android development) - [Setup Guide](https://docs.expo.dev/workflow/android-studio-emulator/)
 
 ### Installation
 
@@ -52,173 +51,139 @@
    ```bash
    bun install
    ```
+   This will install all workspace dependencies using Bun's fast package manager.
 
 3. **Start the development server**
    ```bash
    bun run dev:native
    ```
+   This starts the Expo development server with hot reload enabled.
 
-4. **Run on device/simulator**
+4. **Run on your preferred platform**
    ```bash
-   # iOS
+   # iOS Simulator (macOS only)
    bun run ios
    
-   # Android
+   # Android Emulator
    bun run android
    
-   # Or use Expo Go app with QR code
+   # Or scan QR code with Expo Go app on your device
    ```
+
+### Available Scripts
+
+```bash
+# Development
+bun run dev              # Start all applications
+bun run dev:native       # Start React Native app only
+
+# Code Quality
+bun x ultracite check    # Check for linting issues
+bun x ultracite fix      # Auto-fix formatting and linting
+bun run check-types      # TypeScript type checking
+
+# Building
+bun run build           # Build for production
+```
 
 ## 🛠️ Tech Stack
 
 ### Core Technologies
-- **[React](https://react.dev/)** `19.2.3` - UI library with latest features
 - **[React Native](https://reactnative.dev/)** `0.83.1` - Cross-platform mobile framework
-- **[Expo](https://expo.dev/)** `54.0.30` - Development platform and tools
-- **[TypeScript](https://www.typescriptlang.org/)** `5.9.3` - Type-safe JavaScript
+- **[Expo](https://expo.dev/)** `54.0.30` - Development platform and build tools
+- **[TypeScript](https://www.typescriptlang.org/)** `5.9.3` - Type-safe JavaScript superset
+- **[Bun](https://bun.sh/)** `1.3.5` - Fast JavaScript runtime and package manager
 
 ### UI & Styling
 - **[TailwindCSS](https://tailwindcss.com/)** `4.1.18` - Utility-first CSS framework
-- **[HeroUI Native](https://heroui.com/)** `1.0.0-beta.9` - Beautiful React Native components
-- **[Tailwind Variants](https://www.tailwind-variants.org/)** `3.2.2` - Component variants
-- **[React Native SVG](https://github.com/software-mansion/react-native-svg)** `15.15.1` - SVG support
+- **[HeroUI Native](https://heroui.com/)** - Beautiful React Native component library
+- **[React Native SVG](https://github.com/software-mansion/react-native-svg)** - SVG support for React Native
 
-### Navigation & Routing
-- **[Expo Router](https://docs.expo.dev/router/introduction/)** `6.0.21` - File-based routing
-- **[React Navigation](https://reactnavigation.org/)** `7.1.26` - Navigation library
-
-### Animations & Gestures
+### Navigation & Animations
+- **[Expo Router](https://docs.expo.dev/router/)** `6.0.21` - File-based routing system
 - **[React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)** `4.2.1` - High-performance animations
-- **[React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)** `2.30.0` - Touch gestures
-- **[React Native Worklets](https://github.com/margelo/react-native-worklets-core)** `0.7.1` - JavaScript worklets
+- **[React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)** `2.30.0` - Touch gesture handling
 
 ### State Management & Storage
 - **[Zustand](https://zustand-demo.pmnd.rs/)** `5.0.9` - Lightweight state management
 - **[React Native MMKV](https://github.com/mrousavy/react-native-mmkv)** `4.1.0` - Fast key-value storage
-- **[Zod](https://zod.dev/)** `4.2.1` - Schema validation
+- **[Zod](https://zod.dev/)** `4.2.1` - TypeScript-first schema validation
 
 ### Development Tools
-- **[Bun](https://bun.sh/)** `1.3.5` - Fast package manager and runtime
-- **[Ultracite](https://github.com/biomejs/biome)** `6.5.0` - Code formatting and linting
-- **[Husky](https://typicode.github.io/husky/)** `9.1.7` - Git hooks
+- **[Ultracite](https://github.com/biomejs/biome)** `6.5.0` - Fast Rust-based linting and formatting
+- **[Husky](https://typicode.github.io/husky/)** `9.1.7` - Git hooks for code quality
 - **[Lint Staged](https://github.com/okonet/lint-staged)** `16.2.7` - Pre-commit linting
 
-### UI Components & Libraries
-- **[Bottom Sheet](https://github.com/gorhom/react-native-bottom-sheet)** `5.2.8` - Bottom sheet component
-- **[Keyboard Controller](https://github.com/kirillzyusko/react-native-keyboard-controller)** `1.20.2` - Keyboard handling
-- **[Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)** `5.6.2` - Safe area handling
+## 🔧 Development
 
-## 📁 Project Structure
+### Project Structure
 
 ```
 dreamstream/
 ├── 📱 apps/
-│   └── native/                 # React Native mobile app
-│       ├── app/               # Expo Router pages
-│       ├── components/        # Reusable UI components
-│       ├── hooks/            # Custom React hooks
-│       ├── lib/              # Utilities and configurations
-│       ├── assets/           # Images, fonts, etc.
-│       └── package.json      # App-specific dependencies
+│   └── native/          # React Native mobile app
+│       ├── app/         # Expo Router pages
+│       ├── components/  # Reusable UI components
+│       ├── hooks/       # Custom React hooks
+│       └── lib/         # Utilities and configurations
 ├── 📦 packages/
-│   └── config/               # Shared configurations
-├── 🔧 Configuration Files
-│   ├── biome.jsonc          # Biome (linting/formatting) config
-│   ├── bunfig.toml          # Bun configuration
-│   ├── .lintstagedrc.json   # Lint-staged configuration
-│   └── .husky/              # Git hooks
-└── 📄 Root Files
-    ├── package.json         # Workspace configuration
-    ├── bun.lock            # Dependency lock file
-    └── README.md           # This file
+│   └── config/          # Shared configurations
+└── 🔧 Configuration Files
+    ├── biome.jsonc      # Code quality configuration
+    ├── .husky/          # Git hooks
+    └── package.json     # Workspace configuration
 ```
-
-## 🎯 Available Scripts
-
-### Development
-```bash
-bun run dev              # Start all applications in development mode
-bun run dev:native       # Start React Native/Expo development server
-```
-
-### Building
-```bash
-bun run build           # Build all applications for production
-bun run prebuild        # Generate native code (iOS/Android)
-```
-
-### Platform Specific
-```bash
-bun run ios             # Run on iOS simulator
-bun run android         # Run on Android emulator
-bun run start           # Start Expo development server
-```
-
-### Code Quality
-```bash
-bun run check-types     # Type check all applications
-bun x ultracite check   # Check code quality issues
-bun x ultracite fix     # Auto-fix code quality issues
-```
-
-### Maintenance
-```bash
-bun run up:latest       # Update dependencies to latest versions
-bun run fix:version     # Fix Expo SDK version conflicts
-```
-
-## 🔧 Development
 
 ### Code Quality Standards
 
-This project uses **Ultracite** for maintaining high code quality standards:
+This project uses **Ultracite** (powered by Biome) for maintaining high code quality:
 
-- **Automatic formatting** with Biome (Rust-based, extremely fast)
-- **Strict linting rules** for TypeScript, React, and accessibility
-- **Pre-commit hooks** to ensure code quality
-- **Type safety** with strict TypeScript configuration
+- **Automatic formatting** - Rust-based formatter for consistent code style
+- **Strict linting** - TypeScript, React, and accessibility rules
+- **Pre-commit hooks** - Automatic code quality checks before commits
+- **Type safety** - Strict TypeScript configuration with explicit types
 
-### Key Development Principles
+### Development Workflow
 
-- 🎯 **Type Safety First** - Explicit types for better developer experience
-- ♿ **Accessibility** - ARIA attributes and semantic HTML
-- ⚡ **Performance** - Optimized components and efficient state management
-- 🧪 **Testing Ready** - Structure supports easy testing implementation
-- 📱 **Mobile First** - Optimized for mobile user experience
+1. **Make changes** to your code
+2. **Run quality checks**: `bun x ultracite check`
+3. **Auto-fix issues**: `bun x ultracite fix`
+4. **Type check**: `bun run check-types`
+5. **Test on device**: `bun run ios` or `bun run android`
+6. **Commit changes** - Pre-commit hooks will run automatically
 
-## 🤝 Contributing
+## ⚠️ Important Legal Notice
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Content Disclaimer
 
-## ⚠️ Important Disclaimers
+**This application does not own, host, or distribute any media content.** DreamStream serves as a client interface that aggregates publicly available content from external third-party websites.
 
-### Content & Legal Notice
-
-**This application does not own any content.** DreamStream serves as a client interface that aggregates publicly available content from external third-party websites. Key points:
-
-- 🔗 **Content Sourcing**: All media is scraped/linked from external sources
-- 🚫 **No Content Ownership**: We do not host, store, or distribute any media content
-- 📺 **Ad-Free Experience**: Provides ad-free streaming by bypassing source advertisements
+**Key Points:**
+- 🔗 **Content Sourcing**: All media is linked from external sources
+- 🚫 **No Content Ownership**: We do not store or distribute any copyrighted material
+- 📺 **Ad-Free Experience**: Provides streamlined access by bypassing advertisements
 - ⚖️ **User Responsibility**: Users assume full legal responsibility for their usage
 - 🌍 **Geographic Restrictions**: May not be legal in all jurisdictions
 
 ### Risk Acknowledgment
 
-By using this application, you acknowledge that:
+By using this application, you acknowledge and agree that:
 - You use this software entirely at your own risk
-- You are responsible for ensuring compliance with local laws
-- You understand potential copyright implications
-- You will not hold developers liable for any legal consequences
-
-For detailed terms and conditions, please see the [LICENSE](LICENSE) file.
+- You are responsible for ensuring compliance with local copyright laws
+- You understand the potential legal implications of streaming copyrighted content
+- You will not hold the developers liable for any legal consequences
 
 ## 📄 License
 
-This project is proprietary software. See the [LICENSE](LICENSE) file for detailed terms, conditions, and important legal disclaimers regarding content usage and user responsibilities.
+This project is **proprietary software**. All rights reserved.
+
+**Important:** Please read the [LICENSE](LICENSE) file carefully before using this software. The license contains detailed terms, conditions, and important legal disclaimers regarding:
+- Software usage rights and restrictions
+- Content aggregation and user responsibilities  
+- Liability limitations and risk acknowledgments
+- Geographic usage restrictions and compliance requirements
+
+For questions about licensing or legal compliance, please review the complete license terms in the [LICENSE](LICENSE) file.
 
 ---
 
