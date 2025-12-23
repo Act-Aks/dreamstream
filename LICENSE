@@ -1,12 +1,28 @@
-PROPRIETARY SOFTWARE LICENSE
+MIT License
 
-Copyright (c) 2026 DreamStream. All rights reserved.
+Copyright (c) 2026 DreamStream
 
-IMPORTANT LEGAL NOTICE AND DISCLAIMER
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This software is proprietary and confidential. Unauthorized copying, distribution, 
-modification, public display, or public performance of this software is strictly 
-prohibited.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+ADDITIONAL DISCLAIMERS FOR MEDIA STREAMING APPLICATION
+================================================================================
 
 CONTENT DISCLAIMER AND USER RESPONSIBILITY
 
@@ -38,37 +54,24 @@ CONTENT DISCLAIMER AND USER RESPONSIBILITY
    If you are a copyright holder and believe your content is being accessed 
    through this application in violation of your rights, please contact the 
    developers immediately. We will respond to valid DMCA takedown requests.
+   
+   For DMCA takedown requests and copyright concerns, contact:
+   [Your Contact Information]
 
-6. NO WARRANTIES
-   This software is provided "AS IS" without warranty of any kind, express or 
-   implied, including but not limited to the warranties of merchantability, 
-   fitness for a particular purpose, and non-infringement.
-
-7. LIMITATION OF LIABILITY
-   In no event shall the developers be liable for any claim, damages, or other 
-   liability, whether in an action of contract, tort, or otherwise, arising from, 
-   out of, or in connection with the software or the use or other dealings in the 
-   software.
-
-8. GEOGRAPHIC RESTRICTIONS
+6. GEOGRAPHIC RESTRICTIONS
    This application may not be legal in all jurisdictions. Users are responsible 
    for determining the legality of using this application in their location.
 
-9. TERMINATION
-   This license is effective until terminated. Your rights under this license 
-   will terminate automatically without notice if you fail to comply with any 
-   term(s) of this license.
-
-10. GOVERNING LAW
-    This license shall be governed by and construed in accordance with the laws 
-    of the jurisdiction where the software was developed, without regard to its 
-    conflict of law provisions.
+7. ADDITIONAL LIABILITY LIMITATIONS
+   The developers shall not be liable for any consequences arising from:
+   - Content accessed through external sources
+   - User's compliance or non-compliance with local laws
+   - Any legal issues related to copyright infringement
+   - Revenue impact on content creators or hosting platforms
+   - Geographic or jurisdictional restrictions
 
 BY INSTALLING, COPYING, OR OTHERWISE USING THIS SOFTWARE, YOU ACKNOWLEDGE THAT 
 YOU HAVE READ THIS LICENSE, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS 
 AND CONDITIONS.
-
-FOR QUESTIONS OR CONCERNS REGARDING THIS LICENSE OR COPYRIGHT ISSUES, CONTACT:
-[Your Contact Information]
 
 Last Updated: December 2026
