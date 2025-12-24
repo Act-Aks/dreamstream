@@ -47,6 +47,8 @@
     "lint-staged": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "ultracite": "catalog:"
+    "ultracite": "catalog:",
+    "@types/node": "catalog:types",
+    "@types/react": "catalog:types"
   }
 }

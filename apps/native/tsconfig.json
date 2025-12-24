@@ -24,11 +24,5 @@
       "@assets/*": ["./assets/*"]
     }
   },
-  "include": [
-    "src",
-    "assets",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "app.config.ts"
-  ]
+  "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

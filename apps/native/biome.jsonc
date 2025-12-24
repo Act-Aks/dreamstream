@@ -9,17 +9,17 @@
       }
     }
   },
-  // "javascript": {
-  //   "globals": [
-  //     "jest",
-  //     "describe",
-  //     "it",
-  //     "expect",
-  //     "beforeEach",
-  //     "afterEach",
-  //     "__DEV__"
-  //   ]
-  // },
+  "javascript": {
+    "globals": [
+      "jest",
+      "describe",
+      "it",
+      "expect",
+      "beforeEach",
+      "afterEach",
+      "__DEV__"
+    ]
+  },
   "overrides": [
     {
       "includes": ["*.test.ts", "*.test.tsx"],

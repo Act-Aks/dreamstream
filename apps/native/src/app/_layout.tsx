@@ -5,20 +5,15 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 
-export const unstable_settings = {
-    initialRouteName: "(drawer)",
-};
-
 function StackLayout() {
     return (
-        <Stack screenOptions={{}}>
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+        <Stack>
+            <Stack.Screen name={"(tabs)"} options={{ headerShown: false }} />
         </Stack>
     );
 }
 
-export default function Layout() {
+export default function RootLayout() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <KeyboardProvider>
