@@ -1,0 +1,18 @@
+{
+  "name": "@dreamstream/common",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    "./generics": {
+      "types": "./src/generics/index.ts",
+      "import": "./src/generics/index.ts",
+      "require": "./src/generics/index.ts"
+    }
+  },
+  "scripts": {
+    "cq:fix": "bun ultracite fix",
+    "cq:check": "bun ultracite check"
+  }
+}

@@ -23,6 +23,7 @@
       "name": "@dreamstream/native",
       "version": "1.0.0",
       "dependencies": {
+        "@dreamstream/common": "workspace:*",
         "@expo/vector-icons": "15.0.3",
         "@gorhom/bottom-sheet": "5.2.8",
         "@react-navigation/drawer": "7.7.10",
@@ -57,16 +58,14 @@
         "zustand": "5.0.9",
       },
       "devDependencies": {
-        "@dreamstream/config": "workspace:*",
         "@types/node": "catalog:types",
         "@types/react": "catalog:types",
         "tsx": "catalog:",
         "typescript": "catalog:",
       },
     },
-    "packages/config": {
-      "name": "@dreamstream/config",
-      "version": "1.0.0",
+    "packages/common": {
+      "name": "@dreamstream/common",
     },
   },
   "catalog": {
@@ -298,7 +297,7 @@
 
     "@clack/prompts": ["@clack/prompts@0.11.0", "", { "dependencies": { "@clack/core": "0.5.0", "picocolors": "^1.0.0", "sisteransi": "^1.0.5" } }, "sha512-pMN5FcrEw9hUkZA4f+zLlzivQSeQf5dRGJjSUbvVYDLvpKCdQx5OaknvKzgbtXOizhP+SJJJjqEbOe55uKKfAw=="],
 
-    "@dreamstream/config": ["@dreamstream/config@workspace:packages/config"],
+    "@dreamstream/common": ["@dreamstream/common@workspace:packages/common"],
 
     "@dreamstream/native": ["@dreamstream/native@workspace:apps/native"],
 

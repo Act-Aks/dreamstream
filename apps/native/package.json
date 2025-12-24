@@ -12,7 +12,8 @@
     "prebuild": "expo prebuild --clean --no-install",
     "up:latest": "bun update --latest",
     "fix:version": "expo install --fix",
-    "cq:fix": "bun ultracite fix"
+    "cq:fix": "bun ultracite fix",
+    "cq:check": "bun ultracite check"
   },
   "dependencies": {
     "@expo/vector-icons": "15.0.3",
@@ -46,10 +47,10 @@
     "tailwindcss": "4.1.18",
     "uniwind": "1.2.2",
     "zod": "catalog:",
-    "zustand": "5.0.9"
+    "zustand": "5.0.9",
+    "@dreamstream/common": "workspace:*"
   },
   "devDependencies": {
-    "@dreamstream/config": "workspace:*",
     "@types/node": "catalog:types",
     "@types/react": "catalog:types",
     "tsx": "catalog:",

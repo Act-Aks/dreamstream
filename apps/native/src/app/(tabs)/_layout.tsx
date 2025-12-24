@@ -12,31 +12,36 @@ export default function TabLayout() {
                 headerShown: false,
                 headerStyle: { backgroundColor: themeColorBackground },
                 headerTintColor: themeColorForeground,
-                headerTitleStyle: {
-                    color: themeColorForeground,
-                    fontWeight: "600",
-                },
-                tabBarStyle: {
-                    backgroundColor: themeColorBackground,
-                },
+                headerTitleStyle: { color: themeColorForeground, fontWeight: "600" },
+                tabBarStyle: { backgroundColor: themeColorBackground },
             }}
         >
             <Tabs.Screen
                 name="index"
                 options={{
-                    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-                        <Ionicons color={color} name="home" size={size} />
-                    ),
+                    tabBarIcon: ({ color, size }) => <Ionicons color={color} name="home" size={size} />,
                     title: "Home",
                 }}
             />
             <Tabs.Screen
-                name="two"
+                name={"search"}
                 options={{
-                    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-                        <Ionicons color={color} name="compass" size={size} />
-                    ),
-                    title: "Explore",
+                    tabBarIcon: ({ color, size }) => <Ionicons color={color} name="search" size={size} />,
+                    title: "Search",
+                }}
+            />
+            <Tabs.Screen
+                name={"downloads"}
+                options={{
+                    tabBarIcon: ({ color, size }) => <Ionicons color={color} name="download" size={size} />,
+                    title: "Downloads",
+                }}
+            />
+            <Tabs.Screen
+                name={"settings"}
+                options={{
+                    tabBarIcon: ({ color, size }) => <Ionicons color={color} name="settings" size={size} />,
+                    title: "Settings",
                 }}
             />
         </Tabs>
