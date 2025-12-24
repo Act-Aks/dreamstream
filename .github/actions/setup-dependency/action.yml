@@ -1,0 +1,177 @@
+name: 'Node.js Dependencies Cache Setup'
+description: 'Setup Node.js environment and efficiently cache dependencies with support for npm, yarn, pnpm, and bun'
+author: 'Act-Aks'
+
+# Action inputs with clear descriptions
+inputs:
+  node-version-file:
+    description: 'Path to .nvmrc file for Node.js version (default: .nvmrc)'
+    required: false
+    default: '.nvmrc'
+  cache-prefix:
+    description: 'Custom prefix for cache keys (e.g., "v1-")'
+    required: false
+    default: ''
+  registry-url:
+    description: 'NPM registry URL (default: npmjs.org)'
+    required: false
+    default: 'https://registry.npmjs.org/'
+  package-manager:
+    description: 'Package manager: auto, npm, yarn, pnpm, bun (default: auto)'
+    required: false
+    default: 'auto'
+  install-command:
+    description: 'Custom install command (overrides package manager default)'
+    required: false
+    default: ''
+  frozen-lockfile:
+    description: 'Use frozen lockfile (ci/immutable mode) - true/false'
+    required: false
+    default: 'true'
+
+# Action outputs
+outputs:
+  cache-hit:
+    description: 'true if cache was restored successfully, false otherwise'
+    value: ${{ steps.deps-cache.outputs.cache-hit }}
+  package-manager:
+    description: 'Detected or specified package manager name'
+    value: ${{ steps.detect-pm.outputs.package-manager }}
+
+# Visual branding
+branding:
+  icon: 'package'
+  color: 'purple'
+
+# Main execution steps
+runs:
+  using: composite
+  steps:
+    # Step 1: Auto-detect package manager from lockfiles
+    - name: 🔍 Detect Package Manager
+      id: detect-pm
+      shell: bash
+      run: |
+        # Validate input or auto-detect from lockfiles
+        PM="${{ inputs.package-manager }}"
+        
+        if [[ "$PM" != "auto" && "$PM" != "npm" && "$PM" != "yarn" && "$PM" != "pnpm" && "$PM" != "bun" ]]; then
+          echo "❌ Invalid package manager: $PM"
+          exit 1
+        fi
+
+        if [[ "$PM" == "auto" ]]; then
+          # Detection priority: bun > pnpm > yarn > npm
+          [[ -f "bun.lockb" ]] && PM="bun" && echo "📦 bun.lockb detected"
+          [[ -f "bun.lock" ]] && PM="bun" && echo "📦 bun.lock detected"
+          [[ -f "pnpm-lock.yaml" ]] && PM="pnpm" && echo "📦 pnpm-lock.yaml detected"
+          [[ -f "yarn.lock" ]] && PM="yarn" && echo "📦 yarn.lock detected"
+          [[ -f "package-lock.json" ]] && PM="npm" && echo "📦 package-lock.json detected"
+          
+          # Fallback warning
+          [[ ! -f "package.json" ]] && echo "❌ No package.json found" && exit 1
+          [[ "$PM" == "auto" ]] && PM="npm" && echo "⚠️ No lockfile, defaulting to npm"
+        fi
+
+        echo "package-manager=$PM" >> $GITHUB_OUTPUT
+        echo "✅ Using: $PM"
+
+    # Step 2: Setup Node.js from .nvmrc or default
+    - name: ⚙️ Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+        registry-url: ${{ inputs.registry-url }}
+
+    # Step 3: Setup package manager (pnpm/bun only)
+    - name: 📦 Setup pnpm
+      if: steps.detect-pm.outputs.package-manager == 'pnpm'
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest
+
+    - name: 🐰 Setup Bun
+      if: steps.detect-pm.outputs.package-manager == 'bun'
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    # Step 4: Generate cache configuration
+    - name: 🗂️ Configure Cache Paths & Keys
+      id: cache-config
+      shell: bash
+      run: |
+        PM="${{ steps.detect-pm.outputs.package-manager }}"
+        
+        # Define cache paths per package manager
+        case $PM in
+          npm)     CACHE_PATHS="~/.npm\node_modules"; LOCKFILE="package-lock.json" ;;
+          yarn)    CACHE_PATHS="**/node_modules\n.yarn/cache"; LOCKFILE="yarn.lock" ;;
+          pnpm)    CACHE_PATHS="**/node_modules\n~/.pnpm-store"; LOCKFILE="pnpm-lock.yaml" ;;
+          bun)     CACHE_PATHS="**/node_modules\n**/.bun/install/cache"; LOCKFILE="bun.lock" ;;
+        esac
+
+        # Create stable cache key from lockfile + package.json hash
+        LOCK_HASH=$(sha256sum "$LOCKFILE" 2>/dev/null | cut -d' ' -f1 || echo "no-lock")
+        PKG_HASH=$(find . -name "package.json" -not -path "./node_modules/*" | xargs sha256sum | sha256sum | cut -d' ' -f1)
+        
+        CACHE_KEY="${{ inputs.cache-prefix }}${{ runner.os }}-${PM}-${LOCK_HASH:0:12}-${PKG_HASH:0:12}"
+
+        # Output for cache action
+        echo "cache-paths<<EOF" >> $GITHUB_OUTPUT
+        echo "$CACHE_PATHS" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        echo "cache-key=$CACHE_KEY" >> $GITHUB_OUTPUT
+        echo "lockfile=$LOCKFILE" >> $GITHUB_OUTPUT
+        echo "✅ Cache key: $CACHE_KEY"
+
+    # Step 5: Restore cached dependencies
+    - name: 📥 Restore Cache
+      id: deps-cache
+      uses: actions/cache/restore@v5
+      with:
+        path: ${{ steps.cache-config.outputs.cache-paths }}
+        key: ${{ steps.cache-config.outputs.cache-key }}
+        restore-keys: ${{ inputs.cache-prefix }}${{ runner.os }}-${{ steps.detect-pm.outputs.package-manager }}-
+
+    # Step 6: Install if no cache hit
+    - name: 📦 Install Dependencies
+      if: steps.deps-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        PM="${{ steps.detect-pm.outputs.package-manager }}"
+        START_TIME=$(date +%s)
+
+        if [[ -n "${{ inputs.install-command }}" ]]; then
+          # Use custom command
+          eval "${{ inputs.install-command }}"
+        else
+          case $PM in
+            npm)    cmd="${{ inputs.frozen-lockfile == 'true' && 'npm ci' || 'npm install' }} --no-audit" ;;
+            yarn)   cmd="yarn install --inline-builds ${{ inputs.frozen-lockfile == 'true' && '--immutable' || '' }}" ;;
+            pnpm)   cmd="pnpm install ${{ inputs.frozen-lockfile == 'true' && '--frozen-lockfile' || '' }}" ;;
+            bun)    cmd="bun install ${{ inputs.frozen-lockfile == 'true' && '--frozen-lockfile' || '' }}" ;;
+          esac
+          eval "$cmd"
+        fi
+
+        # Timing & validation
+        echo "⏱️ Done in $(( $(date +%s) - START_TIME ))s"
+        [[ -d "node_modules" ]] || exit 1
+
+    # Step 7: Save cache for future runs
+    - name: 💾 Save Cache
+      if: steps.deps-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v5
+      with:
+        path: ${{ steps.cache-config.outputs.cache-paths }}
+        key: ${{ steps.deps-cache.outputs.cache-primary-key }}
+
+    # Step 8: Final summary
+    - name: 📋 Summary
+      shell: bash
+      run: |
+        echo "✅ Setup complete!"
+        echo "• Package Manager: ${{ steps.detect-pm.outputs.package-manager }}"
+        echo "• Cache Hit: ${{ steps.deps-cache.outputs.cache-hit }}"
+        echo "• Node: $(node --version)"

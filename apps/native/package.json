@@ -16,6 +16,7 @@
     "cq:check": "bun ultracite check"
   },
   "dependencies": {
+    "@dreamstream/common": "workspace:*",
     "@expo/vector-icons": "15.0.3",
     "@gorhom/bottom-sheet": "5.2.8",
     "@react-navigation/drawer": "7.7.10",
@@ -24,8 +25,10 @@
     "expo-build-properties": "1.0.10",
     "expo-constants": "18.0.12",
     "expo-dev-client": "6.0.20",
+    "expo-device": "8.0.10",
     "expo-haptics": "15.0.8",
     "expo-linking": "8.0.11",
+    "expo-notifications": "0.32.15",
     "expo-router": "6.0.21",
     "expo-splash-screen": "31.0.13",
     "expo-status-bar": "3.0.9",
@@ -47,8 +50,7 @@
     "tailwindcss": "4.1.18",
     "uniwind": "1.2.2",
     "zod": "catalog:",
-    "zustand": "5.0.9",
-    "@dreamstream/common": "workspace:*"
+    "zustand": "5.0.9"
   },
   "devDependencies": {
     "@types/node": "catalog:types",

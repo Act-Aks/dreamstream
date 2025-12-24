@@ -6,6 +6,7 @@ const baseConfig = {
     android: {
         adaptiveIcon: { backgroundColor: "#E6F4FE", foregroundImage: "./assets/images/icon.png" },
         edgeToEdgeEnabled: true,
+        googleServicesFile: "./google-services.json",
         package: "com.actaks.dreamstream",
         predictiveBackGestureEnabled: false,
         versionCode: 1,
@@ -27,6 +28,7 @@ const baseConfig = {
 const appConfig = ({ config }: { config: ExpoConfig }): ExpoConfig => {
     return withPlugins({ ...config, ...baseConfig }, [
         "expo-router",
+        "expo-notifications",
         [
             "expo-splash-screen",
             {

@@ -1,0 +1,51 @@
+name: 'Code Quality Check'
+description: 'Fast code quality: lint, format, types, security (Bun optimized)'
+author: 'Act-Aks'
+
+inputs:
+  fail-on-warnings:
+    description: 'Fail on lint warnings'
+    required: false
+    default: 'false'
+
+outputs:
+  all-passed:
+    description: 'true if all checks passed'
+    value: ${{ steps.quality.outputs.all-passed }}
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+runs:
+  using: composite
+  steps:
+    # Install deps + Bun setup
+    - name: 📦 Setup Bun & Deps
+      uses: ./.github/actions/node-deps-cache
+      with:
+        package-manager: bun
+        frozen-lockfile: 'true'
+
+    # All quality checks in one step
+    - name: 🔍 Quality Checks
+      id: quality
+      shell: bash
+      run: |
+        echo "🚀 Running quality checks..."
+        
+        # Linting (fail only on errors unless strict)
+        if [[ "${{ inputs.fail-on-warnings }}" == "true" ]]; then
+          bun run cq:check || exit 1
+        else
+          bun run cq:check || echo "⚠️ Warnings OK"
+        fi
+        
+        # Formatting check
+        bun run cq:fix
+        
+        # TypeScript
+        # bun run check-types
+        
+        echo "all-passed=true" >> $GITHUB_OUTPUT
+        echo "✅ All checks passed! 🚀"

@@ -49,3 +49,5 @@ coverage
 tmp
 temp
 .bun
+
+**/google-services*.json

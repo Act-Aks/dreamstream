@@ -1,0 +1,41 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quality:
+    name: 🔍 Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 📦 Setup Dependencies
+        uses: ./.github/actions/node-deps-cache
+        id: deps
+        with:
+          package-manager: bun
+          cache-prefix: quality-
+          frozen-lockfile: true
+      
+      - name: ✅ Quality Gate
+        uses: ./.github/actions/code-quality-check
+        id: quality
+        with:
+          fail-on-warnings: ${{ github.event_name == 'push' && 'true' || 'false' }}
+      
+      - name: 📊 Summary
+        if: always()
+        run: |
+          echo "📊 Quality Report"
+          echo "Cache hit: ${{ steps.deps.outputs.cache-hit }}"
+          echo "All checks: ${{ steps.quality.outputs.all-passed }}"
