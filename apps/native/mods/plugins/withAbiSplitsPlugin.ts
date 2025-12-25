@@ -1,20 +1,20 @@
-import { type ConfigPlugin, withAppBuildGradle } from "expo/config-plugins";
+import { type ConfigPlugin, withAppBuildGradle } from 'expo/config-plugins'
 
 // Regex patterns for gradle file manipulation
-const SPLITS_REGEX = /splits\s*\{[\s\S]*?\}/;
-const ANDROID_BLOCK_REGEX = /android\s*\{/;
+const SPLITS_REGEX = /splits\s*\{[\s\S]*?\}/
+const ANDROID_BLOCK_REGEX = /android\s*\{/
 
-type AbiSplitType = "arm64-v8a" | "armeabi-v7a" | "x86" | "x86_64";
+type AbiSplitType = 'arm64-v8a' | 'armeabi-v7a' | 'x86' | 'x86_64'
 interface AbiSplitProps {
-    abiFilters?: AbiSplitType[];
+    abiFilters?: AbiSplitType[]
 }
 
 const withAbiSplits: ConfigPlugin<AbiSplitProps> = (
     config,
-    { abiFilters = ["arm64-v8a", "armeabi-v7a", "x86", "x86_64"] } = {}
+    { abiFilters = ['arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'] } = {}
 ) =>
     withAppBuildGradle(config, (configGradle) => {
-        const filters = abiFilters.map((abi) => `"${abi}"`).join(", ");
+        const filters = abiFilters.map((abi) => `"${abi}"`).join(', ')
         const splitsBlock = `
     splits {
         abi {
@@ -23,16 +23,16 @@ const withAbiSplits: ConfigPlugin<AbiSplitProps> = (
             include ${filters}
             universalApk true
         }
-    }`;
+    }`
 
-        const gradle = configGradle.modResults.contents;
-        const hasSplits = SPLITS_REGEX.test(gradle);
+        const gradle = configGradle.modResults.contents
+        const hasSplits = SPLITS_REGEX.test(gradle)
 
         configGradle.modResults.contents = hasSplits
             ? gradle.replace(SPLITS_REGEX, splitsBlock)
-            : gradle.replace(ANDROID_BLOCK_REGEX, (match) => `${match}\n${splitsBlock}\n`);
+            : gradle.replace(ANDROID_BLOCK_REGEX, (match) => `${match}\n${splitsBlock}\n`)
 
-        return configGradle;
-    });
+        return configGradle
+    })
 
-export default withAbiSplits;
+export default withAbiSplits

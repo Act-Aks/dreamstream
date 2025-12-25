@@ -2,6 +2,7 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["ultracite/core", "ultracite/react"],
   "formatter": {
+    "bracketSpacing": true,
     "enabled": true,
     "formatWithErrors": true,
     "indentStyle": "space",
@@ -24,14 +25,31 @@
       },
       "performance": {
         "noBarrelFile": "error"
+      },
+      "nursery": {
+        "useSortedClasses": "error"
       }
     }
   },
   "assist": {
     "actions": {
       "source": {
-        "useSortedKeys": "on"
+        "organizeImports": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on",
+        "useSortedAttributes": "on"
       }
+    }
+  },
+  "javascript": {
+    "assist": {
+      "enabled": true
+    },
+    "formatter": {
+      "enabled": true,
+      "jsxQuoteStyle": "single",
+      "quoteStyle": "single",
+      "semicolons": "asNeeded"
     }
   }
 }

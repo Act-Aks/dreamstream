@@ -5,19 +5,19 @@
  * @param condition
  * @param msg
  */
-export function assertCondition(condition: unknown, msg?: string): asserts condition;
-export function assertCondition(condition: unknown, errorFactory?: () => Error): asserts condition;
+export function assertCondition(condition: unknown, msg?: string): asserts condition
+export function assertCondition(condition: unknown, errorFactory?: () => Error): asserts condition
 export function assertCondition(condition: unknown, msgOrErrorFactory?: string | (() => Error)): asserts condition {
     if (!condition) {
-        if (typeof msgOrErrorFactory === "string" || msgOrErrorFactory === undefined) {
-            throw new Error(msgOrErrorFactory);
+        if (typeof msgOrErrorFactory === 'string' || msgOrErrorFactory === undefined) {
+            throw new Error(msgOrErrorFactory)
         }
-        throw msgOrErrorFactory();
+        throw msgOrErrorFactory()
     }
 }
 
 // biome-ignore lint/complexity/noBannedTypes: This is used to define a generic function type
-export const isFunction = (value: unknown): value is Function => !!(value && typeof value === "function");
+export const isFunction = (value: unknown): value is Function => !!(value && typeof value === 'function')
 
 /**
  * This is really a _best guess_ promise checking.
@@ -25,14 +25,14 @@ export const isFunction = (value: unknown): value is Function => !!(value && typ
  * sure you're handling it correctly.
  */
 export const isPromise = (value: unknown): value is Promise<unknown> => {
-    if (!value || typeof value !== "object") {
-        return false;
+    if (!value || typeof value !== 'object') {
+        return false
     }
-    if (!("then" in value)) {
-        return false;
+    if (!('then' in value)) {
+        return false
     }
-    return isFunction(value.then);
-};
+    return isFunction(value.then)
+}
 
 /**
  * A helper to try an async function without forking
@@ -47,23 +47,23 @@ export const tryit =
         ? Promise<[Error, undefined] | [undefined, Awaited<Return>]>
         : [Error, undefined] | [undefined, Return] => {
         try {
-            const result = func(...args);
+            const result = func(...args)
             if (isPromise(result)) {
                 return result
                     .then((value) => [undefined, value])
                     .catch((err) => [err, undefined]) as Return extends Promise<unknown>
                     ? Promise<[Error, undefined] | [undefined, Awaited<Return>]>
-                    : [Error, undefined] | [undefined, Return];
+                    : [Error, undefined] | [undefined, Return]
             }
             return [undefined, result] as Return extends Promise<unknown>
                 ? Promise<[Error, undefined] | [undefined, Awaited<Return>]>
-                : [Error, undefined] | [undefined, Return];
+                : [Error, undefined] | [undefined, Return]
         } catch (err) {
             return [err as unknown, undefined] as Return extends Promise<unknown>
                 ? Promise<[Error, undefined] | [undefined, Awaited<Return>]>
-                : [Error, undefined] | [undefined, Return];
+                : [Error, undefined] | [undefined, Return]
         }
-    };
+    }
 
 /**
  * Function to get an element from the array, by default returns the first element
@@ -71,8 +71,8 @@ export const tryit =
  * @param index
  */
 export function getArrayElement<T>(array: readonly T[], index = 0) {
-    assertCondition(array[index] !== undefined);
-    return array[index];
+    assertCondition(array[index] !== undefined)
+    return array[index]
 }
 
 /**
@@ -88,7 +88,7 @@ export function getArrayElement<T>(array: readonly T[], index = 0) {
  * const pairs = entries(obj); // [['name', 'John'], ['age', 30]] with proper typing
  */
 export function entries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
-    return Object.entries(obj) as [keyof T, T[keyof T]][];
+    return Object.entries(obj) as [keyof T, T[keyof T]][]
 }
 
 /**
@@ -104,7 +104,7 @@ export function entries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
  * const objKeys = keys(obj); // ['name', 'age'] with proper typing
  */
 export function keys<T extends object>(obj: T): (keyof T)[] {
-    return Object.keys(obj) as (keyof T)[];
+    return Object.keys(obj) as (keyof T)[]
 }
 
 /**
@@ -120,7 +120,7 @@ export function keys<T extends object>(obj: T): (keyof T)[] {
  * const objValues = values(obj); // ['John', 30] with proper typing
  */
 export function values<T extends object>(obj: T): T[keyof T][] {
-    return Object.values(obj) as T[keyof T][];
+    return Object.values(obj) as T[keyof T][]
 }
 
 /**
@@ -134,7 +134,7 @@ export function values<T extends object>(obj: T): T[keyof T][] {
  * @param value
  */
 export function toLowerCase<S extends string>(value: S): Lowercase<S> {
-    return value.toLowerCase() as Lowercase<S>;
+    return value.toLowerCase() as Lowercase<S>
 }
 
 /**
@@ -149,7 +149,7 @@ export function toLowerCase<S extends string>(value: S): Lowercase<S> {
  * @param value
  */
 export function toUpperCase<S extends string>(value: S): Uppercase<S> {
-    return value.toUpperCase() as Uppercase<S>;
+    return value.toUpperCase() as Uppercase<S>
 }
 
 /**
@@ -163,7 +163,7 @@ export function toUpperCase<S extends string>(value: S): Uppercase<S> {
  * @param value
  */
 export function capitalize<S extends string>(value: S) {
-    return (value.substring(0, 1).toUpperCase() + value.substring(1)) as Capitalize<S>;
+    return (value.substring(0, 1).toUpperCase() + value.substring(1)) as Capitalize<S>
 }
 
 /**
@@ -178,47 +178,47 @@ export function capitalize<S extends string>(value: S) {
  * @param value
  */
 export function uncapitalize<T extends string>(value: T): Uncapitalize<T> {
-    return (value.substring(0, 1).toLowerCase() + value.substring(1)) as Uncapitalize<T>;
+    return (value.substring(0, 1).toLowerCase() + value.substring(1)) as Uncapitalize<T>
 }
 
-type Delimiters = ["_", "-", " ", "."];
-type StringCase = "CamelCase" | "PascalCase" | "SnakeCase" | "TitleCase";
+type Delimiters = ['_', '-', ' ', '.']
+type StringCase = 'CamelCase' | 'PascalCase' | 'SnakeCase' | 'TitleCase'
 type ToCamelCase<
     Head extends string,
     Tail extends string,
     Delimiter extends string,
-> = `${Head}${ProcessDelimiter<Capitalize<Tail>, Delimiter, "CamelCase">}`;
+> = `${Head}${ProcessDelimiter<Capitalize<Tail>, Delimiter, 'CamelCase'>}`
 type ToPascalCase<
     Head extends string,
     Tail extends string,
     Delimiter extends string,
-> = `${Capitalize<Head>}${ProcessDelimiter<Capitalize<Tail>, Delimiter, "PascalCase">}`;
+> = `${Capitalize<Head>}${ProcessDelimiter<Capitalize<Tail>, Delimiter, 'PascalCase'>}`
 type ToSnakeCase<
     Head extends string,
     Tail extends string,
     Delimiter extends string,
-> = `${Uncapitalize<Head>}${Head extends "" ? "" : "_"}${ProcessDelimiter<Uncapitalize<Tail>, Delimiter, "SnakeCase">}`;
+> = `${Uncapitalize<Head>}${Head extends '' ? '' : '_'}${ProcessDelimiter<Uncapitalize<Tail>, Delimiter, 'SnakeCase'>}`
 type ToTitleCase<
     Head extends string,
     Tail extends string,
     Delimiter extends string,
-> = `${Capitalize<Head>}${Head extends "" ? "" : " "}${ProcessDelimiter<Capitalize<Tail>, Delimiter, "TitleCase">}`;
+> = `${Capitalize<Head>}${Head extends '' ? '' : ' '}${ProcessDelimiter<Capitalize<Tail>, Delimiter, 'TitleCase'>}`
 
 type ProcessDelimiter<
     S extends string,
     D extends string,
     C extends StringCase,
 > = S extends `${infer Head}${D}${infer Tail}`
-    ? C extends "CamelCase"
+    ? C extends 'CamelCase'
         ? ToCamelCase<Head, Tail, D>
-        : C extends "PascalCase"
+        : C extends 'PascalCase'
           ? ToPascalCase<Head, Tail, D>
-          : C extends "SnakeCase"
+          : C extends 'SnakeCase'
             ? ToSnakeCase<Head, Tail, D>
-            : C extends "TitleCase"
+            : C extends 'TitleCase'
               ? ToTitleCase<Head, Tail, D>
               : S
-    : S;
+    : S
 
 type ProcessDelimiters<
     S extends string,
@@ -226,14 +226,14 @@ type ProcessDelimiters<
     ToCase extends StringCase,
 > = DelimiterList extends readonly [infer First extends string, ...infer Rest extends readonly string[]]
     ? ProcessDelimiters<ProcessDelimiter<S, First, ToCase>, Rest, ToCase>
-    : S;
+    : S
 
-export type CamelCase<S extends string> = ProcessDelimiters<S, Delimiters, "CamelCase">;
-export type PascalCase<S extends string> = ProcessDelimiters<S, Delimiters, "PascalCase">;
-export type SnakeCase<S extends string> = ProcessDelimiters<S, Delimiters, "SnakeCase">;
-export type TitleCase<S extends string> = Capitalize<Lowercase<ProcessDelimiters<S, Delimiters, "TitleCase">>>;
+export type CamelCase<S extends string> = ProcessDelimiters<S, Delimiters, 'CamelCase'>
+export type PascalCase<S extends string> = ProcessDelimiters<S, Delimiters, 'PascalCase'>
+export type SnakeCase<S extends string> = ProcessDelimiters<S, Delimiters, 'SnakeCase'>
+export type TitleCase<S extends string> = Capitalize<Lowercase<ProcessDelimiters<S, Delimiters, 'TitleCase'>>>
 
-const camelCaseRegex = /[-_\s]([a-z])|^./g;
+const camelCaseRegex = /[-_\s]([a-z])|^./g
 
 /**
  * Formats the given string in camel case fashion
@@ -243,7 +243,7 @@ const camelCaseRegex = /[-_\s]([a-z])|^./g;
  * camel('helloWorld') -> 'helloWorld'
  */
 export function toCamelCase<S extends string>(value: S): CamelCase<S> {
-    return value.toLowerCase().replace(camelCaseRegex, (m, c) => (c ? toUpperCase(c) : toUpperCase(m))) as CamelCase<S>;
+    return value.toLowerCase().replace(camelCaseRegex, (m, c) => (c ? toUpperCase(c) : toUpperCase(m))) as CamelCase<S>
 }
 
 /**
@@ -254,5 +254,5 @@ export function toCamelCase<S extends string>(value: S): CamelCase<S> {
  * camel('helloWorld') -> 'HelloWorld'
  */
 export function toTitleCase<S extends string>(value: S): TitleCase<S> {
-    return value.toLowerCase().replace(camelCaseRegex, (m, c) => (c ? capitalize(c) : capitalize(m))) as TitleCase<S>;
+    return value.toLowerCase().replace(camelCaseRegex, (m, c) => (c ? capitalize(c) : capitalize(m))) as TitleCase<S>
 }
