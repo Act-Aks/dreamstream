@@ -18,13 +18,13 @@ export const heroNativeUiConfig: HeroUINativeConfig = {
             </KeyboardAvoidingView>
         ),
         defaultProps: {
-            placement: 'top',
+            placement: 'bottom',
             variant: 'default',
         },
         insets: {
-            bottom: 6,
-            left: 12,
-            right: 12,
+            bottom: 60,
+            left: 16,
+            right: 16,
             top: 0,
         },
         maxVisibleToasts: 3,
