@@ -1,6 +1,11 @@
 {
   "name": "@dreamstream/source",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Act-Aks",
+    "url": "https://github.com/Act-Aks/dreamstream"
+  },
   "workspaces": {
     "packages": [
       "apps/*",
