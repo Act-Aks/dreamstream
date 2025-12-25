@@ -15,12 +15,12 @@ jobs:
     name: 🔍 Code Quality
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       
       - name: 📦 Setup Dependencies
-        uses: ./.github/actions/node-deps-cache
+        uses: ./.github/actions/setup-dependency
         id: deps
         with:
           package-manager: bun

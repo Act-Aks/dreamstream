@@ -105,10 +105,10 @@ runs:
         
         # Define cache paths per package manager
         case $PM in
-          npm)     CACHE_PATHS="~/.npm\node_modules"; LOCKFILE="package-lock.json" ;;
+          npm)     CACHE_PATHS="~/.npm/node_modules"; LOCKFILE="package-lock.json" ;;
           yarn)    CACHE_PATHS="**/node_modules\n.yarn/cache"; LOCKFILE="yarn.lock" ;;
           pnpm)    CACHE_PATHS="**/node_modules\n~/.pnpm-store"; LOCKFILE="pnpm-lock.yaml" ;;
-          bun)     CACHE_PATHS="**/node_modules\n**/.bun/install/cache"; LOCKFILE="bun.lock" ;;
+          bun)     CACHE_PATHS=".bun/cache"; LOCKFILE="bun.lock" ;;
         esac
 
         # Create stable cache key from lockfile + package.json hash

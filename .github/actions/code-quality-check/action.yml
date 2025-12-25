@@ -20,13 +20,6 @@ branding:
 runs:
   using: composite
   steps:
-    # Install deps + Bun setup
-    - name: 📦 Setup Bun & Deps
-      uses: ./.github/actions/node-deps-cache
-      with:
-        package-manager: bun
-        frozen-lockfile: 'true'
-
     # All quality checks in one step
     - name: 🔍 Quality Checks
       id: quality
