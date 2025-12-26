@@ -1,5 +1,9 @@
 {
   "name": "@dreamstream/common",
+  "version": "1.0.0",
+  "description": "Common types and utilities for dreamstream project",
+  "author": "Act-Aks",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
@@ -14,6 +18,11 @@
       "types": "./src/generics/index.ts",
       "import": "./src/generics/index.ts",
       "require": "./src/generics/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "import": "./src/types/index.ts",
+      "require": "./src/types/index.ts"
     }
   },
   "scripts": {
