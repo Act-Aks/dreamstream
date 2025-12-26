@@ -4,18 +4,18 @@ import { ScrollView, type ViewProps } from 'react-native'
 import Animated, { type AnimatedProps } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-export function Container({ children, className, ...props }: PropsWithChildren<AnimatedProps<ViewProps>>) {
+export const Container: React.FC<PropsWithChildren<AnimatedProps<ViewProps>>> = ({ children, className, ...props }) => {
     const insets = useSafeAreaInsets()
 
     return (
         <Animated.View
             className={cn('flex-1 bg-background', className) ?? ''}
-            style={{
-                paddingBottom: insets.bottom,
-            }}
+            style={{ paddingBottom: insets.bottom }}
             {...props}
         >
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>{children}</ScrollView>
+            <ScrollView automaticallyAdjustKeyboardInsets contentContainerStyle={{ flexGrow: 1 }}>
+                {children}
+            </ScrollView>
         </Animated.View>
     )
 }

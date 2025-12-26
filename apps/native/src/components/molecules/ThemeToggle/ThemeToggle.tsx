@@ -8,7 +8,7 @@ import { useAppTheme } from '@/contexts/ThemeContext'
 
 const StyledIonicons = withUniwind(Ionicons)
 
-export function ThemeToggle() {
+export const ThemeToggle: React.FC = () => {
     const { toggleTheme, isLight } = useAppTheme()
 
     return (

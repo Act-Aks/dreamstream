@@ -1,8 +1,7 @@
 import { Link, Stack } from 'expo-router'
 import { Card } from 'heroui-native'
 import { Pressable, Text, View } from 'react-native'
-
-import { Container } from '@/components/container'
+import { Container } from '@/components/atoms/Container/Container'
 
 export default function NotFoundScreen() {
     return (
