@@ -12,14 +12,16 @@
       "packages/*"
     ],
     "catalog": {
-      "dotenv": "17.2.3",
-      "zod": "4.2.1",
-      "typescript": "5.9.3",
       "@biomejs/biome": "2.3.10",
+      "axios": "1.13.2",
+      "cheerio": "1.1.2",
+      "dotenv": "17.2.3",
       "husky": "9.1.7",
       "lint-staged": "16.2.7",
+      "tsx": "4.21.0",
+      "typescript": "5.9.3",
       "ultracite": "6.5.0",
-      "tsx": "4.21.0"
+      "zod": "4.2.1"
     },
     "catalogs": {
       "types": {

@@ -1,7 +1,7 @@
 {
-  "name": "@dreamstream/common",
+  "name": "@dreamstream/core",
   "version": "1.0.0",
-  "description": "Common types and utilities for dreamstream project",
+  "description": "Core types and utilities for dreamstream project",
   "author": "Act-Aks",
   "license": "MIT",
   "private": true,
@@ -13,6 +13,11 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./src/index.ts"
+    },
+    "./axiosClient": {
+      "types": "./src/axiosClient/index.ts",
+      "import": "./src/axiosClient/index.ts",
+      "require": "./src/axiosClient/index.ts"
     },
     "./generics": {
       "types": "./src/generics/index.ts",
@@ -28,5 +33,8 @@
   "scripts": {
     "cq:fix": "bun ultracite fix",
     "cq:check": "bun ultracite check"
+  },
+  "dependencies": {
+    "axios": "catalog:"
   }
 }

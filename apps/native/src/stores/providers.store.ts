@@ -1,4 +1,4 @@
-import type { Provider } from '@dreamstream/common/types'
+import type { Provider } from '@dreamstream/core/types'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { AppStorage } from '@/utils/mmkvStorage'

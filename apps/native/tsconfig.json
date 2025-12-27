@@ -27,7 +27,7 @@
   "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "references": [
     {
-      "path": "../../packages/common"
+      "path": "../../packages/core"
     }
   ]
 }
