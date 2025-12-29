@@ -21,7 +21,8 @@
       "tsx": "4.21.0",
       "typescript": "5.9.3",
       "ultracite": "6.5.0",
-      "zod": "4.2.1"
+      "zod": "4.2.1",
+      "tsup": "8.5.1"
     },
     "catalogs": {
       "types": {
@@ -32,13 +33,13 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "bun run --filter '*' dev",
     "build": "bun run --filter '*' build",
-    "cq:fix": "bun run --filter '*' cq:fix",
     "cq:check": "bun run --filter '*' cq:check",
-    "check-types": "bun run --filter '*' check-types",
+    "cq:fix": "bun run --filter '*' cq:fix",
+    "cq:types": "bun run --filter '*' cq:types",
     "dev:native": "bun run --filter @dreamstream/native dev",
     "dev:web": "bun run --filter @dreamstream/web dev",
+    "dev": "bun run --filter '*' dev",
     "prepare": "husky"
   },
   "engines": {

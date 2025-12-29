@@ -1,0 +1,33 @@
+{
+  "name": "@dreamstream/providers",
+  "version": "1.0.0",
+  "description": "Holds all providers for dreamstream project",
+  "author": "Act-Aks",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "cq:check": "bun ultracite check",
+    "cq:fix": "bun ultracite fix",
+    "cq:types": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@dreamstream/core": "workspace:*",
+    "@dreamstream/extractors": "workspace:*",
+    "axios": "catalog:",
+    "cheerio": "catalog:"
+  },
+  "devDependencies": {
+    "tsup": "catalog:"
+  }
+}

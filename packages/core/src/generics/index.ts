@@ -256,3 +256,39 @@ export function toCamelCase<S extends string>(value: S): CamelCase<S> {
 export function toTitleCase<S extends string>(value: S): TitleCase<S> {
     return value.toLowerCase().replace(camelCaseRegex, (m, c) => (c ? capitalize(c) : capitalize(m))) as TitleCase<S>
 }
+
+/**
+ * Creates a safe error message from any value, preserving Error.message when possible
+ * @param error - The error value to extract message from
+ * @returns Error message string
+ */
+export function getErrorMessage(error: unknown): string {
+    return error instanceof Error ? error.message : String(error)
+}
+
+/**
+ * Safely parses text content to integer with default radix 10
+ * @param text - Text content from DOM element
+ * @param radix - Optional radix (defaults to 10)
+ * @returns Parsed integer or 0 on failure
+ */
+export function parseIntSafe(text: string | undefined | null, radix = 10): number {
+    const trimmed = text?.trim()
+    if (!trimmed) {
+        return 0
+    }
+    return Number.parseInt(trimmed, radix)
+}
+
+/**
+ * Safely parses text content to float
+ * @param text - Text content from DOM element
+ * @returns Parsed float or 0 on failure
+ */
+export function parseFloatSafe(text: string | undefined | null): number {
+    const trimmed = text?.trim()
+    if (!trimmed) {
+        return 0
+    }
+    return Number.parseFloat(trimmed)
+}

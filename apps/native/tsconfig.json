@@ -24,10 +24,5 @@
       "@assets/*": ["./assets/*"]
     }
   },
-  "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"],
-  "references": [
-    {
-      "path": "../../packages/core"
-    }
-  ]
+  "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

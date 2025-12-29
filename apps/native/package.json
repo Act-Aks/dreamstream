@@ -5,15 +5,16 @@
   "type": "module",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
-    "dev": "expo start --clear",
     "android": "expo run:android",
+    "cq:check": "bun ultracite check",
+    "cq:fix": "bun ultracite fix",
+    "cq:types": "tsc --noEmit -p tsconfig.json",
+    "dev": "expo start --clear",
+    "fix:version": "expo install --fix",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild --clean --no-install",
-    "up:latest": "bun update --latest",
-    "fix:version": "expo install --fix",
-    "cq:fix": "bun ultracite fix",
-    "cq:check": "bun ultracite check"
+    "start": "expo start",
+    "up:latest": "bun update --latest"
   },
   "dependencies": {
     "@dreamstream/core": "workspace:*",
@@ -21,7 +22,7 @@
     "@gorhom/bottom-sheet": "5.2.8",
     "@react-navigation/drawer": "7.7.10",
     "@react-navigation/native": "7.1.26",
-    "@tanstack/react-query": "5.90.12",
+    "@tanstack/react-query": "5.90.14",
     "expo": "54.0.30",
     "expo-build-properties": "1.0.10",
     "expo-constants": "18.0.12",

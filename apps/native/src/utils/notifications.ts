@@ -29,6 +29,7 @@ async function registerForPushNotifications(): Promise<string | undefined> {
             handleRegistrationError('Permission not granted to get push token for push notification!')
             return
         }
+        // @ts-expect-error - `eas` is not defined in the type
         const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId
         if (!projectId) {
             handleRegistrationError('Project ID not found')
