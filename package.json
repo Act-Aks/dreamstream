@@ -34,13 +34,13 @@
   },
   "type": "module",
   "scripts": {
-    "build": "bun x turbo build",
-    "cq:check": "bun x turbo check",
-    "cq:fix": "bun x turbo fix",
-    "cq:types": "bun run build && bun run turbo types",
-    "dev:native": "bun x turbo dev --filter=@dreamstream/native",
-    "dev:web": "bun x turbo dev --filter=@dreamstream/web",
-    "dev": "bun x turbo dev",
+    "build": "bun run --filter '*' build",
+    "cq:check": "bun run --filter '*' cq:check",
+    "cq:fix": "bun run --filter '*' cq:fix",
+    "cq:types": "bun run turbo build && bun run --filter '*' cq:types",
+    "dev:native": "bun run --filter @dreamstream/native dev",
+    "dev:web": "bun run --filter @dreamstream/web dev",
+    "dev": "bun run --filter '*' dev",
     "prepare": "husky"
   },
   "engines": {
