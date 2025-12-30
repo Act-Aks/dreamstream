@@ -4,7 +4,7 @@ export default defineConfig({
     clean: true,
     dts: true,
     entry: ['src'],
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     minify: process.env.NODE_ENV === 'production',
     outDir: 'dist',
     platform: 'node',

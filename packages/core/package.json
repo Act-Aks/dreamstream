@@ -6,43 +6,36 @@
   "license": "MIT",
   "private": true,
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.js"
     },
     "./axiosClient": {
       "types": "./dist/axiosClient/index.d.ts",
-      "import": "./dist/axiosClient/index.js",
-      "require": "./dist/axiosClient/index.cjs"
+      "import": "./dist/axiosClient/index.js"
     },
     "./constants": {
       "types": "./dist/constants/index.d.ts",
-      "import": "./dist/constants/index.js",
-      "require": "./dist/constants/index.cjs"
+      "import": "./dist/constants/index.js"
     },
     "./generics": {
       "types": "./dist/generics/index.d.ts",
-      "import": "./dist/generics/index.js",
-      "require": "./dist/generics/index.cjs"
+      "import": "./dist/generics/index.js"
     },
     "./typeguards": {
       "types": "./dist/typeguards/index.d.ts",
-      "import": "./dist/typeguards/index.js",
-      "require": "./dist/typeguards/index.cjs"
+      "import": "./dist/typeguards/index.js"
     },
     "./types": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.js",
-      "require": "./dist/types/index.cjs"
+      "import": "./dist/types/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.cjs"
+      "import": "./dist/utils/index.js"
     }
   },
   "scripts": {

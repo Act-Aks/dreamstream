@@ -22,7 +22,8 @@
       "typescript": "5.9.3",
       "ultracite": "6.5.0",
       "zod": "4.2.1",
-      "tsup": "8.5.1"
+      "tsup": "8.5.1",
+      "turbo": "2.7.2"
     },
     "catalogs": {
       "types": {
@@ -33,15 +34,13 @@
   },
   "type": "module",
   "scripts": {
-    "build:packages": "bun run --filter './packages/*' build",
-    "build": "bun run --filter '*' build",
-    "cq:check": "bun run --filter '*' cq:check",
-    "cq:fix": "bun run --filter '*' cq:fix",
-    "cq:types": "bun run --filter '*' cq:types",
-    "dev:native": "bun run --filter @dreamstream/native dev",
-    "dev:web": "bun run --filter @dreamstream/web dev",
-    "dev": "bun run --filter '*' dev",
-    "postinstall": "bun run build:packages",
+    "build": "bun turbo build",
+    "cq:check": "bun turbo cq:check",
+    "cq:fix": "bun turbo cq:fix",
+    "cq:types": "bun turbo cq:types",
+    "dev:native": "bun turbo dev --filter=@dreamstream/native",
+    "dev:web": "bun turbo dev --filter=@dreamstream/web",
+    "dev": "bun turbo dev",
     "prepare": "husky"
   },
   "engines": {
@@ -54,12 +53,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:types",
+    "@types/react": "catalog:types",
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "tsx": "catalog:",
+    "turbo": "catalog:",
     "typescript": "catalog:",
-    "ultracite": "catalog:",
-    "@types/node": "catalog:types",
-    "@types/react": "catalog:types"
+    "ultracite": "catalog:"
   }
 }
