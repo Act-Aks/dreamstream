@@ -38,7 +38,7 @@ runs:
         bun run cq:fix
         
         # TypeScript
-        bun run cq:types
+        bun run build cq:types
         
         echo "all-passed=true" >> $GITHUB_OUTPUT
         echo "✅ All checks passed! 🚀"
