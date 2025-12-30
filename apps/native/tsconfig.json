@@ -24,5 +24,11 @@
       "@assets/*": ["./assets/*"]
     }
   },
-  "include": ["src", "assets", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": [
+    "src",
+    "assets",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "uniwind-types.d.ts"
+  ]
 }
