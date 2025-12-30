@@ -1,0 +1,85 @@
+name: "🐛 Bug Report"
+description: Report something that isn't working as expected in the DreamStream app or packages.
+title: "[BUG] <short summary>"
+labels:
+  - bug
+  - needs triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+
+        Thanks for taking the time to help improve **DreamStream**!
+
+        Please fill in the details below so we can reproduce and fix the issue quickly.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Which part of DreamStream is affected?
+      options:
+        - Native app (Expo / React Native)
+        - Core package (@dreamstream/core)
+        - Extractors (@dreamstream/extractors)
+        - Providers (@dreamstream/providers)
+        - Monorepo tooling (Turbo, Semantic Release, CI)
+        - Other / Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear description of the bug. What did you expect to happen instead?
+      placeholder: |
+        When I try to ..., the app crashes / returns an error...
+
+        Expected:
+        Actual:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide a minimal, reliable reproduction if possible.
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. Scroll down to ...
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / stack traces
+      description: Paste any relevant logs or stack traces. Remove sensitive information.
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / environment
+      description: App version, package versions, platform (iOS/Android/Web), OS, Node/Bun versions if relevant.
+      placeholder: |
+        @dreamstream/core@1.0.0
+        @dreamstream/providers@1.0.0
+        iOS 18.0 / Android 15 / macOS 15
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and Discussions for this problem.
+          required: true
+        - label: I can reproduce this issue with the latest `main` or latest released version.
+        - label: I am willing to open a PR to help fix this.
+
+

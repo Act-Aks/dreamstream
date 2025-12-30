@@ -1,0 +1,33 @@
+name: "💡 Question / Other"
+description: Ask a question, share feedback, or request clarification related to DreamStream.
+title: "[QUESTION] <short summary>"
+labels:
+  - question
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 💡 Question / Other
+
+        For general discussion, please also consider using **Discussions**.
+
+        Use this template when your topic doesn’t quite fit into a bug report or feature request.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What would you like to know or discuss?
+      placeholder: |
+        I’m trying to understand how to ...
+        I’m wondering if DreamStream supports ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Any code snippets, environment details, or links that help clarify your question.
+
+

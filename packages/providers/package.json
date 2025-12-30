@@ -2,9 +2,12 @@
   "name": "@dreamstream/providers",
   "version": "1.0.0",
   "description": "Holds all providers for dreamstream project",
-  "author": "Act-Aks",
+  "author": {
+    "name": "Act-Aks",
+    "url": "https://github.com/Act-Aks"
+  },
   "license": "MIT",
-  "private": true,
+  "private": false,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,6 +16,17 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Act-Aks/dreamstream.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Act-Aks/dreamstream/issues"
+  },
+  "homepage": "https://github.com/Act-Aks/dreamstream#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "build": "tsup",

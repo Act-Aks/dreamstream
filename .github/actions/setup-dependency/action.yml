@@ -28,6 +28,14 @@ inputs:
     description: 'Use frozen lockfile (ci/immutable mode) - true/false'
     required: false
     default: 'true'
+  bun-version:
+    description: 'Specific Bun version (e.g., "1.3.5") or "latest" (default: latest)'
+    required: false
+    default: 'latest'
+  pnpm-version:
+    description: 'Specific pnpm version (e.g., "9.0.0") or "latest" (default: latest)'
+    required: false
+    default: 'latest'
 
 # Action outputs
 outputs:
@@ -83,18 +91,36 @@ runs:
         node-version-file: ${{ inputs.node-version-file }}
         registry-url: ${{ inputs.registry-url }}
 
+    # Step 2.5: Configure GitHub Packages registry if needed
+    - name: 🔐 Configure GitHub Packages Registry
+      if: contains(inputs.registry-url, 'npm.pkg.github.com')
+      shell: bash
+      run: |
+        echo "📦 Configuring GitHub Packages registry"
+        # Append to existing .npmrc or create new one
+        if [[ -f .npmrc ]]; then
+          echo "⚠️ .npmrc exists, appending GitHub Packages config"
+        else
+          echo "✅ Creating new .npmrc"
+        fi
+        {
+          echo "@dreamstream:registry=${{ inputs.registry-url }}"
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN:-${GITHUB_TOKEN}}"
+          echo "always-auth=true"
+        } >> .npmrc
+
     # Step 3: Setup package manager (pnpm/bun only)
     - name: 📦 Setup pnpm
       if: steps.detect-pm.outputs.package-manager == 'pnpm'
       uses: pnpm/action-setup@v4
       with:
-        version: latest
+        version: ${{ inputs.pnpm-version }}
 
     - name: 🐰 Setup Bun
       if: steps.detect-pm.outputs.package-manager == 'bun'
       uses: oven-sh/setup-bun@v2
       with:
-        bun-version: latest
+        bun-version: ${{ inputs.bun-version }}
 
     # Step 4: Generate cache configuration
     - name: 🗂️ Configure Cache Paths & Keys
@@ -136,7 +162,7 @@ runs:
 
     # Step 6: Install if no cache hit
     - name: 📦 Install Dependencies
-      if: steps.deps-cache.outputs.cache-hit != 'true'
+      # if: steps.deps-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
         PM="${{ steps.detect-pm.outputs.package-manager }}"
@@ -175,3 +201,11 @@ runs:
         echo "• Package Manager: ${{ steps.detect-pm.outputs.package-manager }}"
         echo "• Cache Hit: ${{ steps.deps-cache.outputs.cache-hit }}"
         echo "• Node: $(node --version)"
+        if [[ "${{ steps.detect-pm.outputs.package-manager }}" == "bun" ]]; then
+          echo "• Bun: $(bun --version)"
+        elif [[ "${{ steps.detect-pm.outputs.package-manager }}" == "pnpm" ]]; then
+          echo "• pnpm: $(pnpm --version)"
+        fi
+        if [[ "${{ inputs.registry-url }}" == *"npm.pkg.github.com"* ]]; then
+          echo "• Registry: GitHub Packages"
+        fi
