@@ -49,5 +49,8 @@ coverage
 tmp
 temp
 .bun
+.agent
+.kiro
+.zed
 
 **/google-services*.json
