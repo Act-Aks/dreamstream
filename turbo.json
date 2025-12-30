@@ -5,14 +5,14 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "cq:check": {
+    "check": {
       "dependsOn": ["^cq:check"]
     },
-    "cq:fix": {
+    "fix": {
       "dependsOn": ["^cq:fix"]
     },
-    "cq:types": {
-      "dependsOn": ["^build"]
+    "types": {
+      "dependsOn": ["^cq:types"]
     },
     "dev": {
       "persistent": true,
