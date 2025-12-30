@@ -37,7 +37,7 @@
     "build": "bun turbo build",
     "cq:check": "bun turbo cq:check",
     "cq:fix": "bun turbo cq:fix",
-    "cq:types": "bun turbo build cq:types",
+    "cq:types": "bun turbo cq:types",
     "dev:native": "bun turbo dev --filter=@dreamstream/native",
     "dev:web": "bun turbo dev --filter=@dreamstream/web",
     "dev": "bun turbo dev",

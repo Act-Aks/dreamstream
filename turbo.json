@@ -12,7 +12,7 @@
       "dependsOn": ["^cq:fix"]
     },
     "cq:types": {
-      "dependsOn": ["^cq:types"]
+      "dependsOn": ["^build", "^cq:types"]
     },
     "dev": {
       "persistent": true,
