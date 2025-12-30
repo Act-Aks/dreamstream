@@ -33,6 +33,7 @@
   },
   "type": "module",
   "scripts": {
+    "build:packages": "bun run --filter './packages/*' build",
     "build": "bun run --filter '*' build",
     "cq:check": "bun run --filter '*' cq:check",
     "cq:fix": "bun run --filter '*' cq:fix",
@@ -40,6 +41,7 @@
     "dev:native": "bun run --filter @dreamstream/native dev",
     "dev:web": "bun run --filter @dreamstream/web dev",
     "dev": "bun run --filter '*' dev",
+    "postinstall": "bun run build:packages",
     "prepare": "husky"
   },
   "engines": {
