@@ -22,8 +22,7 @@
       "typescript": "5.9.3",
       "ultracite": "6.5.0",
       "zod": "4.2.1",
-      "tsup": "8.5.1",
-      "turbo": "2.7.2"
+      "tsup": "8.5.1"
     },
     "catalogs": {
       "types": {
@@ -58,7 +57,7 @@
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "tsx": "catalog:",
-    "turbo": "catalog:",
+    "turbo": "2.7.2",
     "typescript": "catalog:",
     "ultracite": "catalog:"
   }
