@@ -33,13 +33,13 @@
   },
   "type": "module",
   "scripts": {
-    "build": "turbo run build",
-    "cq:check": "turbo run cq:check",
-    "cq:fix": "turbo run cq:fix",
-    "cq:types": "turbo run cq:types",
-    "dev:native": "turbo run --filter @dreamstream/native dev",
-    "dev:web": "turbo run --filter @dreamstream/web dev",
-    "dev": "turbo run dev",
+    "build": "bunx turbo run build",
+    "cq:check": "bunx turbo run cq:check",
+    "cq:fix": "bunx turbo run cq:fix",
+    "cq:types": "bunx turbo run cq:types",
+    "dev:native": "bunx turbo run --filter @dreamstream/native dev",
+    "dev:web": "bunx turbo run --filter @dreamstream/web dev",
+    "dev": "bunx turbo run dev",
     "prepare": "husky"
   },
   "engines": {
