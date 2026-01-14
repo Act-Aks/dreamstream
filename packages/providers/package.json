@@ -38,7 +38,8 @@
     "@dreamstream/core": "workspace:*",
     "@dreamstream/extractors": "workspace:*",
     "axios": "catalog:",
-    "cheerio": "catalog:"
+    "cheerio": "catalog:",
+    "node-html-parser": "catalog:"
   },
   "devDependencies": {
     "tsup": "catalog:"

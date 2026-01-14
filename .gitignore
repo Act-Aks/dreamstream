@@ -52,5 +52,6 @@ temp
 .agent
 .kiro
 .zed
+.cursor
 
 **/google-services*.json

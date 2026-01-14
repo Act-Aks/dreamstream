@@ -24,6 +24,8 @@ import { parseScheduleDate, type ScheduleOptions } from './animekai.static'
 const megaUpExtractor = new MegaUp()
 
 export class AnimeKai extends AnimeParser {
+    private static BASE_URL = 'https://anikai.to'
+
     override readonly name = 'AnimeKai'
 
     protected override baseUrl = 'https://anikai.to'
@@ -34,6 +36,10 @@ export class AnimeKai extends AnimeParser {
     private static readonly BACKGROUND_IMAGE_REGEX = /background-image:\s*url\(["']?(.+?)["']?\)/i
     private getPage(page: number): number {
         return page <= 0 ? 1 : page
+    }
+
+    constructor() {
+        super(AnimeKai.BASE_URL)
     }
 
     /**

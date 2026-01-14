@@ -12,26 +12,27 @@
       "packages/*"
     ],
     "catalog": {
-      "@biomejs/biome": "2.3.10",
+      "@biomejs/biome": "2.3.11",
       "@semantic-release/changelog": "6.0.3",
       "@semantic-release/git": "10.0.1",
       "axios": "1.13.2",
-      "cheerio": "1.1.2",
+      "cheerio": "1.0.0-rc.12",
       "dotenv": "17.2.3",
       "husky": "9.1.7",
       "lint-staged": "16.2.7",
+      "node-html-parser": "7.0.2",
       "semantic-release": "25.0.2",
       "tsup": "8.5.1",
       "tsx": "4.21.0",
-      "turbo": "2.7.2",
+      "turbo": "2.7.4",
       "typescript": "5.9.3",
-      "ultracite": "6.5.0",
-      "zod": "4.2.1"
+      "ultracite": "7.0.11",
+      "zod": "4.3.5"
     },
     "catalogs": {
       "types": {
         "@types/node": "24.10.4",
-        "@types/react": "19.2.7"
+        "@types/react": "19.2.8"
       }
     }
   },
