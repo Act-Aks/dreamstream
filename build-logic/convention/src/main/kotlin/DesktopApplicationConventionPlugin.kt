@@ -38,8 +38,8 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(lib("kotlinx-coroutines-swing"))
-                "implementation"(lib("kermit"))
+                "implementation"(lib("kotlinx-coroutines-swing").get())
+                "implementation"(lib("kermit").get())
             }
 
             // Ensure Jar tasks are deterministic for reproducible desktop builds.

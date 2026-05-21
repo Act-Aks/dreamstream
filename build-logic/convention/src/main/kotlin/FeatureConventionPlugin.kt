@@ -33,14 +33,14 @@ class FeatureConventionPlugin : Plugin<Project> {
             val outer: Project = this
 
             extensions.configure<KotlinMultiplatformExtension> {
-                sourceSets.getByName("commonMain").dependencies {
+                sourceSets.commonMain.dependencies {
                     addProjectIfPresent(outer, ":core:domain")
                     addProjectIfPresent(outer, ":core:presentation")
                     addProjectIfPresent(outer, ":core:design-system")
 
                     implementation(lib("kermit").get())
                     implementation(lib("jb-navigation-compose").get())
-                    implementation(bundle("coil").get())
+                    bundle("coil").get().forEach { implementation(it) }
                 }
             }
         }

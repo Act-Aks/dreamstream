@@ -1,7 +1,4 @@
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.configureAndroidTarget
-import com.dreamstream.convention.configureDesktopTarget
-import com.dreamstream.convention.configureKotlinMultiplatformCompilerOpts
 import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -23,24 +20,18 @@ class DomainModuleConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "kotlin-multiplatform",
-                "android-kotlin-multiplatform-library",
-                "dreamstream-detekt",
-                "dreamstream-testing",
+                "dreamstream-kmp-library",
+                "kotlin-serialization",
             )
 
             extensions.configure<KotlinMultiplatformExtension> {
-                configureAndroidTarget(this)
-                configureDesktopTarget(this)
-
-                sourceSets.getByName("commonMain").dependencies {
+                sourceSets.commonMain.dependencies {
                     implementation(lib("kotlinx-coroutines-core").get())
+                    implementation(lib("kotlinx-serialization-json").get())
                     implementation(lib("kotlinx-datetime").get())
                     implementation(lib("kermit").get())
                 }
             }
-
-            configureKotlinMultiplatformCompilerOpts()
         }
     }
 }

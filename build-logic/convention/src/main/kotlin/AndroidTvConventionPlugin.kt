@@ -39,7 +39,7 @@ class AndroidTvConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", bundle("androidx-tv"))
+                bundle("androidx-tv").get().forEach { "implementation"(it) }
             }
         }
     }
