@@ -201,7 +201,6 @@ haze                        = { group = "dev.chrisbanes.haze", name = "haze",   
 haze-materials              = { group = "dev.chrisbanes.haze", name = "haze-materials",  version.ref = "haze" }
 
 # ── Quality ────────────────────────────────────────────────────────────────
-detekt-formatting               = { group = "dev.detekt",    name = "detekt-formatting",            version.ref = "detekt" }
 detekt-rules-ktlint-wrapper     = { group = "dev.detekt",    name = "detekt-rules-ktlint-wrapper",  version.ref = "detekt" }
 
 # ── Testing ─────────────────────────────────────────────────────────────────

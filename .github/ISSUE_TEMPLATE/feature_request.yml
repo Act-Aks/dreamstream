@@ -1,0 +1,82 @@
+name: Feature request
+description: Suggest an improvement or new capability for DreamStream
+title: "feat: "
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        DreamStream is a modular Kotlin Multiplatform app. Proposals should preserve Clean Architecture boundaries and the source integration rules documented in `AGENTS.md`.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This request aligns with DreamStream's legal, privacy, and source integration rules.
+          required: true
+        - label: I am not requesting DRM circumvention, paywall bypassing, credential theft, token scraping, ad rendering, tracker preservation, or access-control evasion.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What user problem does this solve?
+      placeholder: Describe the current limitation and who it affects.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should DreamStream do differently?
+      placeholder: Describe the behavior, UI, architecture, or workflow you want.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      multiple: true
+      options:
+        - User-facing feature
+        - Android UI
+        - Desktop UI
+        - Navigation
+        - Domain model or business logic
+        - Data layer or repository
+        - Source integration
+        - Playback or media
+        - Offline, cache, or downloads
+        - Build, CI, or tooling
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider?
+    validations:
+      required: false
+  - type: textarea
+    id: implementation-notes
+    attributes:
+      label: Implementation notes
+      description: If you have technical context, include module boundaries, APIs, or compatibility concerns.
+      placeholder: Keep feature modules independent. Keep domain pure Kotlin. Use typed errors for expected failures.
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add mockups, examples, references, or constraints.
+    validations:
+      required: false

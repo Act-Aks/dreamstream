@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Act-Aks/dreamstream/blob/main/SECURITY.md
+    about: Please report security vulnerabilities privately using the security policy.
+  - name: Code of Conduct incident
+    url: https://github.com/Act-Aks/dreamstream/blob/main/CODE_OF_CONDUCT.md
+    about: Please report Code of Conduct incidents privately using the contact in the Code of Conduct.

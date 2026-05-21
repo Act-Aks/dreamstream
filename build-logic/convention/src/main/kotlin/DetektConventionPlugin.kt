@@ -34,7 +34,6 @@ class DetektConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "detektPlugins"(lib("detekt-formatting").get())
                 "detektPlugins"(lib("detekt-rules-ktlint-wrapper").get())
             }
 

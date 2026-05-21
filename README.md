@@ -1,5 +1,10 @@
 # DreamStream
 
+[![CI](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml/badge.svg)](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/Act-Aks/dreamstream)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin&logoColor=white)](gradle/libs.versions.toml)
+[![Gradle](https://img.shields.io/badge/Gradle-9.5.1-02303A?logo=gradle&logoColor=white)](gradle/wrapper/gradle-wrapper.properties)
+
 A modern Kotlin Multiplatform multimedia app for discovering and streaming entertainment content through a native, polished, ad-free interface.
 
 DreamStream is designed as a long-lived, modular KMP application supporting multiple content sources, rich media discovery, playback, offline-aware flows, and a high-quality Compose UI. Android is the primary target, with Desktop (JVM) as an additional Compose Multiplatform target.
@@ -72,7 +77,7 @@ Empty modules are not created speculatively. See [`AGENTS.md`](AGENTS.md) for th
 ### Clone
 
 ```bash
-git clone <repository-url> DreamStream
+git clone https://github.com/Act-Aks/dreamstream.git DreamStream
 cd DreamStream
 ```
 
@@ -147,10 +152,15 @@ See `.opencode/skills/android-testing/SKILL.md` for the full testing playbook.
 
 Before contributing, read:
 
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — setup, workflow, architecture summary, and PR checklist
 - [`AGENTS.md`](AGENTS.md) — product direction, non-negotiable principles, and module rules
 - [`.opencode/skills/`](.opencode/skills) — detailed implementation playbooks for each layer
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — community expectations and enforcement process
+- [`SECURITY.md`](SECURITY.md) — private vulnerability reporting process
 
 When in doubt, the skill files are the source of truth for implementation mechanics; `AGENTS.md` is the source of truth for DreamStream-specific product and domain rules.
+
+Issues and pull requests should use the templates in [`.github`](.github). Please do not open public issues for security vulnerabilities or Code of Conduct incidents.
 
 ### Commit Style
 
@@ -163,3 +173,17 @@ fix(search): handle empty provider responses
 ```
 
 Each commit should represent one coherent reason for change. See `.opencode/skills/git-commit-workflow/SKILL.md`.
+
+## Project Files
+
+- [`LICENSE`](LICENSE) — Apache License 2.0
+- [`CHANGELOG.md`](CHANGELOG.md) — release notes using Keep a Changelog conventions
+- [`.editorconfig`](.editorconfig) — shared editor formatting defaults
+- [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — Gradle CI workflow
+- [`.github/dependabot.yml`](.github/dependabot.yml) — scheduled dependency update configuration
+
+## License
+
+DreamStream is licensed under the [Apache License 2.0](LICENSE).
+
+Copyright 2026 DreamStream Contributors.
