@@ -10,7 +10,7 @@ body:
       value: |
         Thanks for helping improve DreamStream.
 
-        Search existing issues first to avoid duplicates. Do not report security vulnerabilities here; use the process in `SECURITY.md`.
+        Search existing issues first to avoid duplicates. Do not report security vulnerabilities here; use the process in `docs/community/SECURITY.md`.
   - type: checkboxes
     id: preflight
     attributes:
