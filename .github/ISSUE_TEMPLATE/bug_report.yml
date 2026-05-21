@@ -1,0 +1,106 @@
+name: Bug report
+description: Report a reproducible problem in DreamStream
+title: "fix: "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve DreamStream.
+
+        Search existing issues first to avoid duplicates. Do not report security vulnerabilities here; use the process in `SECURITY.md`.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
+        - label: I am not requesting DRM circumvention, paywall bypassing, credential theft, token scraping, ad rendering, tracker preservation, or access-control evasion.
+          required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior
+      description: What happened?
+      placeholder: Describe the observed behavior clearly.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide a minimal, repeatable set of steps.
+      placeholder: |
+        1. Open ...
+        2. Tap ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      multiple: true
+      options:
+        - Android app
+        - Desktop app
+        - Compose UI
+        - Navigation
+        - Data layer
+        - Source integration
+        - Playback
+        - Downloads or caching
+        - Build, Gradle, or CI
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Use a release version, branch name, or commit SHA.
+      placeholder: main at abc1234
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include anything relevant to reproduce the issue.
+      value: |
+        - OS:
+        - Device or emulator:
+        - Android version, if applicable:
+        - JDK version:
+        - Gradle command, if applicable:
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste relevant logs or attach screenshots. Remove tokens, cookies, private URLs, and personal data.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add links, screenshots, or notes that help explain the issue.
+    validations:
+      required: false

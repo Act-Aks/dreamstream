@@ -1,0 +1,67 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:30"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - gradle
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      kotlin-toolchain:
+        patterns:
+          - org.jetbrains.kotlin*
+          - com.google.devtools.ksp*
+      android-toolchain:
+        patterns:
+          - com.android.*
+          - androidx.*
+      compose:
+        patterns:
+          - org.jetbrains.compose*
+          - org.jetbrains.androidx.lifecycle*
+          - org.jetbrains.androidx.navigation3*
+      test-dependencies:
+        patterns:
+          - org.junit*
+          - app.cash.turbine*
+          - com.willowtreeapps.assertk*
+
+  - package-ecosystem: gradle
+    directory: /build-logic
+    schedule:
+      interval: weekly
+      day: monday
+      time: "10:00"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - gradle
+      - build-logic
+    commit-message:
+      prefix: chore
+      include: scope
