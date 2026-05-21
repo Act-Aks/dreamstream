@@ -29,4 +29,10 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "DreamStream"
+
+include(":core:design-system")
+include(":core:domain")
+include(":core:presentation")
