@@ -8,8 +8,8 @@ By participating in this project you agree to abide by the [Code of Conduct](COD
 
 DreamStream has a strict architectural contract. Before opening a non-trivial PR, read:
 
-- [`AGENTS.md`](AGENTS.md) — product direction, non-negotiable principles, and module rules
-- [`.opencode/skills/`](.opencode/skills) — detailed implementation playbooks per layer (module structure, data, presentation/MVI, Compose UI, navigation, DI, error handling, testing, commit workflow)
+- [`AGENTS.md`](../../AGENTS.md) — product direction, non-negotiable principles, and module rules
+- [`.opencode/skills/`](../../.opencode/skills) — detailed implementation playbooks per layer (module structure, data, presentation/MVI, Compose UI, navigation, DI, error handling, testing, commit workflow)
 
 When `AGENTS.md` and a skill appear to disagree, the skill is the source of truth for **implementation mechanics**, and `AGENTS.md` is the source of truth for **DreamStream-specific product and domain rules**.
 
@@ -51,7 +51,7 @@ cd DreamStream
 
 ## Architectural Rules (Summary)
 
-These are non-negotiable. Full details are in [`AGENTS.md`](AGENTS.md) and the skills.
+These are non-negotiable. Full details are in [`AGENTS.md`](../../AGENTS.md) and the skills.
 
 - **Modularization:** feature-layered — split by feature first, then by Clean Architecture layer (`presentation -> domain <- data`).
 - **Domain modules are pure Kotlin.** No Android, Compose, Room, Ktor, or DI imports.
@@ -78,7 +78,7 @@ Pull requests that implement DRM circumvention, paywall bypassing, credential th
 - ViewModel tests use `Dispatchers.setMain(UnconfinedTestDispatcher())`.
 - Add Compose UI tests for critical user flows; use the robot pattern when a screen has multiple tests.
 
-See `.opencode/skills/android-testing/SKILL.md` for the full playbook.
+See [`android-testing`](../../.opencode/skills/android-testing/SKILL.md) for the full playbook.
 
 ## Commit Style
 
@@ -92,7 +92,7 @@ docs(readme): document module structure
 test(home-presentation): cover refresh flow
 ```
 
-Each commit should represent **one coherent reason for change**. Group related work; split unrelated work. See `.opencode/skills/git-commit-workflow/SKILL.md`.
+Each commit should represent **one coherent reason for change**. Group related work; split unrelated work. See [`git-commit-workflow`](../../.opencode/skills/git-commit-workflow/SKILL.md).
 
 ## Pull Request Checklist
 
@@ -109,7 +109,7 @@ Before requesting review:
 
 ## Reporting Bugs and Requesting Features
 
-Use the [issue templates](.github/ISSUE_TEMPLATE). Search existing issues first to avoid duplicates.
+Use the [issue templates](../../.github/ISSUE_TEMPLATE). Search existing issues first to avoid duplicates.
 
 ## Security
 
@@ -117,4 +117,4 @@ Do **not** open public issues for security vulnerabilities. See [SECURITY.md](SE
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE).
+By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](../legal/LICENSE).

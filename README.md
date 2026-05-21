@@ -5,7 +5,7 @@
 **A native-first Kotlin Multiplatform media experience built for discovery, playback, and long-term modular growth.**
 
 [![CI](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-0F172A?labelColor=7C3AED)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-0F172A?labelColor=7C3AED)](docs/legal/LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin&logoColor=white)](gradle/libs.versions.toml)
 [![Compose](https://img.shields.io/badge/Compose_Multiplatform-1.11.0-4285F4?logo=jetpackcompose&logoColor=white)](gradle/libs.versions.toml)
 [![Gradle](https://img.shields.io/badge/Gradle-9.5.1-02303A?logo=gradle&logoColor=white)](gradle/wrapper/gradle-wrapper.properties)
@@ -170,11 +170,12 @@ Start here:
 
 | Document | Purpose |
 | --- | --- |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Setup, workflow, architecture summary, and PR checklist |
+| [`CONTRIBUTING.md`](docs/community/CONTRIBUTING.md) | Setup, workflow, architecture summary, and PR checklist |
 | [`AGENTS.md`](AGENTS.md) | Product direction, non-negotiable principles, and module rules |
 | [`.opencode/skills/`](.opencode/skills) | Implementation playbooks for each layer |
-| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community expectations and enforcement process |
-| [`SECURITY.md`](SECURITY.md) | Private vulnerability reporting process |
+| [`CODE_OF_CONDUCT.md`](docs/community/CODE_OF_CONDUCT.md) | Community expectations and enforcement process |
+| [`SECURITY.md`](docs/community/SECURITY.md) | Private vulnerability reporting process |
+| [`CHANGELOG.md`](docs/release/CHANGELOG.md) | Notable project changes |
 
 Issues and pull requests should use the templates in [`.github`](.github). Do not open public issues for security vulnerabilities or Code of Conduct incidents.
 
@@ -188,6 +189,6 @@ fix(search): handle empty provider responses
 
 ## License
 
-DreamStream is licensed under the [Apache License 2.0](LICENSE).
+DreamStream is licensed under the [Apache License 2.0](docs/legal/LICENSE).
 
 Copyright 2026 DreamStream Contributors.
