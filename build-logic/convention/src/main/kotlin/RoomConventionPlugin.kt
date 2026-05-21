@@ -1,4 +1,4 @@
-import androidx.room.gradle.RoomExtension
+import androidx.room3.gradle.RoomExtension
 import com.dreamstream.convention.applyPlugins
 import com.dreamstream.convention.bundle
 import com.dreamstream.convention.lib
@@ -6,6 +6,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -30,15 +31,15 @@ class RoomConventionPlugin : Plugin<Project> {
                 schemaDirectory("$projectDir/schemas")
             }
 
-            val isKmp = extensions.findByType(KotlinMultiplatformExtension::class.java) != null
+            val isKmp = extensions.findByType<KotlinMultiplatformExtension>() != null
             if (isKmp) {
-                extensions.configure(KotlinMultiplatformExtension::class.java) {
-                    sourceSets.getByName("commonMain").dependencies {
+                extensions.configure<KotlinMultiplatformExtension> {
+                    sourceSets.commonMain.dependencies {
                         implementation(lib("room-runtime").get())
                         implementation(lib("room-ktx").get())
                         implementation(lib("room-paging").get())
                     }
-                    sourceSets.findByName("commonTest")?.dependencies {
+                    sourceSets.commonTest.dependencies {
                         implementation(lib("room-testing").get())
                     }
                 }
@@ -49,10 +50,10 @@ class RoomConventionPlugin : Plugin<Project> {
                 }
             } else {
                 dependencies {
-                    "implementation"(bundle("room-runtime"))
-                    "ksp"(lib("room-compiler"))
-                    "testImplementation"(lib("room-testing"))
-                    "androidTestImplementation"(lib("room-testing"))
+                    bundle("room-runtime").get().forEach { "implementation"(it) }
+                    "ksp"(lib("room-compiler").get())
+                    "testImplementation"(lib("room-testing").get())
+                    "androidTestImplementation"(lib("room-testing").get())
                 }
             }
         }

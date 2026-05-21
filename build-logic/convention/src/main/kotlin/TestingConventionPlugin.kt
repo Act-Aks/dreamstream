@@ -24,7 +24,7 @@ class TestingConventionPlugin : Plugin<Project> {
             // JUnit Platform engine must be on the runtime classpath wherever the
             // platform plugin runs (configuration name varies by module type, so we
             // wait for the relevant plugin to apply and then add deps).
-            plugins.withType(KotlinBasePlugin::class.java) {
+            plugins.withType<KotlinBasePlugin> {
                 wireTestDependencies()
             }
         }
@@ -35,17 +35,11 @@ class TestingConventionPlugin : Plugin<Project> {
 
         if (isKmp) {
             extensions.configure(KotlinMultiplatformExtension::class.java) {
-                sourceSets.findByName("commonTest")?.dependencies {
+                sourceSets.commonTest.dependencies {
+                    implementation(kotlin("test"))
                     implementation(lib("assertk").get())
                     implementation(lib("turbine").get())
                     implementation(lib("kotlinx-coroutines-test").get())
-                }
-                // JUnit5 + Android-instrumented tests are JVM-only; wire them on the
-                // JVM-bearing source sets without forcing them onto common.
-                sourceSets.findByName("androidUnitTest")?.dependencies {
-                    implementation(lib("junit-jupiter-api").get())
-                    implementation(lib("junit-jupiter-params").get())
-                    runtimeOnly(lib("junit-jupiter-engine").get())
                 }
                 sourceSets.findByName("desktopTest")?.dependencies {
                     implementation(lib("junit-jupiter-api").get())
@@ -55,14 +49,14 @@ class TestingConventionPlugin : Plugin<Project> {
             }
         } else {
             dependencies {
-                "testImplementation"(bundle("testing-unit-common"))
-                "testRuntimeOnly"(lib("junit-jupiter-engine"))
+                bundle("testing-unit-common").get().forEach { "testImplementation"(it) }
+                "testRuntimeOnly"(lib("junit-jupiter-engine").get())
 
                 // Android-only instrumented test deps when the Android plugin is present.
                 if (plugins.hasPlugin("com.android.application") ||
                     plugins.hasPlugin("com.android.library")
                 ) {
-                    "androidTestImplementation"(bundle("testing-android"))
+                    bundle("testing-android").get().forEach { "androidTestImplementation"(it) }
                 }
             }
         }

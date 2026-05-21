@@ -1,15 +1,9 @@
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.bundle
+import com.dreamstream.convention.configureComposeBuildFeature
+import com.dreamstream.convention.configureComposeCompiler
+import com.dreamstream.convention.configureComposeDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.compose.ComposeExtension
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
  * Compose Multiplatform convention plugin.
@@ -39,80 +33,14 @@ class ComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
+                "kotlin-multiplatform",
                 "compose-compiler",
                 "compose-multiplatform",
             )
 
-            extensions.configure<ComposeCompilerGradlePluginExtension> {
-                val metricsEnabled = providers
-                    .gradleProperty("dreamstream.enableComposeMetrics")
-                    .map { it.toBoolean() }
-                    .orElse(false)
-
-                if (metricsEnabled.get()) {
-                    metricsDestination.set(layout.buildDirectory.dir("compose-metrics"))
-                    reportsDestination.set(layout.buildDirectory.dir("compose-reports"))
-                }
-
-                val stabilityConfig = rootProject.file("config/compose/stability-config.conf")
-                if (stabilityConfig.exists()) {
-                    stabilityConfigurationFiles.add(
-                        layout.projectDirectory.file(stabilityConfig.absolutePath)
-                    )
-                }
-            }
-
-            enableComposeBuildFeature()
-            wireComposeDependencies()
-        }
-    }
-
-    /**
-     * Enable Android `buildFeatures.compose` if this module is an Android app
-     * or AGP-library module. For pure-JVM/desktop modules this is a no-op.
-     */
-    private fun Project.enableComposeBuildFeature() {
-        plugins.withId("com.android.application") {
-            extensions.getByType<ApplicationExtension>().buildFeatures.compose = true
-        }
-        plugins.withId("com.android.library") {
-            extensions.getByType<LibraryExtension>().buildFeatures.compose = true
-        }
-    }
-
-    private fun Project.wireComposeDependencies() {
-        val compose = extensions.getByType<ComposeExtension>().dependencies
-
-        val isKmp = extensions.findByType(KotlinMultiplatformExtension::class.java) != null
-        if (isKmp) {
-            extensions.configure(KotlinMultiplatformExtension::class.java) {
-                sourceSets.getByName("commonMain").dependencies {
-                    implementation(compose.runtime)
-                    implementation(compose.foundation)
-                    implementation(compose.material3)
-                    implementation(compose.materialIconsExtended)
-                    implementation(compose.ui)
-                    implementation(compose.components.resources)
-                    implementation(compose.components.uiToolingPreview)
-                    implementation(bundle("jb-lifecycle-compose").get())
-                }
-                sourceSets.findByName("desktopMain")?.dependencies {
-                    implementation(compose.desktop.currentOs)
-                }
-            }
-        } else {
-            // Android-only Compose module (e.g. :app, :tvApp). The KMP libraries
-            // already bring CMP runtime in transitively; this branch only adds
-            // what's needed to host them at the Android entry point.
-            dependencies {
-                "implementation"(compose.runtime)
-                "implementation"(compose.foundation)
-                "implementation"(compose.material3)
-                "implementation"(compose.ui)
-                "implementation"(compose.components.resources)
-                "debugImplementation"(compose.uiTooling)
-                "debugImplementation"(compose.components.uiToolingPreview)
-            }
+            configureComposeCompiler()
+            configureComposeBuildFeature()
+            configureComposeDependencies()
         }
     }
 }

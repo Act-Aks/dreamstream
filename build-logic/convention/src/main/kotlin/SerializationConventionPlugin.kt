@@ -15,17 +15,8 @@ class SerializationConventionPlugin : Plugin<Project> {
         with(target) {
             applyPlugins("kotlin-serialization")
 
-            val isKmp = extensions.findByType(KotlinMultiplatformExtension::class.java) != null
-            if (isKmp) {
-                extensions.configure(KotlinMultiplatformExtension::class.java) {
-                    sourceSets.getByName("commonMain").dependencies {
-                        implementation(lib("kotlinx-serialization-json").get())
-                    }
-                }
-            } else {
-                dependencies {
-                    "implementation"(lib("kotlinx-serialization-json"))
-                }
+            dependencies {
+                "implementation"(lib("kotlinx-serialization-json").get())
             }
         }
     }

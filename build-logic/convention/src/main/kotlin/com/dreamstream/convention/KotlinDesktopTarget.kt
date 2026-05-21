@@ -14,12 +14,8 @@ internal fun Project.configureDesktopTarget(
 ) {
     with(extension) {
         jvm("desktop") {
-            compilations.all {
-                compileTaskProvider.configure {
-                    compilerOptions {
-                        jvmTarget.set(project.jvmTarget)
-                    }
-                }
+            compilerOptions {
+                jvmTarget.set(project.jvmTarget)
             }
         }
     }

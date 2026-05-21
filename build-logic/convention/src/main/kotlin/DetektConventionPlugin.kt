@@ -1,13 +1,14 @@
 import com.dreamstream.convention.applyPlugins
 import com.dreamstream.convention.javaVersion
 import com.dreamstream.convention.lib
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.internal.Actions.with
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
-import io.gitlab.arturbosch.detekt.Detekt
 
 /**
  * Detekt convention plugin.
@@ -23,27 +24,28 @@ class DetektConventionPlugin : Plugin<Project> {
         with(target) {
             applyPlugins("detekt")
 
-            extensions.configure<DetektExtension> {
-                parallel = true
-                buildUponDefaultConfig = true
-                autoCorrect = false
-                ignoreFailures = false
-                config.setFrom(rootProject.file("config/detekt/detekt.yml"))
-                baseline = rootProject.file("config/detekt/baseline.xml")
+            configure<DetektExtension> {
+                parallel.set(true)
+                buildUponDefaultConfig.set( true)
+                autoCorrect.set( false)
+                ignoreFailures.set(false)
+                config.from(rootProject.file("config/detekt/detekt.yml"))
+                baseline.set(rootProject.file("config/detekt/baseline.xml"))
             }
 
             dependencies {
-                "detektPlugins"(lib("detekt-formatting"))
+                "detektPlugins"(lib("detekt-formatting").get())
+                "detektPlugins"(lib("detekt-rules-ktlint-wrapper").get())
             }
 
             tasks.withType<Detekt>().configureEach {
-                jvmTarget = javaVersion.toString()
+                jvmTarget.set(javaVersion.toString())
+
                 reports {
-                    xml.required.set(true)
+                    checkstyle.required.set(true)
                     html.required.set(true)
                     sarif.required.set(true)
-                    md.required.set(false)
-                    txt.required.set(false)
+                    markdown.required.set(true)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.dreamstream.convention
 
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -12,8 +13,10 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
  * iOS/native targets are intentionally NOT configured here for DreamStream's
  * initial scope (Android + desktop only). Add them later when needed.
  */
-internal fun Project.configureKotlinMultiplatformCompilerOpts() {
-    extensions.configure<KotlinMultiplatformExtension> {
+internal fun Project.configureKotlinMultiplatformCompilerOpts(
+    extension: KotlinMultiplatformExtension
+) {
+    with(extension) {
         compilerOptions {
             freeCompilerArgs.add("-Xexpect-actual-classes")
             optIn.add("kotlin.RequiresOptIn")

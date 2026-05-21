@@ -48,10 +48,10 @@ gradlePlugin {
     plugins {
         /******************* Application entry points ********************/
         register("androidApplication") {
-            id = "com.dreamstream.androidApplication"
+            id = "com.dreamstream.android.app"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidTv") {
+        register("androidTvApplication") {
             id = "com.dreamstream.android.tv"
             implementationClass = "AndroidTvConventionPlugin"
         }

@@ -1,5 +1,5 @@
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.configureAndroidTarget
+import com.dreamstream.convention.configureAndroidLibraryTarget
 import com.dreamstream.convention.configureDesktopTarget
 import com.dreamstream.convention.configureKotlinMultiplatformCompilerOpts
 import org.gradle.api.Plugin
@@ -25,11 +25,10 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             )
 
             extensions.configure<KotlinMultiplatformExtension> {
-                configureAndroidTarget(this)
+                configureAndroidLibraryTarget(this)
                 configureDesktopTarget(this)
+                configureKotlinMultiplatformCompilerOpts(this)
             }
-
-            configureKotlinMultiplatformCompilerOpts()
         }
     }
 }
