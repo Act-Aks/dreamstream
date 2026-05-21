@@ -4,7 +4,7 @@
 
 **A native-first Kotlin Multiplatform media experience built for discovery, playback, and long-term modular growth.**
 
-[![CI](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Act-Aks/dreamstream/actions/workflows/ci.yml)
+[![Quality Gates](https://github.com/Act-Aks/dreamstream/actions/workflows/quality-gates.yml/badge.svg?branch=main)](https://github.com/Act-Aks/dreamstream/actions/workflows/quality-gates.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-0F172A?labelColor=7C3AED)](docs/legal/LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin&logoColor=white)](gradle/libs.versions.toml)
 [![Compose](https://img.shields.io/badge/Compose_Multiplatform-1.11.0-4285F4?logo=jetpackcompose&logoColor=white)](gradle/libs.versions.toml)
@@ -151,7 +151,7 @@ All shared Gradle configuration lives in [`build-logic/convention`](build-logic/
 | Dependency and plugin versions | [`gradle/libs.versions.toml`](gradle/libs.versions.toml) |
 | Convention plugins | [`build-logic/convention`](build-logic/convention) |
 | Detekt config | [`config/detekt/detekt.yml`](config/detekt/detekt.yml) |
-| CI workflow | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
+| Quality gates workflow | [`.github/workflows/quality-gates.yml`](.github/workflows/quality-gates.yml) |
 | Dependency updates | [`.github/dependabot.yml`](.github/dependabot.yml) |
 
 ## Testing Strategy
