@@ -8,3 +8,7 @@ build
 .kotlin
 
 *.DS_Store
+
+.idea
+
+local.properties
