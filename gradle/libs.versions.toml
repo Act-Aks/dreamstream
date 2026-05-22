@@ -155,6 +155,7 @@ koin-compose                = { group = "io.insert-koin", name = "koin-compose" 
 koin-compose-viewmodel      = { group = "io.insert-koin", name = "koin-compose-viewmodel"   }
 koin-core                   = { group = "io.insert-koin", name = "koin-core"                }
 koin-test                   = { group = "io.insert-koin", name = "koin-test"                }
+koin-test-junit5            = { group = "io.insert-koin", name = "koin-test-junit5"         }
 
 # ── Ktor ────────────────────────────────────────────────────────────────────
 ktor-client-core                = { group = "io.ktor", name = "ktor-client-core",                   version.ref = "ktor" }
