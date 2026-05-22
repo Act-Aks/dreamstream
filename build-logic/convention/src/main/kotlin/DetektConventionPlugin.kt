@@ -26,8 +26,8 @@ class DetektConventionPlugin : Plugin<Project> {
 
             configure<DetektExtension> {
                 parallel.set(true)
-                buildUponDefaultConfig.set( true)
-                autoCorrect.set( false)
+                buildUponDefaultConfig.set(true)
+                autoCorrect.set(false)
                 ignoreFailures.set(false)
                 config.from(rootProject.file("config/detekt/detekt.yml"))
                 baseline.set(rootProject.file("config/detekt/baseline.xml"))

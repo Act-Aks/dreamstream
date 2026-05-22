@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="domain-desktop">
-    <output-path>$PROJECT_DIR$/core/domain/build/libs</output-path>
-    <root id="archive" name="domain-desktop.jar">
-      <element id="module-output" name="DreamStream.core.domain.desktopMain" />
-    </root>
-  </artifact>
-</component>

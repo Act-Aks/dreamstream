@@ -16,7 +16,7 @@ class SerializationConventionPlugin : Plugin<Project> {
             applyPlugins("kotlin-serialization")
 
             dependencies {
-                "implementation"(lib("kotlinx-serialization-json").get())
+                "commonMainImplementation"(lib("kotlinx-serialization-json").get())
             }
         }
     }

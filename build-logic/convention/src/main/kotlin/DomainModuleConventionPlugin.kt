@@ -1,9 +1,9 @@
 import com.dreamstream.convention.applyPlugins
 import com.dreamstream.convention.lib
+import com.dreamstream.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.gradle.kotlin.dsl.dependencies
 
 /**
  * Convention plugin for pure-Kotlin domain modules.
@@ -21,16 +21,14 @@ class DomainModuleConventionPlugin : Plugin<Project> {
         with(target) {
             applyPlugins(
                 "dreamstream-kmp-library",
-                "kotlin-serialization",
+                "dreamstream-serialization",
             )
 
-            extensions.configure<KotlinMultiplatformExtension> {
-                sourceSets.commonMain.dependencies {
-                    implementation(lib("kotlinx-coroutines-core").get())
-                    implementation(lib("kotlinx-serialization-json").get())
-                    implementation(lib("kotlinx-datetime").get())
-                    implementation(lib("kermit").get())
-                }
+            dependencies {
+                "commonMainImplementation"(lib("kotlin-stdlib").get())
+                "commonMainImplementation"(lib("kotlinx-coroutines-core").get())
+                "commonMainImplementation"(lib("kotlinx-datetime").get())
+                "commonMainImplementation"(lib("kermit").get())
             }
         }
     }

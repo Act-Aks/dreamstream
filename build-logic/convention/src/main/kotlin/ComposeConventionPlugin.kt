@@ -1,5 +1,4 @@
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.configureComposeBuildFeature
 import com.dreamstream.convention.configureComposeCompiler
 import com.dreamstream.convention.configureComposeDependencies
 import org.gradle.api.Plugin
@@ -33,13 +32,12 @@ class ComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "kotlin-multiplatform",
+                "dreamstream-kmp-library",
                 "compose-compiler",
                 "compose-multiplatform",
             )
 
             configureComposeCompiler()
-            configureComposeBuildFeature()
             configureComposeDependencies()
         }
     }

@@ -30,6 +30,10 @@ internal fun Project.configureAndroidLibraryTarget(
                 jvmTarget.set(project.jvmTarget)
             }
             withHostTest { }
+            androidResources{
+                enable = true
+            }
+            enableCoreLibraryDesugaring = true
         }
         configureCoreLibraryDesugaring()
     }

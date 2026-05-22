@@ -39,7 +39,7 @@ class FeatureConventionPlugin : Plugin<Project> {
                     addProjectIfPresent(outer, ":core:design-system")
 
                     implementation(lib("kermit").get())
-                    implementation(lib("jb-navigation-compose").get())
+                    implementation(lib("compose-navigation3-ui").get())
                     bundle("coil").get().forEach { implementation(it) }
                 }
             }

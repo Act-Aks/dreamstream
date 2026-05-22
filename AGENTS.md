@@ -10,9 +10,16 @@ DreamStream should be designed as a long-lived, modular KMP application that can
 
 ## Current State
 
-The repository currently contains only a Gradle init scaffold. Treat all application architecture as greenfield unless code is added later.
+The following modules and infrastructure are complete and compiled:
 
-When adding the first implementation, establish the architecture deliberately instead of placing code in temporary root modules.
+- `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities
+- `:core:domain` — `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local), `ResultExtensions`, `DreamLogger`; tests passing
+- `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`
+- `:core:design-system` — `DreamStreamTheme`, `Color`, `Typography`, `Shape`
+
+Steps 1–5 of the initial implementation guidance are complete.
+
+The next step is step 6: add one vertical feature slice (`:feature:home`) with a working `:app:android` entry point, Koin wiring, and navigation. Do not create additional feature modules until the first slice is fully working and tested.
 
 ## Architecture Source Of Truth
 

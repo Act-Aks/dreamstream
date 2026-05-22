@@ -13,11 +13,26 @@
 
 plugins {
     alias(libs.plugins.dreamstream.compose)
-    alias(libs.plugins.dreamstream.kmp.library)
 }
 
 kotlin {
     android {
         namespace = "com.dreamstream.core.designsystem"
     }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.core.presentation)
+
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor3)
+            }
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.dreamstream.core.designsystem"
 }
