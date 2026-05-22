@@ -29,6 +29,10 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "DreamStream"
@@ -43,13 +47,16 @@ include(":core:domain")
 include(":core:presentation")
 
 /********************* All The Feature Modules **************************/
-//listOf("home", "search", "browse", "detail", "player", "plugins", "settings", "watchlist", "history").forEach { feature ->
+include(":feature:home:data")
+include(":feature:home:domain")
+include(":feature:home:presentation")
+//listOf("search", "browse", "detail", "player", "plugins", "settings", "watchlist", "history").forEach { feature ->
 //    include(":feature:$feature:data")
 //    include(":feature:$feature:domain")
 //    include(":feature:$feature:presentation")
 //}
 
 /********************* All The Apps **************************/
-//include(":app:android")
+include(":app:android")
 //include(":app:desktop")
 //include(":app:tv")

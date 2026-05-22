@@ -13,7 +13,6 @@
  */
 
 plugins {
-    alias(libs.plugins.dreamstream.kmp.library)
     alias(libs.plugins.dreamstream.compose)
 }
 
@@ -25,4 +24,9 @@ kotlin {
     sourceSets.commonMain.dependencies {
         implementation(projects.core.domain)
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.dreamstream.core.presentation"
 }
