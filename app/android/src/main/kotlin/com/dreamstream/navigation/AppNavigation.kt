@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.dreamstream.feature.home.presentation.HomeRoute
 import com.dreamstream.feature.home.presentation.HomeRoot
+import com.dreamstream.feature.home.presentation.HomeRoute
 
 /**
  * Root navigation host for DreamStream.
