@@ -27,6 +27,14 @@ kotlin {
 
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor3)
+
+                // Glassmorphism — blur/frosted-glass visual effects.
+                // haze provides hazeSource / hazeChild modifiers and HazeStyle.
+                // haze-materials provides HazeMaterials presets (adaptive light/dark).
+                // Exposed as `api` so feature modules that use HazeState with glass
+                // components don't need to declare haze as a direct dependency.
+                api(libs.haze)
+                implementation(libs.haze.materials)
             }
         }
     }

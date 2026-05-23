@@ -7,14 +7,21 @@ import androidx.compose.ui.unit.dp
 /**
  * DreamStream shape ramp.
  *
- * Slightly more rounded than the Material defaults to fit the soft,
- * media-forward aesthetic. Surface containers (cards, sheets) lean on
- * [Shapes.medium] / [Shapes.large]; chips and buttons use [Shapes.small].
+ * More aggressively rounded than Material defaults to complement the
+ * glassmorphic aesthetic — softer radii give glass surfaces the fluid,
+ * organic feel expected in a modern media app.
+ *
+ * Usage guidance:
+ *   extraSmall  — chips, badges, tooltips
+ *   small       — buttons, text fields, small cards
+ *   medium      — content cards, list items
+ *   large       — bottom sheets, panels, feature cards
+ *   extraLarge  — hero cards, full-screen sheets, dialogs
  */
 internal val DreamStreamShapes: Shapes = Shapes(
-    extraSmall = RoundedCornerShape(6.dp),
-    small = RoundedCornerShape(10.dp),
-    medium = RoundedCornerShape(14.dp),
-    large = RoundedCornerShape(20.dp),
-    extraLarge = RoundedCornerShape(28.dp),
+    extraSmall = RoundedCornerShape(8.dp),
+    small      = RoundedCornerShape(12.dp),
+    medium     = RoundedCornerShape(16.dp),
+    large      = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(32.dp),
 )
