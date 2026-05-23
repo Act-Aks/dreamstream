@@ -22,15 +22,21 @@ The following modules and infrastructure are complete and compiled:
   - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
   - **Components** — `GradientBackground` (ambient purple/cyan/pink glow blobs, registers as `hazeSource`), `GlassCard` (clickable frosted glass card), `GlassSurface` (non-clickable frosted container), `GlassTopBar` (glassmorphic top app bar)
   - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
-- `:feature:home` — first vertical slice, wired into `:app:android`:
+- `:feature:home` — first vertical slice, fully tested and wired into `:app:android`:
   - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`
-  - `:feature:home:data` — stub `HomeRepository` implementation
-  - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; Koin module; navigation route
-- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation`, and all Koin modules assembled; debug APK builds and runs
+  - `:feature:home:data` — `InMemoryHomeRepository` (hardcoded stub returning 3 sections, 10 items)
+  - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; Koin module; `HomeRoute`
+  - **Tests** — 34 passing: `HomeViewModelTest` (6), `HomeMappingsTest` (17), `InMemoryHomeRepositoryTest` (11)
+- `:feature:details` — second vertical slice, fully tested and wired into `:app:android`:
+  - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`
+  - `:feature:details:data` — `InMemoryDetailsRepository` (full detail records for all 10 catalog IDs from the home stub; returns `DetailsError.NotFound` for unknown IDs)
+  - `:feature:details:presentation` — `DetailsViewModel` (reads `contentId` from `SavedStateHandle`; `OnBackClick` → `NavigateBack` event; `OnRetry` → reload), `DetailsScreen` (glassmorphic hero card, metadata + genre tags, synopsis, play button placeholder), `DetailsRoute(contentId: String)`, Koin module
+  - **Tests** — 35 passing: `DetailsViewModelTest` (6), `DetailsMappingsTest` (20), `InMemoryDetailsRepositoryTest` (9)
+- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home taps push `DetailsRoute`, back pops it), and all Koin modules assembled; debug APK builds and runs
 
-Steps 1–6 of the initial implementation guidance are complete.
+**69 unit tests pass** across the project (34 home + 35 details).
 
-The next step is step 7: add unit tests for `HomeViewModel` and `:feature:home:domain` logic. Do not create additional feature modules until the home slice has passing tests.
+All 8 steps of the initial implementation guidance are complete. The next step is to add the `:feature:search` vertical slice, giving users keyword discovery across the stub catalog. Follow the same three-layer pattern used for home and details: domain contract, in-memory data implementation, MVI presentation with tests.
 
 ## Architecture Source Of Truth
 

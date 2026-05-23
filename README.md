@@ -34,7 +34,7 @@
 
 ## Status
 
-DreamStream has a working first vertical slice. The build infrastructure, convention plugins, core modules, glassmorphic design system, and the first feature screen (`:feature:home`) are complete and the debug APK builds and runs. The project is now in active feature development — adding tests for the home slice is the next step before expanding to additional screens.
+DreamStream has two working vertical slices. The build infrastructure, convention plugins, core modules, glassmorphic design system, home screen (`:feature:home`), and details screen (`:feature:details`) are all complete with passing unit tests. Tapping a content card on the home screen navigates to the full detail view with back-navigation support. The debug APK builds and runs. The project is in active feature development — the next step is the `:feature:search` slice.
 
 ## Vision
 
@@ -86,13 +86,18 @@ DreamStream/
 |   `-- design-system/            Glassmorphic theme, tokens, gradient brushes,
 |                                  GradientBackground, GlassCard, GlassSurface, GlassTopBar
 |-- feature/
-|   `-- home/
-|       |-- domain/               Content model, HomeRepository contract, HomeError
-|       |-- data/                 Stub HomeRepository implementation
-|       `-- presentation/         HomeViewModel (MVI), HomeScreen (glassmorphic UI),
-|                                  Koin module, navigation route
+|   |-- home/
+|   |   |-- domain/               Content model, HomeRepository contract, HomeError
+|   |   |-- data/                 InMemoryHomeRepository (stub, 3 sections / 10 items)
+|   |   `-- presentation/         HomeViewModel (MVI), HomeScreen (glassmorphic UI),
+|   |                              Koin module, HomeRoute — 34 unit tests
+|   `-- details/
+|       |-- domain/               DetailContent model, DetailsRepository contract, DetailsError
+|       |-- data/                 InMemoryDetailsRepository (full records for all 10 IDs)
+|       `-- presentation/         DetailsViewModel (SavedStateHandle), DetailsScreen,
+|                                  Koin module, DetailsRoute(contentId) — 35 unit tests
 |-- app/
-|   `-- android/                  MainActivity, AppNavigation, Koin assembly
+|   `-- android/                  MainActivity, AppNavigation (home→details), Koin assembly
 |-- gradle/
 |   `-- libs.versions.toml        Dependency and plugin versions
 |-- settings.gradle.kts
@@ -104,7 +109,7 @@ Modules are added only when implementation needs them. Planned but not yet prese
 ```text
 :core:data
 :core:media
-:feature:details:domain / :data / :presentation
+:feature:search:domain / :data / :presentation
 … and additional feature slices
 ```
 
