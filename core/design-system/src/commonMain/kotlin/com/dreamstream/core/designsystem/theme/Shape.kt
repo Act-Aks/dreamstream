@@ -11,12 +11,13 @@ import androidx.compose.ui.unit.dp
  * glassmorphic aesthetic — softer radii give glass surfaces the fluid,
  * organic feel expected in a modern media app.
  *
- * Usage guidance:
- *   extraSmall  — chips, badges, tooltips
- *   small       — buttons, text fields, small cards
- *   medium      — content cards, list items
- *   large       — bottom sheets, panels, feature cards
- *   extraLarge  — hero cards, full-screen sheets, dialogs
+ * | Level       | Radius | Typical use                              |
+ * |-------------|--------|------------------------------------------|
+ * | extraSmall  |  8 dp  | Chips, badges, tooltips                  |
+ * | small       | 12 dp  | Buttons, text fields, small cards        |
+ * | medium      | 16 dp  | Content cards, list items                |
+ * | large       | 24 dp  | Bottom sheets, panels, feature cards     |
+ * | extraLarge  | 32 dp  | Hero cards, full-screen sheets, dialogs  |
  */
 internal val DreamStreamShapes: Shapes = Shapes(
     extraSmall = RoundedCornerShape(8.dp),
