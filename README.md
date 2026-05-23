@@ -7,7 +7,7 @@
 [![Quality Gates](https://github.com/Act-Aks/dreamstream/actions/workflows/quality-gates.yml/badge.svg?branch=main)](https://github.com/Act-Aks/dreamstream/actions/workflows/quality-gates.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-0F172A?labelColor=7C3AED)](docs/legal/LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin&logoColor=white)](gradle/libs.versions.toml)
-[![Compose](https://img.shields.io/badge/Compose_Multiplatform-1.11.0-4285F4?logo=jetpackcompose&logoColor=white)](gradle/libs.versions.toml)
+[![Compose](https://img.shields.io/badge/Compose_Multiplatform-1.12.0--alpha01-4285F4?logo=jetpackcompose&logoColor=white)](gradle/libs.versions.toml)
 [![Gradle](https://img.shields.io/badge/Gradle-9.5.1-02303A?logo=gradle&logoColor=white)](gradle/wrapper/gradle-wrapper.properties)
 [![Platform](https://img.shields.io/badge/Targets-Android_%7C_Desktop-14B8A6)](#targets)
 
@@ -34,7 +34,7 @@
 
 ## Status
 
-DreamStream is in early scaffold development. The repository currently contains the build infrastructure, convention plugins, version catalog, foundational `core` modules, community files, and CI setup. Feature modules and the `:app` shell are intentionally not created until there is real product code to justify them.
+DreamStream has a working first vertical slice. The build infrastructure, convention plugins, core modules, glassmorphic design system, and the first feature screen (`:feature:home`) are complete and the debug APK builds and runs. The project is now in active feature development — adding tests for the home slice is the next step before expanding to additional screens.
 
 ## Vision
 
@@ -47,7 +47,8 @@ The project is designed as a long-lived modular application that can support mul
 | Area | Current Choice |
 | --- | --- |
 | Language | Kotlin 2.3.21 Multiplatform |
-| UI | Compose Multiplatform 1.11.0, Material 3 |
+| UI | Compose Multiplatform 1.12.0-alpha01, Material 3 |
+| Design system | Glassmorphic — electric violet/cyan/pink palette, `haze` blur, `GlassCard` / `GlassSurface` / `GlassTopBar` / `GradientBackground` |
 | Build | Gradle Kotlin DSL, AGP 9.2.1, JDK 17 toolchain |
 | Architecture | Feature-layered Clean Architecture |
 | Presentation | MVI with `State`, `Action`, `Event`, `StateFlow`, and one-time event `Flow` |
@@ -77,27 +78,34 @@ DreamStream uses feature-layered modularization. Code lives in a feature module 
 
 ```text
 DreamStream/
-|-- build-logic/                  Convention plugins
+|-- build-logic/                  Convention plugins (13 plugins)
 |   `-- convention/
 |-- core/
 |   |-- domain/                   Result<T, E>, Error, DataError, result helpers
 |   |-- presentation/             UiText, ObserveAsEvents, error-to-UiText mapping
-|   `-- design-system/            Theme, color, typography, shape
+|   `-- design-system/            Glassmorphic theme, tokens, gradient brushes,
+|                                  GradientBackground, GlassCard, GlassSurface, GlassTopBar
+|-- feature/
+|   `-- home/
+|       |-- domain/               Content model, HomeRepository contract, HomeError
+|       |-- data/                 Stub HomeRepository implementation
+|       `-- presentation/         HomeViewModel (MVI), HomeScreen (glassmorphic UI),
+|                                  Koin module, navigation route
+|-- app/
+|   `-- android/                  MainActivity, AppNavigation, Koin assembly
 |-- gradle/
 |   `-- libs.versions.toml        Dependency and plugin versions
 |-- settings.gradle.kts
 `-- build.gradle.kts
 ```
 
-Planned modules are added only when implementation needs them:
+Modules are added only when implementation needs them. Planned but not yet present:
 
 ```text
-:app
 :core:data
 :core:media
-:feature:<name>:domain
-:feature:<name>:data
-:feature:<name>:presentation
+:feature:details:domain / :data / :presentation
+… and additional feature slices
 ```
 
 ## Guardrails

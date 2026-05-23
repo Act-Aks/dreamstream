@@ -15,11 +15,22 @@ The following modules and infrastructure are complete and compiled:
 - `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities
 - `:core:domain` — `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local), `ResultExtensions`, `DreamLogger`; tests passing
 - `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`
-- `:core:design-system` — `DreamStreamTheme`, `Color`, `Typography`, `Shape`
+- `:core:design-system` — full glassmorphic design system:
+  - **Color tokens** — vibrant electric palette: `Primary` violet `#A855F7`, `Secondary` cyan `#06B6D4`, `Tertiary` pink `#F472B6`; deep-space dark surfaces; ambient glow sources for gradient backdrops; glass tint tokens
+  - **Shape tokens** — more-rounded ramp: `extraSmall 8dp` → `extraLarge 32dp`
+  - **Glass token system** — `GlassStyle` data class with five named presets (`GlassDefaults.ultraThin` → `ultraThick`); `toHazeStyle()` converts to a Haze `HazeStyle` mixing white frosted tint + brand-violet tint
+  - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
+  - **Components** — `GradientBackground` (ambient purple/cyan/pink glow blobs, registers as `hazeSource`), `GlassCard` (clickable frosted glass card), `GlassSurface` (non-clickable frosted container), `GlassTopBar` (glassmorphic top app bar)
+  - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
+- `:feature:home` — first vertical slice, wired into `:app:android`:
+  - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`
+  - `:feature:home:data` — stub `HomeRepository` implementation
+  - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; Koin module; navigation route
+- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation`, and all Koin modules assembled; debug APK builds and runs
 
-Steps 1–5 of the initial implementation guidance are complete.
+Steps 1–6 of the initial implementation guidance are complete.
 
-The next step is step 6: add one vertical feature slice (`:feature:home`) with a working `:app:android` entry point, Koin wiring, and navigation. Do not create additional feature modules until the first slice is fully working and tested.
+The next step is step 7: add unit tests for `HomeViewModel` and `:feature:home:domain` logic. Do not create additional feature modules until the home slice has passing tests.
 
 ## Architecture Source Of Truth
 
