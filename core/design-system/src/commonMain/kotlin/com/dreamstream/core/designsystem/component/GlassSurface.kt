@@ -19,7 +19,7 @@ import com.dreamstream.core.designsystem.theme.GlassDefaults
 import com.dreamstream.core.designsystem.theme.GlassStyle
 import com.dreamstream.core.designsystem.theme.toHazeStyle
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.hazeEffect
 
 /**
  * Non-clickable glassmorphic surface container.
@@ -46,7 +46,7 @@ fun GlassSurface(
 ) {
     Surface(
         modifier = modifier
-            .hazeChild(
+            .hazeEffect(
                 state = hazeState,
                 style = style.toHazeStyle(),
             ),

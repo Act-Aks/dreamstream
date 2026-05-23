@@ -16,17 +16,17 @@ import com.dreamstream.core.designsystem.theme.GlassDefaults
 import com.dreamstream.core.designsystem.theme.GlassStyle
 import com.dreamstream.core.designsystem.theme.toHazeStyle
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.hazeEffect
 
 /**
  * Glassmorphic top app bar.
  *
- * Wraps Material3 [TopAppBar] with a [hazeChild] modifier so that whatever
+ * Wraps Material3 [TopAppBar] with a [hazeEffect] modifier so that whatever
  * [HazeState] source scrolls beneath the bar is blurred through it. The
  * container and scrolled-container colors are both set to transparent so the
  * glass effect is visible regardless of scroll position.
  *
- * The bar uses no shape clip (`shape = null` in [hazeChild]) — top bars are
+ * The bar uses no shape clip (`shape = null` in [hazeEffect]) — top bars are
  * full-width and should not have rounded corners at the top edge.
  *
  * ```kotlin
@@ -58,7 +58,7 @@ fun GlassTopBar(
     TopAppBar(
         title = title,
         modifier = modifier
-            .hazeChild(
+            .hazeEffect(
                 state = hazeState,
                 // shape = null → rectangular — no corner clip on a top bar
                 style = style.toHazeStyle(),

@@ -20,12 +20,12 @@ import com.dreamstream.core.designsystem.theme.GlassDefaults
 import com.dreamstream.core.designsystem.theme.GlassStyle
 import com.dreamstream.core.designsystem.theme.toHazeStyle
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.hazeEffect
 
 /**
  * Clickable glassmorphic card.
  *
- * Applies a [hazeChild] blur over whatever [HazeState] source is behind this
+ * Applies a [hazeEffect] blur over whatever [HazeState] source is behind this
  * card, then overlays a frosted white + brand-violet tint. The translucent
  * border adds the characteristic rim-light of real frosted glass.
  *
@@ -61,7 +61,7 @@ fun GlassCard(
     Card(
         onClick = onClick,
         modifier = modifier
-            .hazeChild(
+            .hazeEffect(
                 state = hazeState,
                 style = style.toHazeStyle(),
             ),
