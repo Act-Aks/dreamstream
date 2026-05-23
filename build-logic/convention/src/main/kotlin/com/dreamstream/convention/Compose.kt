@@ -8,7 +8,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 internal fun Project.configureComposeCompiler() {
     extensions.configure<ComposeCompilerGradlePluginExtension> {
         val metricsEnabled =
-            providers.gradleProperty("dreamstream.enableComposeMetrics").map { it.toBoolean() }.orElse(false)
+            providers.gradleProperty("dreamstream.enableComposeMetrics").map { it.toBoolean() }
+                .orElse(false)
 
         if (metricsEnabled.get()) {
             metricsDestination.set(layout.buildDirectory.dir("compose-metrics"))

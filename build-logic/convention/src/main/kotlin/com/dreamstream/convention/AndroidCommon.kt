@@ -1,6 +1,11 @@
 package com.dreamstream.convention
 
-import com.android.build.api.dsl.*
+import com.android.build.api.dsl.BuildFeatures
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.CompileOptions
+import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.Packaging
+import com.android.build.api.dsl.TestOptions
 import com.dreamstream.tasks.configureKotlinCompile
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -34,6 +39,7 @@ internal fun Project.configureAndroid(extension: CommonExtension) {
 
     configureCoreLibraryDesugaring()
     configureKotlinCompile()
+    configureAndroidCoreDependencies()
 }
 
 /**
@@ -117,5 +123,19 @@ internal fun Project.configureTestOptions(testOptions: TestOptions) {
 internal fun Project.configureCoreLibraryDesugaring() {
     dependencies {
         "coreLibraryDesugaring"(lib("android-desugarJdkLibs"))
+    }
+}
+
+/**
+ * Adds the android core dependencies
+ */
+internal fun Project.configureAndroidCoreDependencies() {
+    dependencies {
+        "implementation"(lib("androidx-activity-compose").get())
+        "implementation"(lib("androidx-appcompat").get())
+        "implementation"(lib("androidx-core-ktx").get())
+        "implementation"(lib("androidx-core-splashscreen").get())
+
+        "implementation"(lib("compose-navigation3-ui").get())
     }
 }

@@ -1,5 +1,11 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.dreamstream.convention.*
+import com.dreamstream.convention.appVersion
+import com.dreamstream.convention.appVersionCode
+import com.dreamstream.convention.applicationId
+import com.dreamstream.convention.applyPlugins
+import com.dreamstream.convention.configureAndroid
+import com.dreamstream.convention.configureAndroidBuildTypes
+import com.dreamstream.convention.targetSdkVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -24,6 +30,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureAndroid(this)
+                configureAndroidBuildTypes(this)
 
                 namespace = applicationId
 

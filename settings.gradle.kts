@@ -50,7 +50,10 @@ include(":core:presentation")
 include(":feature:home:data")
 include(":feature:home:domain")
 include(":feature:home:presentation")
-//listOf("search", "browse", "detail", "player", "plugins", "settings", "watchlist", "history").forEach { feature ->
+include(":feature:details:data")
+include(":feature:details:domain")
+include(":feature:details:presentation")
+//listOf("search", "browse", "player", "plugins", "settings", "watchlist", "history").forEach { feature ->
 //    include(":feature:$feature:data")
 //    include(":feature:$feature:domain")
 //    include(":feature:$feature:presentation")
