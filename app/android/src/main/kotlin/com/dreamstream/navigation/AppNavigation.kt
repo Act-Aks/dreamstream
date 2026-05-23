@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.dreamstream.feature.details.presentation.DetailsRoot
+import com.dreamstream.feature.details.presentation.DetailsRoute
 import com.dreamstream.feature.home.presentation.HomeRoot
 import com.dreamstream.feature.home.presentation.HomeRoute
 
@@ -28,8 +30,17 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
             entry(HomeRoute) {
-                // No cross-feature navigation yet — detail screen added in a future slice
-                HomeRoot(onNavigateToDetail = { /* TODO: navigate to detail */ })
+                HomeRoot(
+                    onNavigateToDetail = { contentId ->
+                        backStack.add(DetailsRoute(contentId))
+                    },
+                )
+            }
+            entry<DetailsRoute> { route ->
+                DetailsRoot(
+                    contentId = route.contentId,
+                    onNavigateBack = { backStack.removeLastOrNull() },
+                )
             }
         },
     )
