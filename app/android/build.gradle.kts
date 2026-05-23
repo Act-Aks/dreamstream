@@ -17,12 +17,6 @@ plugins {
     alias(libs.plugins.dreamstream.koin)
 }
 
-android {
-    buildFeatures {
-        compose = true
-    }
-}
-
 dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.presentation)
@@ -32,6 +26,9 @@ dependencies {
     implementation(projects.feature.home.presentation)
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
+
     implementation(libs.compose.navigation3.ui)
 }

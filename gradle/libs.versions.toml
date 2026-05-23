@@ -105,7 +105,7 @@ kotlinx-serialization-json   = { group = "org.jetbrains.kotlinx",   name = "kotl
 kotlinx-datetime             = { group = "org.jetbrains.kotlinx",   name = "kotlinx-datetime",              version.ref = "kotlinx-datetime" }
 
 # ── AndroidX (Android-only — used at :app entry, not in KMP libs) ──────────
-androidx-splash-screen                  = { group = "androidx.core",       name = "core-splashscreen",              version.ref = "androidx-splash-screen" }
+androidx-core-splashscreen              = { group = "androidx.core",       name = "core-splashscreen",              version.ref = "androidx-splash-screen" }
 androidx-appcompat                      = { group = "androidx.appcompat",  name = "appcompat",                      version.ref = "androidx-appcompat" }
 androidx-core-ktx                       = { group = "androidx.core",       name = "core-ktx",                       version.ref = "androidx-core-ktx" }
 androidx-activity-compose               = { group = "androidx.activity",   name = "activity-compose",               version.ref = "androidx-activity" }
