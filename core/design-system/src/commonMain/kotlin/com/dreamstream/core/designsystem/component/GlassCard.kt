@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +62,7 @@ fun GlassCard(
     Card(
         onClick = onClick,
         modifier = modifier
+            .clip(shape)
             .hazeEffect(
                 state = hazeState,
                 style = style.toHazeStyle(),
