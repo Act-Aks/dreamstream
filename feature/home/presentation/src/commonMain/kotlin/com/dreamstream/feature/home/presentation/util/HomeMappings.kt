@@ -1,9 +1,10 @@
 package com.dreamstream.feature.home.presentation.util
 
+import com.dreamstream.core.model.search.SearchResult
+import com.dreamstream.core.model.search.displayRating
+import com.dreamstream.core.model.search.year
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.domain.error.HomeError
-import com.dreamstream.feature.home.domain.model.Content
-import com.dreamstream.feature.home.domain.model.ContentType
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.presentation.model.ContentUi
 import com.dreamstream.feature.home.presentation.model.HomeSectionUi
@@ -18,23 +19,22 @@ internal fun HomeSection.toHomeSectionUi(): HomeSectionUi = HomeSectionUi(
     items = items.map { it.toContentUi() },
 )
 
-internal fun Content.toContentUi(): ContentUi = ContentUi(
-    id = id.value,
-    title = title,
-    description = description,
-    thumbnailUrl = thumbnailUrl,
-    typeName = type.toDisplayName(),
+/**
+ * Maps a [SearchResult] to a [ContentUi].
+ *
+ * [ContentUi.id] is set to [SearchResult.url] — the provider-side stable
+ * identifier — so the detail screen can look up the full [com.dreamstream.core.model.detail.ContentDetail] by URL.
+ *
+ * Year and rating are extracted via shared extensions on [SearchResult].
+ */
+internal fun SearchResult.toContentUi(): ContentUi = ContentUi(
+    id = url,
+    title = name,
+    thumbnailUrl = posterUrl,
+    typeName = type.displayName,
     year = year?.toString() ?: "",
-    rating = rating?.let { "%.1f".format(it) } ?: "",
+    rating = displayRating,
 )
-
-private fun ContentType.toDisplayName(): String = when (this) {
-    ContentType.Movie -> "Movie"
-    ContentType.Series -> "Series"
-    ContentType.Anime -> "Anime"
-    ContentType.Documentary -> "Documentary"
-    ContentType.Short -> "Short"
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Error → UiText mapper

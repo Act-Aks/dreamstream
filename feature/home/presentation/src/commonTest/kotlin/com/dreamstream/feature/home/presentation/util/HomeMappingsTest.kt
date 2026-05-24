@@ -3,42 +3,40 @@ package com.dreamstream.feature.home.presentation.util
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.model.search.MovieResult
+import com.dreamstream.core.model.search.SearchResult
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.domain.error.HomeError
-import com.dreamstream.feature.home.domain.model.Content
-import com.dreamstream.feature.home.domain.model.ContentId
-import com.dreamstream.feature.home.domain.model.ContentType
 import com.dreamstream.feature.home.domain.model.HomeSection
 import kotlin.test.Test
 
 class HomeMappingsTest {
 
-    // ── Content.toContentUi() ─────────────────────────────────────────────────
+    // ── SearchResult.toContentUi() ─────────────────────────────────────────
 
     @Test
-    fun `toContentUi maps id, title, description, thumbnailUrl`() {
-        val content = Content(
-            id = ContentId("abc-123"),
-            title = "Cosmic Drift",
-            description = "A space adventure.",
-            thumbnailUrl = "https://example.com/thumb.jpg",
-            type = ContentType.Movie,
+    fun `toContentUi maps url as id, name as title, posterUrl as thumbnailUrl`() {
+        val response = MovieResult(
+            name = "Cosmic Drift",
+            url = "abc-123",
+            providerId = "test",
+            posterUrl = "https://example.com/thumb.jpg",
             year = 2024,
             rating = 8.2f,
         )
 
-        val ui = content.toContentUi()
+        val ui = response.toContentUi()
 
         assertThat(ui.id).isEqualTo("abc-123")
         assertThat(ui.title).isEqualTo("Cosmic Drift")
-        assertThat(ui.description).isEqualTo("A space adventure.")
         assertThat(ui.thumbnailUrl).isEqualTo("https://example.com/thumb.jpg")
     }
 
     @Test
-    fun `toContentUi maps null thumbnailUrl to null`() {
-        val content = content(thumbnailUrl = null)
-        assertThat(content.toContentUi().thumbnailUrl).isNull()
+    fun `toContentUi maps null posterUrl to null thumbnailUrl`() {
+        val ui = content(posterUrl = null).toContentUi()
+        assertThat(ui.thumbnailUrl).isNull()
     }
 
     @Test
@@ -62,13 +60,13 @@ class HomeMappingsTest {
     }
 
     @Test
-    fun `toContentUi maps Movie type to display name`() {
+    fun `toContentUi maps Movie type to singular display name`() {
         assertThat(content(type = ContentType.Movie).toContentUi().typeName).isEqualTo("Movie")
     }
 
     @Test
-    fun `toContentUi maps Series type to display name`() {
-        assertThat(content(type = ContentType.Series).toContentUi().typeName).isEqualTo("Series")
+    fun `toContentUi maps TvSeries type to display name`() {
+        assertThat(content(type = ContentType.TvSeries).toContentUi().typeName).isEqualTo("TV Series")
     }
 
     @Test
@@ -82,8 +80,23 @@ class HomeMappingsTest {
     }
 
     @Test
-    fun `toContentUi maps Short type to display name`() {
-        assertThat(content(type = ContentType.Short).toContentUi().typeName).isEqualTo("Short")
+    fun `toContentUi maps Others type to display name`() {
+        assertThat(content(type = ContentType.Others).toContentUi().typeName).isEqualTo("Others")
+    }
+
+    @Test
+    fun `toContentUi maps AnimeMovie type to display name`() {
+        assertThat(content(type = ContentType.AnimeMovie).toContentUi().typeName).isEqualTo("Anime Movie")
+    }
+
+    @Test
+    fun `toContentUi maps Live type to display name`() {
+        assertThat(content(type = ContentType.Live).toContentUi().typeName).isEqualTo("Live")
+    }
+
+    @Test
+    fun `toContentUi maps Music type to display name`() {
+        assertThat(content(type = ContentType.Music).toContentUi().typeName).isEqualTo("Music")
     }
 
     // ── HomeSection.toHomeSectionUi() ─────────────────────────────────────────
@@ -103,7 +116,10 @@ class HomeMappingsTest {
         val section = HomeSection(
             id = "trending",
             title = "Trending Now",
-            items = listOf(content(), content(id = "b", title = "Another Title")),
+            items = listOf(
+                content(url = "content-id"),
+                content(url = "b", name = "Another Title"),
+            ),
         )
 
         val ui = section.toHomeSectionUi()
@@ -119,9 +135,9 @@ class HomeMappingsTest {
             id = "section",
             title = "Section",
             items = listOf(
-                content(id = "first"),
-                content(id = "second"),
-                content(id = "third"),
+                content(url = "first"),
+                content(url = "second"),
+                content(url = "third"),
             ),
         )
 
@@ -146,13 +162,8 @@ class HomeMappingsTest {
 
     @Test
     fun `toUiText NoContentAvailable and LoadFailed produce different messages`() {
-        assertThat(HomeError.NoContentAvailable.toUiText())
-            .isEqualTo(HomeError.NoContentAvailable.toUiText())
-
         val notAvailable = HomeError.NoContentAvailable.toUiText()
         val loadFailed = HomeError.LoadFailed.toUiText()
-        assertThat(notAvailable).isEqualTo(notAvailable)
-        assertThat(loadFailed).isEqualTo(loadFailed)
         assertThat(notAvailable == loadFailed).isEqualTo(false)
     }
 
@@ -161,19 +172,19 @@ class HomeMappingsTest {
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun content(
-        id: String = "content-id",
-        title: String = "Sample Title",
+        url: String = "content-id",
+        name: String = "Sample Title",
         type: ContentType = ContentType.Movie,
         year: Int? = 2024,
         rating: Float? = 8.0f,
-        thumbnailUrl: String? = null,
-    ): Content = Content(
-        id = ContentId(id),
-        title = title,
-        description = "Sample description",
-        thumbnailUrl = thumbnailUrl,
+        posterUrl: String? = null,
+    ): SearchResult = MovieResult(
+        name = name,
+        url = url,
+        providerId = "test",
         type = type,
         year = year,
         rating = rating,
+        posterUrl = posterUrl,
     )
 }

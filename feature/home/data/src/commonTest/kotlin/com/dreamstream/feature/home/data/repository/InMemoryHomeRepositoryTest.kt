@@ -73,18 +73,18 @@ class InMemoryHomeRepositoryTest {
     // ── Item integrity ────────────────────────────────────────────────────────
 
     @Test
-    fun `each item has a non-empty title`() = runTest {
+    fun `each item has a non-empty name`() = runTest {
         val sections = (repository.getHomeSections() as Result.Success).data
         sections.flatMap { it.items }.forEach { content ->
-            assertThat(content.title).isNotEmpty()
+            assertThat(content.name).isNotEmpty()
         }
     }
 
     @Test
-    fun `each item has a non-empty id`() = runTest {
+    fun `each item has a non-empty url`() = runTest {
         val sections = (repository.getHomeSections() as Result.Success).data
         sections.flatMap { it.items }.forEach { content ->
-            assertThat(content.id.value).isNotEmpty()
+            assertThat(content.url).isNotEmpty()
         }
     }
 

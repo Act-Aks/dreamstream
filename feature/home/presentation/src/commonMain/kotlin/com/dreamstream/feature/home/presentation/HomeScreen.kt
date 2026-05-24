@@ -14,7 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -51,6 +55,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeRoot(
     onNavigateToDetail: (String) -> Unit,
+    onNavigateToSearch: () -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -60,6 +65,7 @@ fun HomeRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is HomeEvent.NavigateToDetail -> onNavigateToDetail(event.contentId)
+            is HomeEvent.NavigateToSearch -> onNavigateToSearch()
             is HomeEvent.ShowError -> scope.launch {
                 snackbarHostState.showSnackbar(event.message.toString())
             }
@@ -109,6 +115,15 @@ fun HomeScreen(
                         )
                     },
                     hazeState = hazeState,
+                    actions = {
+                        IconButton(onClick = { onAction(HomeAction.OnSearchClick) }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = Color.White,
+                            )
+                        }
+                    },
                 )
             },
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -328,27 +343,24 @@ private fun HomeScreenContentPreview() {
                             ContentUi(
                                 id = "1",
                                 title = "Cosmic Odyssey",
-                                description = "An epic journey beyond the stars.",
                                 thumbnailUrl = null,
-                                typeName = "MOVIE",
+                                typeName = "Movie",
                                 year = "2024",
                                 rating = "8.4",
                             ),
                             ContentUi(
                                 id = "2",
                                 title = "Neon City Chronicles",
-                                description = "A cyberpunk thriller set in 2089.",
                                 thumbnailUrl = null,
-                                typeName = "SERIES",
+                                typeName = "TV Series",
                                 year = "2023",
                                 rating = "9.1",
                             ),
                             ContentUi(
                                 id = "3",
                                 title = "The Last Frontier",
-                                description = "Survival at the edge of civilization.",
                                 thumbnailUrl = null,
-                                typeName = "MOVIE",
+                                typeName = "Movie",
                                 year = "2024",
                                 rating = "7.8",
                             ),
@@ -361,18 +373,16 @@ private fun HomeScreenContentPreview() {
                             ContentUi(
                                 id = "4",
                                 title = "Echo Chamber",
-                                description = "Truth and deception in a fractured world.",
                                 thumbnailUrl = null,
-                                typeName = "SERIES",
+                                typeName = "TV Series",
                                 year = "2024",
                                 rating = "",
                             ),
                             ContentUi(
                                 id = "5",
                                 title = "Dark Horizon",
-                                description = "A race against time at the ends of the Earth.",
                                 thumbnailUrl = null,
-                                typeName = "MOVIE",
+                                typeName = "Movie",
                                 year = "2024",
                                 rating = "8.0",
                             ),

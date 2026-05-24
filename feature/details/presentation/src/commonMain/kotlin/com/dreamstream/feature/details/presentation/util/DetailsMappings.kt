@@ -1,34 +1,47 @@
 package com.dreamstream.feature.details.presentation.util
 
+import com.dreamstream.core.model.detail.ContentDetail
+import com.dreamstream.core.model.detail.MovieDetail
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.domain.error.DetailsError
-import com.dreamstream.feature.details.domain.model.DetailContent
-import com.dreamstream.feature.details.domain.model.DetailMediaType
 import com.dreamstream.feature.details.presentation.model.DetailContentUi
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain → UI mappers
 // ─────────────────────────────────────────────────────────────────────────────
 
-internal fun DetailContent.toDetailContentUi(): DetailContentUi = DetailContentUi(
-    contentId = contentId,
-    title = title,
-    synopsis = synopsis,
-    thumbnailUrl = thumbnailUrl,
-    backdropUrl = backdropUrl,
-    typeName = type.toDisplayName(),
+/**
+ * Maps a [ContentDetail] to a [DetailContentUi].
+ *
+ * Field mapping:
+ * - [ContentDetail.url]                 → [DetailContentUi.contentId]
+ * - [ContentDetail.name]                → [DetailContentUi.title]
+ * - [ContentDetail.plot]                → [DetailContentUi.synopsis]
+ * - [ContentDetail.posterUrl]           → [DetailContentUi.thumbnailUrl]
+ * - [ContentDetail.backgroundPosterUrl] → [DetailContentUi.backdropUrl]
+ * - [ContentDetail.tags]                → [DetailContentUi.genres]
+ * - [MovieDetail.duration]              → [DetailContentUi.duration] (other types → "")
+ */
+internal fun ContentDetail.toDetailContentUi(): DetailContentUi = DetailContentUi(
+    contentId = url,
+    title = name,
+    synopsis = plot ?: "",
+    thumbnailUrl = posterUrl,
+    backdropUrl = backgroundPosterUrl,
+    typeName = type.displayName,
     year = year?.toString() ?: "",
-    rating = rating?.let { "%.1f".format(it) } ?: "",
-    genres = genres,
-    duration = durationMinutes.toDurationString(),
+    rating = displayRating ?: "",
+    genres = tags,
+    duration = durationMinutes().toDurationString(),
 )
 
-private fun DetailMediaType.toDisplayName(): String = when (this) {
-    DetailMediaType.Movie -> "Movie"
-    DetailMediaType.Series -> "Series"
-    DetailMediaType.Anime -> "Anime"
-    DetailMediaType.Documentary -> "Documentary"
-    DetailMediaType.Short -> "Short"
+/**
+ * Extracts the runtime in minutes from subtypes that carry it.
+ * Returns null for episodic and live types where a single duration is not meaningful.
+ */
+private fun ContentDetail.durationMinutes(): Int? = when (this) {
+    is MovieDetail -> duration
+    else -> null
 }
 
 private fun Int?.toDurationString(): String {

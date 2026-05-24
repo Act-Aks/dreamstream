@@ -1,10 +1,4 @@
+// Moved to :core:model — com.dreamstream.core.model.ContentType
+// This file is intentionally empty. DetailMediaType is no longer a feature-local
+// type; use ContentType from core:model instead.
 package com.dreamstream.feature.details.domain.model
-
-/** Media type classification for the details feature. */
-enum class DetailMediaType {
-    Movie,
-    Series,
-    Anime,
-    Documentary,
-    Short,
-}

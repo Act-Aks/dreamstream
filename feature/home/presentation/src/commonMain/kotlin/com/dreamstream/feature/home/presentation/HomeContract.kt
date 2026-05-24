@@ -31,6 +31,9 @@ sealed interface HomeAction {
 
     /** User tapped a content card. */
     data class OnContentClick(val contentId: String) : HomeAction
+
+    /** User tapped the search icon in the top bar. */
+    data object OnSearchClick : HomeAction
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -40,6 +43,9 @@ sealed interface HomeAction {
 sealed interface HomeEvent {
     /** Navigate to the detail screen for the given content. */
     data class NavigateToDetail(val contentId: String) : HomeEvent
+
+    /** Navigate to the search screen. */
+    data object NavigateToSearch : HomeEvent
 
     /** Show a transient error message. */
     data class ShowError(val message: UiText) : HomeEvent

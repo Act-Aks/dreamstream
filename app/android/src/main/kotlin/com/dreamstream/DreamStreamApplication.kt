@@ -5,6 +5,8 @@ import com.dreamstream.feature.details.data.di.detailsDataModule
 import com.dreamstream.feature.details.presentation.di.detailsPresentationModule
 import com.dreamstream.feature.home.data.di.homeDataModule
 import com.dreamstream.feature.home.presentation.di.homePresentationModule
+import com.dreamstream.feature.search.data.di.searchDataModule
+import com.dreamstream.feature.search.presentation.di.searchPresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -19,6 +21,8 @@ class DreamStreamApplication : Application() {
                 homePresentationModule,
                 detailsDataModule,
                 detailsPresentationModule,
+                searchDataModule,
+                searchPresentationModule,
             )
         }
     }

@@ -20,7 +20,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
+                // api: LoadResponse is part of DetailsRepository's public API so
+                // data and presentation layers see core:model transitively.
+                api(projects.core.model)
             }
         }
     }

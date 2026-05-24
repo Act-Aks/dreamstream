@@ -27,4 +27,7 @@ dependencies {
     implementation(projects.feature.details.domain)
     implementation(projects.feature.details.data)
     implementation(projects.feature.details.presentation)
+    implementation(projects.feature.search.domain)
+    implementation(projects.feature.search.data)
+    implementation(projects.feature.search.presentation)
 }

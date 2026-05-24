@@ -9,9 +9,10 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.domain.util.Result
+import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.model.detail.ContentDetail
+import com.dreamstream.core.model.detail.MovieDetail
 import com.dreamstream.feature.details.domain.error.DetailsError
-import com.dreamstream.feature.details.domain.model.DetailContent
-import com.dreamstream.feature.details.domain.model.DetailMediaType
 import com.dreamstream.feature.details.domain.repository.DetailsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,7 +45,7 @@ class DetailsViewModelTest {
 
     @Test
     fun `init loads content detail and updates state`() = runTest {
-        fakeRepository.content = fakeDetailContent("t1", "Cosmic Drift")
+        fakeRepository.content = fakeLoadResponse("t1", "Cosmic Drift")
         val viewModel = viewModel("t1")
 
         viewModel.state.test {
@@ -60,7 +61,7 @@ class DetailsViewModelTest {
 
     @Test
     fun `init sets isLoading false after successful load`() = runTest {
-        fakeRepository.content = fakeDetailContent("t1")
+        fakeRepository.content = fakeLoadResponse("t1")
         val viewModel = viewModel("t1")
 
         viewModel.state.test {
@@ -112,7 +113,7 @@ class DetailsViewModelTest {
 
         // Fix the repo and retry
         fakeRepository.error = null
-        fakeRepository.content = fakeDetailContent("t1", "Cosmic Drift")
+        fakeRepository.content = fakeLoadResponse("t1", "Cosmic Drift")
         viewModel.onAction(DetailsAction.OnRetry)
 
         viewModel.state.test {
@@ -127,7 +128,7 @@ class DetailsViewModelTest {
 
     @Test
     fun `OnBackClick sends NavigateBack event`() = runTest {
-        fakeRepository.content = fakeDetailContent("t1")
+        fakeRepository.content = fakeLoadResponse("t1")
         val viewModel = viewModel("t1")
 
         viewModel.events.test {
@@ -146,20 +147,20 @@ class DetailsViewModelTest {
         detailsRepository = fakeRepository,
     )
 
-    private fun fakeDetailContent(
-        contentId: String = "t1",
-        title: String = "Sample Title",
-    ): DetailContent = DetailContent(
-        contentId = contentId,
-        title = title,
-        synopsis = "A sample synopsis.",
-        thumbnailUrl = null,
-        backdropUrl = null,
-        type = DetailMediaType.Movie,
+    private fun fakeLoadResponse(
+        url: String = "t1",
+        name: String = "Sample Title",
+    ): ContentDetail = MovieDetail(
+        name = name,
+        url = url,
+        dataUrl = "",
+        providerId = "test",
+        type = ContentType.Movie,
         year = 2024,
         rating = 8.0f,
-        genres = listOf("Sci-Fi"),
-        durationMinutes = 120,
+        plot = "A sample synopsis.",
+        tags = listOf("Sci-Fi"),
+        duration = 120,
     )
 }
 
@@ -168,10 +169,10 @@ class DetailsViewModelTest {
 // ─────────────────────────────────────────────────────────────────────────────
 
 private class FakeDetailsRepository : DetailsRepository {
-    var content: DetailContent? = null
+    var content: ContentDetail? = null
     var error: DetailsError? = null
 
-    override suspend fun getContentDetail(contentId: String): Result<DetailContent, DetailsError> {
+    override suspend fun getContentDetail(contentId: String): Result<ContentDetail, DetailsError> {
         val err = error
         return if (err != null) Result.Error(err)
         else Result.Success(checkNotNull(content) { "FakeDetailsRepository: set content or error before calling" })

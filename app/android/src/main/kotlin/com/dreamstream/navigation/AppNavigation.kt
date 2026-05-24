@@ -9,6 +9,8 @@ import com.dreamstream.feature.details.presentation.DetailsRoot
 import com.dreamstream.feature.details.presentation.DetailsRoute
 import com.dreamstream.feature.home.presentation.HomeRoot
 import com.dreamstream.feature.home.presentation.HomeRoute
+import com.dreamstream.feature.search.presentation.SearchRoot
+import com.dreamstream.feature.search.presentation.SearchRoute
 
 /**
  * Root navigation host for DreamStream.
@@ -34,11 +36,22 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                     onNavigateToDetail = { contentId ->
                         backStack.add(DetailsRoute(contentId))
                     },
+                    onNavigateToSearch = {
+                        backStack.add(SearchRoute)
+                    },
                 )
             }
             entry<DetailsRoute> { route ->
                 DetailsRoot(
                     contentId = route.contentId,
+                    onNavigateBack = { backStack.removeLastOrNull() },
+                )
+            }
+            entry(SearchRoute) {
+                SearchRoot(
+                    onNavigateToDetail = { contentId ->
+                        backStack.add(DetailsRoute(contentId))
+                    },
                     onNavigateBack = { backStack.removeLastOrNull() },
                 )
             }

@@ -3,27 +3,28 @@ package com.dreamstream.feature.details.presentation.util
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.model.detail.ContentDetail
+import com.dreamstream.core.model.detail.MovieDetail
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.domain.error.DetailsError
-import com.dreamstream.feature.details.domain.model.DetailContent
-import com.dreamstream.feature.details.domain.model.DetailMediaType
 import kotlin.test.Test
 
 class DetailsMappingsTest {
 
-    // ── DetailContent.toDetailContentUi() ────────────────────────────────────
+    // ── ContentDetail.toDetailContentUi() ─────────────────────────────────────
 
     @Test
-    fun `toDetailContentUi maps contentId, title, synopsis, thumbnailUrl, backdropUrl`() {
-        val content = content(
-            contentId = "r2",
-            title = "Void Protocol",
-            synopsis = "An AI gains sentience.",
-            thumbnailUrl = "https://example.com/thumb.jpg",
+    fun `toDetailContentUi maps url as contentId, name as title, plot as synopsis, posterUrl, backgroundPosterUrl`() {
+        val response = content(
+            url = "r2",
+            name = "Void Protocol",
+            plot = "An AI gains sentience.",
+            posterUrl = "https://example.com/thumb.jpg",
             backdropUrl = "https://example.com/backdrop.jpg",
         )
 
-        val ui = content.toDetailContentUi()
+        val ui = response.toDetailContentUi()
 
         assertThat(ui.contentId).isEqualTo("r2")
         assertThat(ui.title).isEqualTo("Void Protocol")
@@ -33,8 +34,8 @@ class DetailsMappingsTest {
     }
 
     @Test
-    fun `toDetailContentUi maps null thumbnailUrl and backdropUrl to null`() {
-        val ui = content(thumbnailUrl = null, backdropUrl = null).toDetailContentUi()
+    fun `toDetailContentUi maps null posterUrl and backgroundPosterUrl to null`() {
+        val ui = content(posterUrl = null, backdropUrl = null).toDetailContentUi()
         assertThat(ui.thumbnailUrl).isNull()
         assertThat(ui.backdropUrl).isNull()
     }
@@ -60,36 +61,51 @@ class DetailsMappingsTest {
     }
 
     @Test
-    fun `toDetailContentUi passes genres list through unchanged`() {
-        val genres = listOf("Sci-Fi", "Drama", "Thriller")
-        assertThat(content(genres = genres).toDetailContentUi().genres).isEqualTo(genres)
+    fun `toDetailContentUi passes tags through as genres`() {
+        val tags = listOf("Sci-Fi", "Drama", "Thriller")
+        assertThat(content(tags = tags).toDetailContentUi().genres).isEqualTo(tags)
     }
 
     // ── Type display names ────────────────────────────────────────────────────
 
     @Test
     fun `toDetailContentUi maps Movie type to display name`() {
-        assertThat(content(type = DetailMediaType.Movie).toDetailContentUi().typeName).isEqualTo("Movie")
+        assertThat(content(type = ContentType.Movie).toDetailContentUi().typeName).isEqualTo("Movie")
     }
 
     @Test
-    fun `toDetailContentUi maps Series type to display name`() {
-        assertThat(content(type = DetailMediaType.Series).toDetailContentUi().typeName).isEqualTo("Series")
+    fun `toDetailContentUi maps TvSeries type to display name`() {
+        assertThat(content(type = ContentType.TvSeries).toDetailContentUi().typeName).isEqualTo("TV Series")
     }
 
     @Test
     fun `toDetailContentUi maps Anime type to display name`() {
-        assertThat(content(type = DetailMediaType.Anime).toDetailContentUi().typeName).isEqualTo("Anime")
+        assertThat(content(type = ContentType.Anime).toDetailContentUi().typeName).isEqualTo("Anime")
     }
 
     @Test
     fun `toDetailContentUi maps Documentary type to display name`() {
-        assertThat(content(type = DetailMediaType.Documentary).toDetailContentUi().typeName).isEqualTo("Documentary")
+        assertThat(content(type = ContentType.Documentary).toDetailContentUi().typeName).isEqualTo("Documentary")
     }
 
     @Test
-    fun `toDetailContentUi maps Short type to display name`() {
-        assertThat(content(type = DetailMediaType.Short).toDetailContentUi().typeName).isEqualTo("Short")
+    fun `toDetailContentUi maps Others type to display name`() {
+        assertThat(content(type = ContentType.Others).toDetailContentUi().typeName).isEqualTo("Others")
+    }
+
+    @Test
+    fun `toDetailContentUi maps AnimeMovie type to display name`() {
+        assertThat(content(type = ContentType.AnimeMovie).toDetailContentUi().typeName).isEqualTo("Anime Movie")
+    }
+
+    @Test
+    fun `toDetailContentUi maps Live type to display name`() {
+        assertThat(content(type = ContentType.Live).toDetailContentUi().typeName).isEqualTo("Live")
+    }
+
+    @Test
+    fun `toDetailContentUi maps Music type to display name`() {
+        assertThat(content(type = ContentType.Music).toDetailContentUi().typeName).isEqualTo("Music")
     }
 
     // ── Duration formatting ───────────────────────────────────────────────────
@@ -144,26 +160,28 @@ class DetailsMappingsTest {
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun content(
-        contentId: String = "test-id",
-        title: String = "Test Title",
-        synopsis: String = "A test synopsis.",
-        thumbnailUrl: String? = null,
+        url: String = "test-id",
+        name: String = "Test Title",
+        plot: String? = "A test synopsis.",
+        posterUrl: String? = null,
         backdropUrl: String? = null,
-        type: DetailMediaType = DetailMediaType.Movie,
+        type: ContentType = ContentType.Movie,
         year: Int? = 2024,
         rating: Float? = 8.0f,
-        genres: List<String> = listOf("Drama"),
+        tags: List<String> = listOf("Drama"),
         durationMinutes: Int? = 120,
-    ): DetailContent = DetailContent(
-        contentId = contentId,
-        title = title,
-        synopsis = synopsis,
-        thumbnailUrl = thumbnailUrl,
-        backdropUrl = backdropUrl,
+    ): ContentDetail = MovieDetail(
+        name = name,
+        url = url,
+        dataUrl = "",
+        providerId = "test",
+        posterUrl = posterUrl,
+        backgroundPosterUrl = backdropUrl,
         type = type,
         year = year,
+        plot = plot,
         rating = rating,
-        genres = genres,
-        durationMinutes = durationMinutes,
+        tags = tags,
+        duration = durationMinutes,
     )
 }

@@ -32,6 +32,7 @@ class HomeViewModel(
         when (action) {
             is HomeAction.OnRefresh -> loadHomeSections()
             is HomeAction.OnContentClick -> navigateToDetail(action.contentId)
+            is HomeAction.OnSearchClick -> navigateToSearch()
         }
     }
 
@@ -57,6 +58,12 @@ class HomeViewModel(
     private fun navigateToDetail(contentId: String) {
         viewModelScope.launch {
             _events.send(HomeEvent.NavigateToDetail(contentId))
+        }
+    }
+
+    private fun navigateToSearch() {
+        viewModelScope.launch {
+            _events.send(HomeEvent.NavigateToSearch)
         }
     }
 }

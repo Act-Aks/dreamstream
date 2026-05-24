@@ -10,10 +10,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.domain.util.Result
+import com.dreamstream.core.model.search.MovieResult
 import com.dreamstream.feature.home.domain.error.HomeError
-import com.dreamstream.feature.home.domain.model.Content
-import com.dreamstream.feature.home.domain.model.ContentId
-import com.dreamstream.feature.home.domain.model.ContentType
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.domain.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
@@ -141,6 +139,20 @@ class HomeViewModelTest {
         }
     }
 
+    // ── OnSearchClick ─────────────────────────────────────────────────────────
+
+    @Test
+    fun `OnSearchClick sends NavigateToSearch event`() = runTest {
+        fakeRepository.sections = listOf(fakeSectionWith("A", count = 1))
+        val viewModel = HomeViewModel(fakeRepository)
+
+        viewModel.events.test {
+            viewModel.onAction(HomeAction.OnSearchClick)
+            assertThat(awaitItem()).isInstanceOf(HomeEvent.NavigateToSearch::class)
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // Helpers
     // ─────────────────────────────────────────────────────────────────────────
@@ -149,12 +161,10 @@ class HomeViewModelTest {
         id = title.lowercase(),
         title = title,
         items = (1..count).map { index ->
-            Content(
-                id = ContentId("$title-$index"),
-                title = "Title $index",
-                description = "Desc $index",
-                thumbnailUrl = null,
-                type = ContentType.Movie,
+            MovieResult(
+                name = "Title $index",
+                url = "${title.lowercase()}-$index",
+                providerId = "test",
                 year = 2024,
                 rating = 8.0f,
             )
