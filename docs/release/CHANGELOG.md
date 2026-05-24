@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- **Search screen** (`:feature:search` — all three layers):
+  - `:feature:search:domain` — `SearchRepository` contract, `SearchError` sealed interface (`EmptyQuery` | `NoResults` | `Unknown`).
+  - `:feature:search:data` — `InMemorySearchRepository` performs case-insensitive keyword search across all 10 catalog items from the home stub, matching on title and genre; returns `SearchError.EmptyQuery` for blank input and `SearchError.NoResults` when no items match.
+  - `:feature:search:presentation` — `SearchViewModel` (MVI with `SearchState`, `SearchAction`, `SearchEvent`); `SearchScreen` renders a glassmorphic search bar and a result grid using `GlassCard`; `SearchRoute` is the serializable type-safe nav route; Koin modules for data and presentation layers assembled in `:app:android`.
+  - **39 unit tests** — `SearchViewModelTest` (9), `SearchMappingsTest` (18), `InMemorySearchRepositoryTest` (12).
+
+- **Shared domain library** (`:core:model`):
+  - `catalog/` subpackage — `Actor`, `ContentType` (with `displayName` singular label and `isEpisodic` flag), `Episode`, `Quality`, `Season`, `SubtitleFormat`, `ThemeMode`.
+  - `detail/` subpackage — `ContentDetail` sealed hierarchy (`AnimeDetail`, `LiveDetail`, `MovieDetail`, `SeriesDetail`), `ShowStatus`, `displayRating` extension.
+  - `media/` subpackage — `StreamLink`, `Subtitle`.
+  - `plugin/` subpackage — `DreamError`, `InstalledPlugin`, `PluginManifest`, `PluginRepository`, `PluginStatus`, `RepositoryManifest`.
+  - `search/` subpackage — `SearchResult` sealed hierarchy (`AnimeResult`, `LiveResult`, `MovieResult`, `SeriesResult`), `SearchResultExtensions` (`year`, `rating`, `displayRating`).
+  - `:feature:home:domain` and `:feature:details:domain` now depend on `:core:model`; local type duplicates and private mapping helpers removed from all three mapper classes.
+
 - **Details screen** (`:feature:details` — all three layers):
   - `:feature:details:domain` — `DetailContent` model (richer than the home list item: adds `synopsis`, `backdropUrl`, `genres: List<String>`, `durationMinutes: Int?`), `DetailMediaType` enum, `DetailsRepository` contract, `DetailsError` (`NotFound` | `LoadFailed`).
   - `:feature:details:data` — `InMemoryDetailsRepository` with full detail records for all 10 content IDs from the home stub (t1–t4, n1–n3, r1–r3); returns `DetailsError.NotFound` for unknown IDs.
@@ -49,5 +63,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - DreamStream is in active feature development. Versioned releases have not started yet.
 - The debug APK for `:app:android` builds and runs. Glassmorphic blur is hardware-accelerated on Android 12+ (API 31+); older devices render a frosted tint fallback via Haze.
-- **69 unit tests** pass across the project (34 home + 35 details).
-- Next planned feature: `:feature:search` — keyword discovery across the stub catalog, following the same three-layer pattern.
+- **120 unit tests** pass across the project (5 core/domain + 38 home + 38 details + 39 search).
+- DreamStream now has three complete vertical slices: home, details, and search.

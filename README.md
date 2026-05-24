@@ -34,7 +34,7 @@
 
 ## Status
 
-DreamStream has two working vertical slices. The build infrastructure, convention plugins, core modules, glassmorphic design system, home screen (`:feature:home`), and details screen (`:feature:details`) are all complete with passing unit tests. Tapping a content card on the home screen navigates to the full detail view with back-navigation support. The debug APK builds and runs. The project is in active feature development — the next step is the `:feature:search` slice.
+DreamStream has three working vertical slices. The build infrastructure, convention plugins, shared domain library (`:core:model`), core modules, glassmorphic design system, home screen (`:feature:home`), details screen (`:feature:details`), and search screen (`:feature:search`) are all complete with 120 passing unit tests. Tapping a content card on the home screen navigates to the full detail view; the search screen provides keyword discovery across the stub catalog. The debug APK builds and runs. The project is in active feature development.
 
 ## Vision
 
@@ -83,21 +83,33 @@ DreamStream/
 |-- core/
 |   |-- domain/                   Result<T, E>, Error, DataError, result helpers
 |   |-- presentation/             UiText, ObserveAsEvents, error-to-UiText mapping
-|   `-- design-system/            Glassmorphic theme, tokens, gradient brushes,
-|                                  GradientBackground, GlassCard, GlassSurface, GlassTopBar
+|   |-- design-system/            Glassmorphic theme, tokens, gradient brushes,
+|   |                              GradientBackground, GlassCard, GlassSurface, GlassTopBar
+|   `-- model/                    Shared domain types across features:
+|                                  catalog/ (ContentType, Episode, Quality, Season, …)
+|                                  detail/ (ContentDetail hierarchy, ShowStatus)
+|                                  media/ (StreamLink, Subtitle)
+|                                  plugin/ (DreamError, PluginManifest, …)
+|                                  search/ (SearchResult hierarchy, SearchResultExtensions)
 |-- feature/
 |   |-- home/
 |   |   |-- domain/               Content model, HomeRepository contract, HomeError
 |   |   |-- data/                 InMemoryHomeRepository (stub, 3 sections / 10 items)
 |   |   `-- presentation/         HomeViewModel (MVI), HomeScreen (glassmorphic UI),
-|   |                              Koin module, HomeRoute — 34 unit tests
-|   `-- details/
-|       |-- domain/               DetailContent model, DetailsRepository contract, DetailsError
-|       |-- data/                 InMemoryDetailsRepository (full records for all 10 IDs)
-|       `-- presentation/         DetailsViewModel (SavedStateHandle), DetailsScreen,
-|                                  Koin module, DetailsRoute(contentId) — 35 unit tests
+|   |                              Koin module, HomeRoute — 38 unit tests
+|   |-- details/
+|   |   |-- domain/               DetailContent model, DetailsRepository contract, DetailsError
+|   |   |-- data/                 InMemoryDetailsRepository (full records for all 10 IDs)
+|   |   `-- presentation/         DetailsViewModel (SavedStateHandle), DetailsScreen,
+|   |                              Koin module, DetailsRoute(contentId) — 38 unit tests
+|   `-- search/
+|       |-- domain/               SearchRepository contract, SearchError
+|       |-- data/                 InMemorySearchRepository (keyword search across stub catalog)
+|       `-- presentation/         SearchViewModel (MVI), SearchScreen (search bar + result grid),
+|                                  Koin module, SearchRoute — 39 unit tests
 |-- app/
-|   `-- android/                  MainActivity, AppNavigation (home→details), Koin assembly
+|   `-- android/                  MainActivity, AppNavigation (home→details, search tab),
+|                                  Koin assembly for all modules
 |-- gradle/
 |   `-- libs.versions.toml        Dependency and plugin versions
 |-- settings.gradle.kts
@@ -109,8 +121,7 @@ Modules are added only when implementation needs them. Planned but not yet prese
 ```text
 :core:data
 :core:media
-:feature:search:domain / :data / :presentation
-… and additional feature slices
+… and additional feature slices (player, catalog, bookmarks, settings, …)
 ```
 
 ## Guardrails

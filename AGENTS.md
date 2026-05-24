@@ -22,21 +22,32 @@ The following modules and infrastructure are complete and compiled:
   - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
   - **Components** — `GradientBackground` (ambient purple/cyan/pink glow blobs, registers as `hazeSource`), `GlassCard` (clickable frosted glass card), `GlassSurface` (non-clickable frosted container), `GlassTopBar` (glassmorphic top app bar)
   - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
+- `:core:model` — shared domain types used across feature modules:
+  - `catalog/` — `Actor`, `ContentType` (with `displayName` singular label and `isEpisodic` flag), `Episode`, `Quality`, `Season`, `SubtitleFormat`, `ThemeMode`
+  - `detail/` — `ContentDetail` sealed hierarchy (`AnimeDetail`, `LiveDetail`, `MovieDetail`, `SeriesDetail`), `ShowStatus`, `displayRating` extension
+  - `media/` — `StreamLink`, `Subtitle`
+  - `plugin/` — `DreamError`, `InstalledPlugin`, `PluginManifest`, `PluginRepository`, `PluginStatus`, `RepositoryManifest`
+  - `search/` — `SearchResult` sealed hierarchy (`AnimeResult`, `LiveResult`, `MovieResult`, `SeriesResult`), `SearchResultExtensions` (`year`, `rating`, `displayRating`)
 - `:feature:home` — first vertical slice, fully tested and wired into `:app:android`:
-  - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`
+  - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`; depends on `:core:model` for shared types
   - `:feature:home:data` — `InMemoryHomeRepository` (hardcoded stub returning 3 sections, 10 items)
   - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; Koin module; `HomeRoute`
-  - **Tests** — 34 passing: `HomeViewModelTest` (6), `HomeMappingsTest` (17), `InMemoryHomeRepositoryTest` (11)
+  - **Tests** — 38 passing: `HomeViewModelTest` (7), `HomeMappingsTest` (20), `InMemoryHomeRepositoryTest` (11)
 - `:feature:details` — second vertical slice, fully tested and wired into `:app:android`:
-  - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`
+  - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`; depends on `:core:model` for shared types
   - `:feature:details:data` — `InMemoryDetailsRepository` (full detail records for all 10 catalog IDs from the home stub; returns `DetailsError.NotFound` for unknown IDs)
   - `:feature:details:presentation` — `DetailsViewModel` (reads `contentId` from `SavedStateHandle`; `OnBackClick` → `NavigateBack` event; `OnRetry` → reload), `DetailsScreen` (glassmorphic hero card, metadata + genre tags, synopsis, play button placeholder), `DetailsRoute(contentId: String)`, Koin module
-  - **Tests** — 35 passing: `DetailsViewModelTest` (6), `DetailsMappingsTest` (20), `InMemoryDetailsRepositoryTest` (9)
-- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home taps push `DetailsRoute`, back pops it), and all Koin modules assembled; debug APK builds and runs
+  - **Tests** — 38 passing: `DetailsViewModelTest` (6), `DetailsMappingsTest` (23), `InMemoryDetailsRepositoryTest` (9)
+- `:feature:search` — third vertical slice, fully tested and wired into `:app:android`:
+  - `:feature:search:domain` — `SearchRepository` contract, `SearchError` (`EmptyQuery` | `NoResults` | `Unknown`)
+  - `:feature:search:data` — `InMemorySearchRepository` (case-insensitive keyword search across all 10 catalog items, matching on title and genre)
+  - `:feature:search:presentation` — `SearchViewModel` (MVI with `SearchState`, `SearchAction`, `SearchEvent`), `SearchScreen` (glassmorphic search bar + result grid using `GlassCard`), `SearchRoute`, Koin modules
+  - **Tests** — 39 passing: `SearchViewModelTest` (9), `SearchMappingsTest` (18), `InMemorySearchRepositoryTest` (12)
+- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home taps push `DetailsRoute`, search tab wired to `SearchRoute`, back navigation), and all Koin modules assembled; debug APK builds and runs
 
-**69 unit tests pass** across the project (34 home + 35 details).
+**120 unit tests pass** across the project (5 core/domain + 38 home + 38 details + 39 search).
 
-All 8 steps of the initial implementation guidance are complete. The next step is to add the `:feature:search` vertical slice, giving users keyword discovery across the stub catalog. Follow the same three-layer pattern used for home and details: domain contract, in-memory data implementation, MVI presentation with tests.
+All foundation steps and the first three feature slices (home, details, search) are complete. The next area to explore is real data integration (Ktor networking, a live content source, or Room persistence) or expanding discovery with a catalog/browsing feature.
 
 ## Architecture Source Of Truth
 
@@ -76,6 +87,7 @@ Use this structure as the target architecture once implementation begins:
 :build-logic
 :core:domain
 :core:data
+:core:model
 :core:presentation
 :core:design-system
 :core:database        optional when Room is introduced
