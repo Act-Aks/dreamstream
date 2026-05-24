@@ -2,9 +2,7 @@ import com.dreamstream.convention.applyPlugins
 import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
  * Applies kotlinx.serialization plugin and wires the JSON runtime into the
@@ -16,6 +14,7 @@ class SerializationConventionPlugin : Plugin<Project> {
             applyPlugins("kotlin-serialization")
 
             dependencies {
+                "commonMainImplementation"(lib("kotlinx-serialization-core").get())
                 "commonMainImplementation"(lib("kotlinx-serialization-json").get())
             }
         }
