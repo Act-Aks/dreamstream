@@ -43,11 +43,21 @@ The following modules and infrastructure are complete and compiled:
   - `:feature:search:data` — `InMemorySearchRepository` (case-insensitive keyword search across all 10 catalog items, matching on title and genre)
   - `:feature:search:presentation` — `SearchViewModel` (MVI with `SearchState`, `SearchAction`, `SearchEvent`), `SearchScreen` (glassmorphic search bar + result grid using `GlassCard`), `SearchRoute`, Koin modules
   - **Tests** — 39 passing: `SearchViewModelTest` (9), `SearchMappingsTest` (18), `InMemorySearchRepositoryTest` (12)
-- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home taps push `DetailsRoute`, search tab wired to `SearchRoute`, back navigation), and all Koin modules assembled; debug APK builds and runs
+- `:feature:settings` — fourth feature, wired into `:app:android`:
+  - `:feature:settings:domain` — `AppLanguage` sealed class (6 languages: English, German, Hindi, Japanese, Taiwanese Mandarin, System Default), `LanguageRepository` contract
+  - `:feature:settings:data` — `AppCompatLanguageRepository` using `AppCompatDelegate.setApplicationLocales()` for runtime language switching
+  - `:feature:settings:presentation` — `SettingsViewModel` (MVI with `SettingsState`, `SettingsAction`), `SettingsScreen` (language picker with check indicators), `SettingsRoute`, Koin module
+  - **Tests** — none yet (requires Android instrumentation for `AppCompatLanguageRepository`)
+- **Localization infrastructure**:
+  - `LocalizationConventionPlugin` — registers Compose Multiplatform resource source sets and generates `LocaleConfig` for Android
+  - `LocalizationValidationTask` — Gradle task validating every feature's `composeResources/values/strings.xml` against a required-keys schema
+  - **4 locales** — English, German (`values-de`), Hindi (`values-hi`), Japanese (`values-ja`) across `:core:presentation` and all feature presentation modules
+- `:core:presentation` — `DataError.toUiText()` fully migrated from `DynamicString` to `StringResourceId`; all 16 `DataError` variants now use localized compose resources
+- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home→details, search, settings tabs), and all Koin modules assembled; debug APK builds and runs
 
 **120 unit tests pass** across the project (5 core/domain + 38 home + 38 details + 39 search).
 
-All foundation steps and the first three feature slices (home, details, search) are complete. The next area to explore is real data integration (Ktor networking, a live content source, or Room persistence) or expanding discovery with a catalog/browsing feature.
+All foundation steps and the first three feature slices (home, details, search) are complete, with the settings feature adding real platform API integration (AppCompat). The next area to explore is real data integration (Ktor networking, a live content source, or Room persistence) or expanding discovery with a catalog/browsing feature.
 
 ## Architecture Source Of Truth
 

@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- **Settings screen** (`:feature:settings` — domain, data, presentation):
+  - `:feature:settings:domain` — `AppLanguage` sealed class (6 languages: English, German, Hindi, Japanese, Taiwanese Mandarin, System Default), `LanguageRepository` contract.
+  - `:feature:settings:data` — `AppCompatLanguageRepository` backed by `androidx.appcompat.app.AppCompatDelegate` for runtime language switching.
+  - `:feature:settings:presentation` — `SettingsViewModel` (MVI with `SettingsState`, `SettingsAction`), `SettingsScreen` (language picker with selection indicators), `SettingsRoute` serializable nav route.
+  - **Note**: settings has no unit tests yet — `AppCompatLanguageRepository` requires Android instrumentation.
+
+- **Internationalization (i18n) and localization infrastructure**:
+  - `LocalizationConventionPlugin` — convention plugin that registers Compose Multiplatform resource source sets and generates `LocaleConfig` for Android.
+  - `LocalizationValidationTask` — Gradle task that validates every feature's `composeResources/values/strings.xml` against a required-keys schema, ensuring no feature ships with missing string definitions.
+  - **4 locale directories** — English (`values/`), German (`values-de/`), Hindi (`values-hi/`), Japanese (`values-ja/`) added to `:core:presentation`, `:feature:home:presentation`, `:feature:details:presentation`, `:feature:search:presentation`, and `:feature:settings:presentation`.
+  - `locale_config.xml` generated in `:app:android` to declare all supported locales to the Android OS for per-app language support.
+
+- **Localized error strings** across all features:
+  - `DataError.toUiText()` in `:core:presentation` — all 16 `DataError.Network` and `DataError.Local` variants migrated from `DynamicString` to `StringResourceId` backed by localized compose resources.
+  - `HomeError.toUiText()`, `DetailsError.toUiText()`, `SearchError.toUiText()` — all feature error mappers similarly migrated to `StringResourceId`.
+  - 45 test assertions updated from `DynamicString` comparison to `StringResourceId` comparison.
+
 - **Search screen** (`:feature:search` — all three layers):
   - `:feature:search:domain` — `SearchRepository` contract, `SearchError` sealed interface (`EmptyQuery` | `NoResults` | `Unknown`).
   - `:feature:search:data` — `InMemorySearchRepository` performs case-insensitive keyword search across all 10 catalog items from the home stub, matching on title and genre; returns `SearchError.EmptyQuery` for blank input and `SearchError.NoResults` when no items match.
@@ -63,5 +80,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - DreamStream is in active feature development. Versioned releases have not started yet.
 - The debug APK for `:app:android` builds and runs. Glassmorphic blur is hardware-accelerated on Android 12+ (API 31+); older devices render a frosted tint fallback via Haze.
-- **120 unit tests** pass across the project (5 core/domain + 38 home + 38 details + 39 search).
-- DreamStream now has three complete vertical slices: home, details, and search.
+- **120 unit tests** pass across the project (5 core/domain + 38 home + 38 details + 39 search). The settings feature has no unit tests yet (requires Android instrumentation for `AppCompatLanguageRepository`).
+- DreamStream now has four complete feature modules: home, details, search, and settings. The settings module is the first feature to use AppCompat and real platform APIs rather than in-memory stubs.

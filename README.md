@@ -34,7 +34,7 @@
 
 ## Status
 
-DreamStream has three working vertical slices. The build infrastructure, convention plugins, shared domain library (`:core:model`), core modules, glassmorphic design system, home screen (`:feature:home`), details screen (`:feature:details`), and search screen (`:feature:search`) are all complete with 120 passing unit tests. Tapping a content card on the home screen navigates to the full detail view; the search screen provides keyword discovery across the stub catalog. The debug APK builds and runs. The project is in active feature development.
+DreamStream has four working feature modules. The build infrastructure, convention plugins, shared domain library (`:core:model`), core modules, glassmorphic design system, home screen (`:feature:home`), details screen (`:feature:details`), search screen (`:feature:search`), and settings screen (`:feature:settings`) are all complete with 120 passing unit tests. Tapping a content card on the home screen navigates to the full detail view; the search screen provides keyword discovery across the stub catalog; the settings screen supports runtime language switching across 4 locales. The debug APK builds and runs. The project is in active feature development.
 
 ## Vision
 
@@ -82,7 +82,8 @@ DreamStream/
 |   `-- convention/
 |-- core/
 |   |-- domain/                   Result<T, E>, Error, DataError, result helpers
-|   |-- presentation/             UiText, ObserveAsEvents, error-to-UiText mapping
+|   |-- presentation/             UiText, ObserveAsEvents, error-to-UiText mapping,
+|   |                              localized strings (4 locales)
 |   |-- design-system/            Glassmorphic theme, tokens, gradient brushes,
 |   |                              GradientBackground, GlassCard, GlassSurface, GlassTopBar
 |   `-- model/                    Shared domain types across features:
@@ -102,13 +103,18 @@ DreamStream/
 |   |   |-- data/                 InMemoryDetailsRepository (full records for all 10 IDs)
 |   |   `-- presentation/         DetailsViewModel (SavedStateHandle), DetailsScreen,
 |   |                              Koin module, DetailsRoute(contentId) — 38 unit tests
-|   `-- search/
-|       |-- domain/               SearchRepository contract, SearchError
-|       |-- data/                 InMemorySearchRepository (keyword search across stub catalog)
-|       `-- presentation/         SearchViewModel (MVI), SearchScreen (search bar + result grid),
-|                                  Koin module, SearchRoute — 39 unit tests
+|   |-- search/
+|   |   |-- domain/               SearchRepository contract, SearchError
+|   |   |-- data/                 InMemorySearchRepository (keyword search across stub catalog)
+|   |   `-- presentation/         SearchViewModel (MVI), SearchScreen (search bar + result grid),
+|   |                              Koin module, SearchRoute — 39 unit tests
+|   `-- settings/
+|       |-- domain/               AppLanguage (6 languages), LanguageRepository contract
+|       |-- data/                 AppCompatLanguageRepository (runtime locale switching)
+|       `-- presentation/         SettingsViewModel (MVI), SettingsScreen (language picker),
+|                                  Koin module, SettingsRoute — no unit tests yet
 |-- app/
-|   `-- android/                  MainActivity, AppNavigation (home→details, search tab),
+|   `-- android/                  MainActivity, AppNavigation (home→details, search, settings tabs),
 |                                  Koin assembly for all modules
 |-- gradle/
 |   `-- libs.versions.toml        Dependency and plugin versions
@@ -121,7 +127,7 @@ Modules are added only when implementation needs them. Planned but not yet prese
 ```text
 :core:data
 :core:media
-… and additional feature slices (player, catalog, bookmarks, settings, …)
+… and additional feature slices (player, catalog, bookmarks, …)
 ```
 
 ## Guardrails
