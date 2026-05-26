@@ -38,11 +38,18 @@ import com.dreamstream.core.designsystem.component.GlassTopBar
 import com.dreamstream.core.designsystem.component.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.action_back
+import com.dreamstream.core.presentation.resources.action_retry
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
 import com.dreamstream.feature.details.presentation.model.DetailContentUi
+import com.dreamstream.feature.details.presentation.resources.Res
+import com.dreamstream.feature.details.presentation.resources.details_play_button
+import com.dreamstream.feature.details.presentation.resources.details_synopsis_label
 import dev.chrisbanes.haze.HazeState
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -104,7 +111,7 @@ fun DetailsScreen(
                         IconButton(onClick = { onAction(DetailsAction.OnBackClick) }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Navigate back",
+                                contentDescription = stringResource(CoreRes.string.action_back),
                                 tint = Color.White,
                             )
                         }
@@ -127,7 +134,7 @@ fun DetailsScreen(
 
                     state.error != null -> {
                         DetailsErrorState(
-                            message = state.error.toString(),
+                            message = state.error.asString(),
                             onRetry = { onAction(DetailsAction.OnRetry) },
                             modifier = Modifier.align(Alignment.Center),
                         )
@@ -234,7 +241,7 @@ private fun DetailsContent(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Synopsis",
+                    text = stringResource(Res.string.details_synopsis_label),
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                 )
@@ -262,7 +269,7 @@ private fun DetailsContent(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "▶  Play",
+                    text = stringResource(Res.string.details_play_button),
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                 )
@@ -301,7 +308,7 @@ private fun DetailsErrorState(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "Retry",
+                    text = stringResource(CoreRes.string.action_retry),
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White,
                 )

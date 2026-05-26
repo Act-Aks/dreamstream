@@ -6,6 +6,8 @@ import com.dreamstream.core.model.search.year
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.search.domain.error.SearchError
 import com.dreamstream.feature.search.presentation.model.SearchResultUi
+import com.dreamstream.feature.search.presentation.resources.Res
+import com.dreamstream.feature.search.presentation.resources.search_error_search_failed
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain → UI mappers
@@ -34,11 +36,8 @@ internal fun SearchResult.toSearchResultUi(): SearchResultUi = SearchResultUi(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Maps a [SearchError] to a user-facing [UiText].
- *
- * TODO: Replace [UiText.DynamicString] with [UiText.StringResourceId] once
- * string resources are added to :feature:search:presentation.
+ * Maps a [SearchError] to a user-facing [UiText] backed by a localized string resource.
  */
 internal fun SearchError.toUiText(): UiText = when (this) {
-    SearchError.SearchFailed -> UiText.DynamicString("Search failed. Please try again.")
+    SearchError.SearchFailed -> UiText.StringResourceId(Res.string.search_error_search_failed)
 }

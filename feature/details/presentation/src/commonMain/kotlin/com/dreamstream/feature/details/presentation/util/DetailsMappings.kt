@@ -5,6 +5,9 @@ import com.dreamstream.core.model.detail.MovieDetail
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.domain.error.DetailsError
 import com.dreamstream.feature.details.presentation.model.DetailContentUi
+import com.dreamstream.feature.details.presentation.resources.Res
+import com.dreamstream.feature.details.presentation.resources.details_error_load_failed
+import com.dreamstream.feature.details.presentation.resources.details_error_not_found
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain → UI mappers
@@ -60,12 +63,9 @@ private fun Int?.toDurationString(): String {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Maps a [DetailsError] to a user-facing [UiText].
- *
- * TODO: Replace [UiText.DynamicString] with [UiText.StringResourceId] once
- * string resources are added to :feature:details:presentation.
+ * Maps a [DetailsError] to a user-facing [UiText] backed by a localized string resource.
  */
 internal fun DetailsError.toUiText(): UiText = when (this) {
-    DetailsError.NotFound -> UiText.DynamicString("Content not found.")
-    DetailsError.LoadFailed -> UiText.DynamicString("Failed to load content. Please try again.")
+    DetailsError.NotFound -> UiText.StringResourceId(Res.string.details_error_not_found)
+    DetailsError.LoadFailed -> UiText.StringResourceId(Res.string.details_error_load_failed)
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:search:presentation — Hindi (hi) translations -->
+<resources>
+
+    <string name="search_hint">फ़िल्में, सीरीज़, एनिमे खोजें…</string>
+    <string name="search_prompt_heading">देखने के लिए कुछ खोजें</string>
+    <string name="search_prompt_message">फ़िल्मों, सीरीज़ और एनिमे में खोजें।</string>
+    <string name="search_no_results_heading">\"%1$s\" के लिए कोई परिणाम नहीं</string>
+    <string name="search_no_results_hint">कोई अन्य शीर्षक या कीवर्ड आज़माएं।</string>
+    <string name="search_error_search_failed">खोज विफल रही। कृपया पुनः प्रयास करें।</string>
+
+</resources>

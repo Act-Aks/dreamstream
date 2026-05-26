@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- core:presentation — Hindi (hi) translations -->
+<resources>
+
+    <string name="app_name">DreamStream</string>
+
+    <!-- Common actions -->
+    <string name="action_retry">पुनः प्रयास करें</string>
+    <string name="action_back">वापस जाएं</string>
+    <string name="action_play">चलाएं</string>
+    <string name="action_search">खोजें</string>
+    <string name="action_clear">खोज साफ़ करें</string>
+    <string name="action_settings">सेटिंग्स खोलें</string>
+
+    <!-- DataError.Network -->
+    <string name="error_bad_request">गलत अनुरोध।</string>
+    <string name="error_request_timeout">अनुरोध समय समाप्त। पुनः प्रयास करें।</string>
+    <string name="error_unauthorized">आप अधिकृत नहीं हैं।</string>
+    <string name="error_forbidden">पहुँच प्रतिबंधित है।</string>
+    <string name="error_not_found">संसाधन नहीं मिला।</string>
+    <string name="error_conflict">विरोधाभासी स्थिति। पुनः प्रयास करें।</string>
+    <string name="error_too_many_requests">बहुत अधिक अनुरोध। धीमा करें।</string>
+    <string name="error_no_internet">इंटरनेट कनेक्शन नहीं है।</string>
+    <string name="error_payload_too_large">डेटा बहुत बड़ा है।</string>
+    <string name="error_server_error">सर्वर त्रुटि। बाद में पुनः प्रयास करें।</string>
+    <string name="error_service_unavailable">सेवा अनुपलब्ध है।</string>
+    <string name="error_serialization">प्रतिक्रिया को पार्स करने में विफल।</string>
+    <string name="error_network_unknown">अज्ञात नेटवर्क त्रुटि।</string>
+
+    <!-- DataError.Local -->
+    <string name="error_disk_full">स्टोरेज भरा हुआ है।</string>
+    <string name="error_local_not_found">स्थानीय रूप से नहीं मिला।</string>
+    <string name="error_local_unknown">अज्ञात स्थानीय त्रुटि।</string>
+
+</resources>

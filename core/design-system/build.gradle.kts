@@ -15,9 +15,11 @@ plugins {
     alias(libs.plugins.dreamstream.compose)
 }
 
+val moduleName = "com.dreamstream.core.designsystem"
+
 kotlin {
     android {
-        namespace = "com.dreamstream.core.designsystem"
+        namespace = moduleName
     }
 
     sourceSets {
@@ -42,5 +44,5 @@ kotlin {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "com.dreamstream.core.designsystem"
+    packageOfResClass = "$moduleName.resources"
 }

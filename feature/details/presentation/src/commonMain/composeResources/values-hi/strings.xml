@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:details:presentation — Hindi (hi) translations -->
+<resources>
+
+    <string name="details_synopsis_label">सारांश</string>
+    <string name="details_play_button">चलाएं</string>
+    <string name="details_error_not_found">सामग्री नहीं मिली।</string>
+    <string name="details_error_load_failed">सामग्री लोड करने में विफल। कृपया पुनः प्रयास करें।</string>
+
+</resources>

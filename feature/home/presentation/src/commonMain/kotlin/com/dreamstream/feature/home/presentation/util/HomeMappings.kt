@@ -8,6 +8,9 @@ import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.presentation.model.ContentUi
 import com.dreamstream.feature.home.presentation.model.HomeSectionUi
+import com.dreamstream.feature.home.presentation.resources.Res
+import com.dreamstream.feature.home.presentation.resources.home_error_load_failed
+import com.dreamstream.feature.home.presentation.resources.home_error_no_content
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain → UI mappers
@@ -41,12 +44,9 @@ internal fun SearchResult.toContentUi(): ContentUi = ContentUi(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Maps a [HomeError] to a user-facing [UiText].
- *
- * TODO: Replace [UiText.DynamicString] with [UiText.StringResourceId] once
- * string resources are added to :feature:home:presentation.
+ * Maps a [HomeError] to a user-facing [UiText] backed by a localized string resource.
  */
 internal fun HomeError.toUiText(): UiText = when (this) {
-    HomeError.NoContentAvailable -> UiText.DynamicString("No content available right now.")
-    HomeError.LoadFailed -> UiText.DynamicString("Failed to load content. Please try again.")
+    HomeError.NoContentAvailable -> UiText.StringResourceId(Res.string.home_error_no_content)
+    HomeError.LoadFailed -> UiText.StringResourceId(Res.string.home_error_load_failed)
 }

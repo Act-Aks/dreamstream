@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  core:presentation — shared string resources
+  These strings are public (publicResClass = true) and accessible to all feature modules
+  that depend on :core:presentation.
+
+  Scope: app name, common action labels, all DataError user-facing messages.
+  Do NOT add feature-specific strings here — those belong in each feature's own
+  composeResources/values/strings.xml.
+-->
+<resources>
+
+    <!-- App identity -->
+    <string name="app_name">DreamStream</string>
+
+    <!-- ── Common action labels (reused across multiple screens) ─────────── -->
+    <string name="action_retry">Retry</string>
+    <string name="action_back">Navigate back</string>
+    <string name="action_play">Play</string>
+    <string name="action_search">Search</string>
+    <string name="action_clear">Clear search query</string>
+    <string name="action_settings">Open settings</string>
+
+    <!-- ── DataError.Network messages ────────────────────────────────────── -->
+    <string name="error_bad_request">Bad request.</string>
+    <string name="error_request_timeout">Request timed out. Try again.</string>
+    <string name="error_unauthorized">You are not authorized.</string>
+    <string name="error_forbidden">Access is forbidden.</string>
+    <string name="error_not_found">Resource not found.</string>
+    <string name="error_conflict">Conflicting state. Try again.</string>
+    <string name="error_too_many_requests">Too many requests. Slow down.</string>
+    <string name="error_no_internet">No internet connection.</string>
+    <string name="error_payload_too_large">Payload too large.</string>
+    <string name="error_server_error">Server error. Try again later.</string>
+    <string name="error_service_unavailable">Service is unavailable.</string>
+    <string name="error_serialization">Failed to parse the response.</string>
+    <string name="error_network_unknown">Unknown network error.</string>
+
+    <!-- ── DataError.Local messages ───────────────────────────────────────── -->
+    <string name="error_disk_full">Storage is full.</string>
+    <string name="error_local_not_found">Not found locally.</string>
+    <string name="error_local_unknown">Unknown local error.</string>
+
+</resources>

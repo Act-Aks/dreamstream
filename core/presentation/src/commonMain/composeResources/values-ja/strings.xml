@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- core:presentation — Japanese (ja) translations -->
+<resources>
+
+    <string name="app_name">DreamStream</string>
+
+    <!-- Common actions -->
+    <string name="action_retry">再試行</string>
+    <string name="action_back">戻る</string>
+    <string name="action_play">再生</string>
+    <string name="action_search">検索</string>
+    <string name="action_clear">検索をクリア</string>
+    <string name="action_settings">設定を開く</string>
+
+    <!-- DataError.Network -->
+    <string name="error_bad_request">リクエストが正しくありません。</string>
+    <string name="error_request_timeout">リクエストがタイムアウトしました。再試行してください。</string>
+    <string name="error_unauthorized">認証されていません。</string>
+    <string name="error_forbidden">アクセスが禁止されています。</string>
+    <string name="error_not_found">リソースが見つかりません。</string>
+    <string name="error_conflict">競合が発生しました。再試行してください。</string>
+    <string name="error_too_many_requests">リクエストが多すぎます。少し待ってください。</string>
+    <string name="error_no_internet">インターネット接続がありません。</string>
+    <string name="error_payload_too_large">ペイロードが大きすぎます。</string>
+    <string name="error_server_error">サーバーエラーが発生しました。後で再試行してください。</string>
+    <string name="error_service_unavailable">サービスが利用できません。</string>
+    <string name="error_serialization">レスポンスの解析に失敗しました。</string>
+    <string name="error_network_unknown">不明なネットワークエラー。</string>
+
+    <!-- DataError.Local -->
+    <string name="error_disk_full">ストレージがいっぱいです。</string>
+    <string name="error_local_not_found">ローカルに見つかりません。</string>
+    <string name="error_local_unknown">不明なローカルエラー。</string>
+
+</resources>

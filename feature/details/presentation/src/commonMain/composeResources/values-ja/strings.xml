@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:details:presentation — Japanese (ja) translations -->
+<resources>
+
+    <string name="details_synopsis_label">あらすじ</string>
+    <string name="details_play_button">再生</string>
+    <string name="details_error_not_found">コンテンツが見つかりません。</string>
+    <string name="details_error_load_failed">コンテンツの読み込みに失敗しました。再試行してください。</string>
+
+</resources>

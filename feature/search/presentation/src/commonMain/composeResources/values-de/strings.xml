@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:search:presentation — German (de) translations -->
+<resources>
+
+    <string name="search_hint">Filme, Serien, Anime suchen…</string>
+    <string name="search_prompt_heading">Finde etwas zum Ansehen</string>
+    <string name="search_prompt_message">Suche in Filmen, Serien und Anime.</string>
+    <string name="search_no_results_heading">Keine Ergebnisse für \"%1$s\"</string>
+    <string name="search_no_results_hint">Versuche einen anderen Titel oder Begriff.</string>
+    <string name="search_error_search_failed">Suche fehlgeschlagen. Bitte erneut versuchen.</string>
+
+</resources>

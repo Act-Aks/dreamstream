@@ -48,10 +48,20 @@ import com.dreamstream.core.designsystem.component.GlassTopBar
 import com.dreamstream.core.designsystem.component.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.action_back
+import com.dreamstream.core.presentation.resources.action_clear
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
 import com.dreamstream.feature.search.presentation.model.SearchResultUi
+import com.dreamstream.feature.search.presentation.resources.Res
+import com.dreamstream.feature.search.presentation.resources.search_hint
+import com.dreamstream.feature.search.presentation.resources.search_no_results_heading
+import com.dreamstream.feature.search.presentation.resources.search_no_results_hint
+import com.dreamstream.feature.search.presentation.resources.search_prompt_heading
+import com.dreamstream.feature.search.presentation.resources.search_prompt_message
 import dev.chrisbanes.haze.HazeState
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -118,7 +128,7 @@ fun SearchScreen(
                         IconButton(onClick = { onAction(SearchAction.OnBackClick) }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Navigate back",
+                                contentDescription = stringResource(CoreRes.string.action_back),
                                 tint = Color.White,
                             )
                         }
@@ -141,7 +151,7 @@ fun SearchScreen(
 
                     state.error != null -> {
                         SearchErrorState(
-                            message = state.error.toString(),
+                            message = state.error.asString(),
                             modifier = Modifier.align(Alignment.Center),
                         )
                     }
@@ -188,7 +198,7 @@ private fun SearchTextField(
         modifier = modifier.focusRequester(focusRequester),
         placeholder = {
             Text(
-                text = "Search movies, series, anime…",
+                text = stringResource(Res.string.search_hint),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 0.5f),
             )
@@ -205,7 +215,7 @@ private fun SearchTextField(
                 IconButton(onClick = onClearQuery) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Clear search query",
+                        contentDescription = stringResource(CoreRes.string.action_clear),
                         tint = Color.White.copy(alpha = 0.7f),
                     )
                 }
@@ -321,12 +331,12 @@ private fun SearchPromptState(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "Find something to watch",
+            text = stringResource(Res.string.search_prompt_heading),
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
         )
         Text(
-            text = "Search across movies, series, and anime.",
+            text = stringResource(Res.string.search_prompt_message),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -344,12 +354,12 @@ private fun NoResultsState(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "No results for \"$query\"",
+            text = stringResource(Res.string.search_no_results_heading, query),
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
         )
         Text(
-            text = "Try a different title or keyword.",
+            text = stringResource(Res.string.search_no_results_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

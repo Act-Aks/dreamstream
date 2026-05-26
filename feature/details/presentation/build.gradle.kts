@@ -13,9 +13,11 @@ plugins {
     alias(libs.plugins.dreamstream.feature)
 }
 
+val moduleName = "com.dreamstream.feature.details.presentation"
+
 kotlin {
     android {
-        namespace = "com.dreamstream.feature.details.presentation"
+        namespace = moduleName
     }
 
     sourceSets {
@@ -25,4 +27,8 @@ kotlin {
             }
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "$moduleName.resources"
 }

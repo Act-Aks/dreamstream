@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- core:presentation — German (de) translations -->
+<resources>
+
+    <string name="app_name">DreamStream</string>
+
+    <!-- Common actions -->
+    <string name="action_retry">Erneut versuchen</string>
+    <string name="action_back">Zurück navigieren</string>
+    <string name="action_play">Abspielen</string>
+    <string name="action_search">Suchen</string>
+    <string name="action_clear">Suchanfrage löschen</string>
+    <string name="action_settings">Einstellungen öffnen</string>
+
+    <!-- DataError.Network -->
+    <string name="error_bad_request">Ungültige Anfrage.</string>
+    <string name="error_request_timeout">Anfrage abgelaufen. Erneut versuchen.</string>
+    <string name="error_unauthorized">Sie sind nicht autorisiert.</string>
+    <string name="error_forbidden">Zugriff ist verboten.</string>
+    <string name="error_not_found">Ressource nicht gefunden.</string>
+    <string name="error_conflict">Konflikt aufgetreten. Erneut versuchen.</string>
+    <string name="error_too_many_requests">Zu viele Anfragen. Langsamer.</string>
+    <string name="error_no_internet">Keine Internetverbindung.</string>
+    <string name="error_payload_too_large">Nutzlast zu groß.</string>
+    <string name="error_server_error">Serverfehler. Später erneut versuchen.</string>
+    <string name="error_service_unavailable">Dienst nicht verfügbar.</string>
+    <string name="error_serialization">Antwort konnte nicht verarbeitet werden.</string>
+    <string name="error_network_unknown">Unbekannter Netzwerkfehler.</string>
+
+    <!-- DataError.Local -->
+    <string name="error_disk_full">Speicher ist voll.</string>
+    <string name="error_local_not_found">Lokal nicht gefunden.</string>
+    <string name="error_local_unknown">Unbekannter lokaler Fehler.</string>
+
+</resources>

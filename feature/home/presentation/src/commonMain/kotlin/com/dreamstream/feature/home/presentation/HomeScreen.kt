@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,9 +25,12 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,12 +44,20 @@ import com.dreamstream.core.designsystem.component.GlassTopBar
 import com.dreamstream.core.designsystem.component.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.action_search
+import com.dreamstream.core.presentation.resources.action_settings
+import com.dreamstream.core.presentation.resources.app_name
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
+import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.presentation.model.ContentUi
 import com.dreamstream.feature.home.presentation.model.HomeSectionUi
+import com.dreamstream.feature.home.presentation.resources.Res
+import com.dreamstream.feature.home.presentation.resources.home_empty_heading
+import com.dreamstream.feature.home.presentation.resources.home_empty_message
 import dev.chrisbanes.haze.HazeState
-import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -56,18 +67,30 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeRoot(
     onNavigateToDetail: (String) -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    var pendingError by remember { mutableStateOf<UiText?>(null) }
+    val errorMessage = pendingError?.asString()
+
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            pendingError = null
+        }
+    }
+
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is HomeEvent.NavigateToDetail -> onNavigateToDetail(event.contentId)
             is HomeEvent.NavigateToSearch -> onNavigateToSearch()
-            is HomeEvent.ShowError -> scope.launch {
-                snackbarHostState.showSnackbar(event.message.toString())
+            is HomeEvent.NavigateToSettings -> onNavigateToSettings()
+            is HomeEvent.ShowError -> {
+                pendingError = event.message
             }
         }
     }
@@ -109,17 +132,24 @@ fun HomeScreen(
                 GlassTopBar(
                     title = {
                         Text(
-                            text = "DreamStream",
+                            text = stringResource(CoreRes.string.app_name),
                             style = MaterialTheme.typography.titleLarge,
                             color = Color.White,
                         )
                     },
                     hazeState = hazeState,
                     actions = {
+                        IconButton(onClick = { onAction(HomeAction.OnSettingsClick) }) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = stringResource(CoreRes.string.action_settings),
+                                tint = Color.White,
+                            )
+                        }
                         IconButton(onClick = { onAction(HomeAction.OnSearchClick) }) {
                             Icon(
                                 imageVector = Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(CoreRes.string.action_search),
                                 tint = Color.White,
                             )
                         }
@@ -290,12 +320,12 @@ private fun EmptyHomeState(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "Nothing to show yet",
+            text = stringResource(Res.string.home_empty_heading),
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
         )
         Text(
-            text = "Content will appear here once sources are configured.",
+            text = stringResource(Res.string.home_empty_message),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

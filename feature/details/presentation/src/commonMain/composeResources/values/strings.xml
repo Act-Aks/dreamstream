@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  feature:details:presentation — English (default) strings.
+  Common strings (retry, back, play) come from :core:presentation.
+-->
+<resources>
+
+    <string name="details_synopsis_label">Synopsis</string>
+    <string name="details_play_button">Play</string>
+    <string name="details_error_not_found">Content not found.</string>
+    <string name="details_error_load_failed">Failed to load content. Please try again.</string>
+
+</resources>

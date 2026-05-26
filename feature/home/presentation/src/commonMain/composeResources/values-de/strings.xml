@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:home:presentation — German (de) translations -->
+<resources>
+
+    <string name="home_title">DreamStream</string>
+    <string name="home_empty_heading">Noch nichts zu sehen</string>
+    <string name="home_empty_message">Inhalte erscheinen hier, sobald Quellen konfiguriert sind.</string>
+    <string name="home_error_no_content">Derzeit sind keine Inhalte verfügbar.</string>
+    <string name="home_error_load_failed">Inhalt konnte nicht geladen werden. Bitte erneut versuchen.</string>
+
+</resources>

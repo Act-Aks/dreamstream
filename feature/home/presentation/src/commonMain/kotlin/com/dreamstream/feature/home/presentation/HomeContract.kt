@@ -34,6 +34,9 @@ sealed interface HomeAction {
 
     /** User tapped the search icon in the top bar. */
     data object OnSearchClick : HomeAction
+
+    /** User tapped the settings icon in the top bar. */
+    data object OnSettingsClick : HomeAction
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -46,6 +49,9 @@ sealed interface HomeEvent {
 
     /** Navigate to the search screen. */
     data object NavigateToSearch : HomeEvent
+
+    /** Navigate to the settings screen. */
+    data object NavigateToSettings : HomeEvent
 
     /** Show a transient error message. */
     data class ShowError(val message: UiText) : HomeEvent

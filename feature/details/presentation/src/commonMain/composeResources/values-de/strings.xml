@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:details:presentation — German (de) translations -->
+<resources>
+
+    <string name="details_synopsis_label">Zusammenfassung</string>
+    <string name="details_play_button">Abspielen</string>
+    <string name="details_error_not_found">Inhalt nicht gefunden.</string>
+    <string name="details_error_load_failed">Inhalt konnte nicht geladen werden. Bitte erneut versuchen.</string>
+
+</resources>

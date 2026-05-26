@@ -16,9 +16,11 @@ plugins {
     alias(libs.plugins.dreamstream.compose)
 }
 
+val moduleName = "com.dreamstream.core.presentation"
+
 kotlin {
     android {
-        namespace = "com.dreamstream.core.presentation"
+        namespace = moduleName
     }
 
     sourceSets.commonMain.dependencies {
@@ -28,5 +30,5 @@ kotlin {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "com.dreamstream.core.presentation"
+    packageOfResClass = "$moduleName.resources"
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:home:presentation — Hindi (hi) translations -->
+<resources>
+
+    <string name="home_title">DreamStream</string>
+    <string name="home_empty_heading">अभी कुछ नहीं दिखाना है</string>
+    <string name="home_empty_message">स्रोत कॉन्फ़िगर होने पर यहाँ सामग्री दिखाई देगी।</string>
+    <string name="home_error_no_content">अभी कोई सामग्री उपलब्ध नहीं है।</string>
+    <string name="home_error_load_failed">सामग्री लोड करने में विफल। कृपया पुनः प्रयास करें।</string>
+
+</resources>
