@@ -57,7 +57,10 @@ include(":feature:details:presentation")
 include(":feature:search:data")
 include(":feature:search:domain")
 include(":feature:search:presentation")
-//listOf("browse", "player", "plugins", "settings", "watchlist", "history").forEach { feature ->
+include(":feature:settings:data")
+include(":feature:settings:domain")
+include(":feature:settings:presentation")
+//listOf("browse", "player", "plugins", "watchlist", "history").forEach { feature ->
 //    include(":feature:$feature:data")
 //    include(":feature:$feature:domain")
 //    include(":feature:$feature:presentation")

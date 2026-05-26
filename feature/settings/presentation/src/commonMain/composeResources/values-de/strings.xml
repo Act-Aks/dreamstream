@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:settings:presentation — German (de) translations -->
+<resources>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_language_section_title">Sprache</string>
+    <string name="settings_language_subtitle">Bevorzugte Sprache wählen</string>
+    <string name="settings_language_system_default">Systemstandard</string>
+
+</resources>

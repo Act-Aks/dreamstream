@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature:settings:presentation — Hindi (hi) translations -->
+<resources>
+
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="settings_language_section_title">भाषा</string>
+    <string name="settings_language_subtitle">अपनी पसंदीदा भाषा चुनें</string>
+    <string name="settings_language_system_default">सिस्टम डिफ़ॉल्ट</string>
+
+</resources>

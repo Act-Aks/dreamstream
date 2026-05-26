@@ -30,4 +30,7 @@ dependencies {
     implementation(projects.feature.search.domain)
     implementation(projects.feature.search.data)
     implementation(projects.feature.search.presentation)
+    implementation(projects.feature.settings.domain)
+    implementation(projects.feature.settings.data)
+    implementation(projects.feature.settings.presentation)
 }

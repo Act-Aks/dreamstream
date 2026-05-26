@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  feature:settings:presentation — English (default) strings.
+  Language display names (English, हिंदी, Deutsch, 日本語) are intentionally
+  hardcoded in AppLanguage.kt — they must always render in their own script,
+  never be translated by the current locale.
+  Only "System default" is translatable because it describes a UI concept.
+-->
+<resources>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_language_section_title">Language</string>
+    <string name="settings_language_subtitle">Choose your preferred language</string>
+    <string name="settings_language_system_default">System default</string>
+
+</resources>
