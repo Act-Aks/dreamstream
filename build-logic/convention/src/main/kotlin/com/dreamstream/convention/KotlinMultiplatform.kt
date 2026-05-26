@@ -1,8 +1,6 @@
 package com.dreamstream.convention
 
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -23,4 +21,5 @@ internal fun Project.configureKotlinMultiplatformCompilerOpts(
             optIn.add("kotlin.time.ExperimentalTime")
         }
     }
+    configureKotlinCompile()
 }

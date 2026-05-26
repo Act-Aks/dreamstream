@@ -6,7 +6,6 @@ import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.TestOptions
-import com.dreamstream.tasks.configureKotlinCompile
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 

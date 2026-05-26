@@ -1,3 +1,4 @@
+import com.dreamstream.convention.bundle
 import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -37,9 +38,7 @@ private fun Project.wireKmpKoin() {
 
         sourceSets.commonMain.dependencies {
             implementation(project.dependencies.platform(bom))
-            implementation(lib("koin-core").get())
-            implementation(lib("koin-compose").get())
-            implementation(lib("koin-compose-viewmodel").get())
+            bundle("koin-common").get().forEach { implementation(it) }
         }
         sourceSets.androidMain.dependencies {
             implementation(project.dependencies.platform(bom))

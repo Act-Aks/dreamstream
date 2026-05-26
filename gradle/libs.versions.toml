@@ -289,7 +289,7 @@ media3 = [
     "androidx-media3-ui",
 ]
 
-koin-desktop = [
+koin-common = [
     "koin-compose",
     "koin-compose-viewmodel",
     "koin-core",
@@ -322,6 +322,7 @@ dreamstream-feature                 = { id = "com.dreamstream.feature",         
 dreamstream-kmp-library             = { id = "com.dreamstream.kmp.library",         version = "unspecified"  }
 dreamstream-koin                    = { id = "com.dreamstream.koin",                version = "unspecified"  }
 dreamstream-ktor                    = { id = "com.dreamstream.ktor",                version = "unspecified"  }
+dreamstream-localization            = { id = "com.dreamstream.localization",        version = "unspecified"  }
 dreamstream-room                    = { id = "com.dreamstream.room",                version = "unspecified"  }
 dreamstream-serialization           = { id = "com.dreamstream.serialization",       version = "unspecified"  }
 dreamstream-testing                 = { id = "com.dreamstream.testing",             version = "unspecified"  }

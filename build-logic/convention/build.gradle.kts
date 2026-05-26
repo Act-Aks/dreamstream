@@ -105,5 +105,9 @@ gradlePlugin {
             id = "com.dreamstream.detekt"
             implementationClass = "DetektConventionPlugin"
         }
+        register("localization") {
+            id = "com.dreamstream.localization"
+            implementationClass = "LocalizationConventionPlugin"
+        }
     }
 }

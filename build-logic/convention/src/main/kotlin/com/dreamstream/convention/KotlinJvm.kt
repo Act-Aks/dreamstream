@@ -1,9 +1,7 @@
 package com.dreamstream.convention
 
-import com.dreamstream.tasks.configureKotlinCompile
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 /**
@@ -11,7 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  * Usage: configureKotlinJvmToolchain()
  */
 internal fun Project.configureKotlinJvm() {
-    extensions.configure< KotlinJvmProjectExtension> {
+    extensions.configure<KotlinJvmProjectExtension> {
         compilerOptions { jvmTarget.set(project.jvmTarget) }
     }
     configureKotlinCompile()

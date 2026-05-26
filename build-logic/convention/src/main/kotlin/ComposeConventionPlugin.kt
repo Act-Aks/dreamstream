@@ -35,6 +35,7 @@ class ComposeConventionPlugin : Plugin<Project> {
                 "dreamstream-kmp-library",
                 "compose-compiler",
                 "compose-multiplatform",
+                "dreamstream-localization",
             )
 
             configureComposeCompiler()

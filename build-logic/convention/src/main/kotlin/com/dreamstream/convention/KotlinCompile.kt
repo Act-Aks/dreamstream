@@ -1,6 +1,5 @@
-package com.dreamstream.tasks
+package com.dreamstream.convention
 
-import com.dreamstream.convention.jvmTarget
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
@@ -9,8 +8,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 /**
  * Configures Kotlin compilation defaults for all Kotlin compile tasks in the project.
  *
- * This sets the shared JVM target, optionally enables warnings as errors,
- * and adds compiler flags for coroutines and opt-in APIs.
+ * Responsibilities:
+ * - Sets the shared JVM target via [jvmTarget].
+ * - Optionally treats warnings as errors based on the `warningsAsErrors` project property.
+ * - Enables commonly used opt-in annotations for coroutines and experimental APIs.
+ * - Ensures that Kotlin compilation runs only after localization validation, when
+ *   the `validateLocalization` task is present in the project.
  */
 internal fun Project.configureKotlinCompile() {
     tasks.withType<KotlinCompile>().configureEach {
@@ -25,7 +28,7 @@ internal fun Project.configureKotlinCompile() {
             freeCompilerArgs.addAll(
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.FlowPreview",
-                "-opt-in=kotlin.RequiresOptIn"
+                "-opt-in=kotlin.RequiresOptIn",
             )
         }
     }
