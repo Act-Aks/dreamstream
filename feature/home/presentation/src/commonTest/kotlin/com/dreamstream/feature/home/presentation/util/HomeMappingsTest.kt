@@ -9,6 +9,9 @@ import com.dreamstream.core.model.search.SearchResult
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection
+import com.dreamstream.feature.home.presentation.resources.Res
+import com.dreamstream.feature.home.presentation.resources.home_error_load_failed
+import com.dreamstream.feature.home.presentation.resources.home_error_no_content
 import kotlin.test.Test
 
 class HomeMappingsTest {
@@ -149,15 +152,15 @@ class HomeMappingsTest {
     // ── HomeError.toUiText() ──────────────────────────────────────────────────
 
     @Test
-    fun `toUiText maps NoContentAvailable to dynamic string`() {
+    fun `toUiText maps NoContentAvailable to string resource`() {
         val uiText = HomeError.NoContentAvailable.toUiText()
-        assertThat(uiText).isEqualTo(UiText.DynamicString("No content available right now."))
+        assertThat(uiText).isEqualTo(UiText.StringResourceId(Res.string.home_error_no_content))
     }
 
     @Test
-    fun `toUiText maps LoadFailed to dynamic string`() {
+    fun `toUiText maps LoadFailed to string resource`() {
         val uiText = HomeError.LoadFailed.toUiText()
-        assertThat(uiText).isEqualTo(UiText.DynamicString("Failed to load content. Please try again."))
+        assertThat(uiText).isEqualTo(UiText.StringResourceId(Res.string.home_error_load_failed))
     }
 
     @Test

@@ -8,6 +8,9 @@ import com.dreamstream.core.model.detail.ContentDetail
 import com.dreamstream.core.model.detail.MovieDetail
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.domain.error.DetailsError
+import com.dreamstream.feature.details.presentation.resources.Res
+import com.dreamstream.feature.details.presentation.resources.details_error_load_failed
+import com.dreamstream.feature.details.presentation.resources.details_error_not_found
 import kotlin.test.Test
 
 class DetailsMappingsTest {
@@ -138,15 +141,15 @@ class DetailsMappingsTest {
     // ── DetailsError.toUiText() ───────────────────────────────────────────────
 
     @Test
-    fun `toUiText maps NotFound to dynamic string`() {
+    fun `toUiText maps NotFound to string resource`() {
         assertThat(DetailsError.NotFound.toUiText())
-            .isEqualTo(UiText.DynamicString("Content not found."))
+            .isEqualTo(UiText.StringResourceId(Res.string.details_error_not_found))
     }
 
     @Test
-    fun `toUiText maps LoadFailed to dynamic string`() {
+    fun `toUiText maps LoadFailed to string resource`() {
         assertThat(DetailsError.LoadFailed.toUiText())
-            .isEqualTo(UiText.DynamicString("Failed to load content. Please try again."))
+            .isEqualTo(UiText.StringResourceId(Res.string.details_error_load_failed))
     }
 
     @Test

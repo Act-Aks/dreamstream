@@ -1,9 +1,8 @@
 package com.dreamstream.feature.search.presentation.util
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
 import assertk.assertions.isEmpty
-import assertk.assertions.isNotEmpty
+import assertk.assertions.isEqualTo
 import com.dreamstream.core.model.catalog.ContentType
 import com.dreamstream.core.model.search.AnimeResult
 import com.dreamstream.core.model.search.LiveResult
@@ -11,6 +10,8 @@ import com.dreamstream.core.model.search.MovieResult
 import com.dreamstream.core.model.search.SeriesResult
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.search.domain.error.SearchError
+import com.dreamstream.feature.search.presentation.resources.Res
+import com.dreamstream.feature.search.presentation.resources.search_error_search_failed
 import kotlin.test.Test
 
 class SearchMappingsTest {
@@ -19,13 +20,25 @@ class SearchMappingsTest {
 
     @Test
     fun `MovieResult maps id to url`() {
-        val result = MovieResult(name = "Cosmic Drift", url = "t1", providerId = "local", year = 2024, rating = 8.2f)
+        val result = MovieResult(
+            name = "Cosmic Drift",
+            url = "t1",
+            providerId = "local",
+            year = 2024,
+            rating = 8.2f
+        )
         assertThat(result.toSearchResultUi().id).isEqualTo("t1")
     }
 
     @Test
     fun `MovieResult maps title to name`() {
-        val result = MovieResult(name = "Cosmic Drift", url = "t1", providerId = "local", year = 2024, rating = 8.2f)
+        val result = MovieResult(
+            name = "Cosmic Drift",
+            url = "t1",
+            providerId = "local",
+            year = 2024,
+            rating = 8.2f
+        )
         assertThat(result.toSearchResultUi().title).isEqualTo("Cosmic Drift")
     }
 
@@ -37,7 +50,8 @@ class SearchMappingsTest {
 
     @Test
     fun `MovieResult with Documentary type maps typeName to Documentary`() {
-        val result = MovieResult(name = "X", url = "x", providerId = "local", type = ContentType.Documentary)
+        val result =
+            MovieResult(name = "X", url = "x", providerId = "local", type = ContentType.Documentary)
         assertThat(result.toSearchResultUi().typeName).isEqualTo("Documentary")
     }
 
@@ -97,19 +111,26 @@ class SearchMappingsTest {
 
     @Test
     fun `SeriesResult formats year correctly`() {
-        val result = SeriesResult(name = "X", url = "x", providerId = "local", year = 2023, rating = 7.8f)
+        val result =
+            SeriesResult(name = "X", url = "x", providerId = "local", year = 2023, rating = 7.8f)
         assertThat(result.toSearchResultUi().year).isEqualTo("2023")
     }
 
     @Test
     fun `AnimeResult formats rating to one decimal place`() {
-        val result = AnimeResult(name = "X", url = "x", providerId = "local", year = 2024, rating = 8.6f)
+        val result =
+            AnimeResult(name = "X", url = "x", providerId = "local", year = 2024, rating = 8.6f)
         assertThat(result.toSearchResultUi().rating).isEqualTo("8.6")
     }
 
     @Test
     fun `thumbnailUrl is mapped from posterUrl`() {
-        val result = MovieResult(name = "X", url = "x", providerId = "local", posterUrl = "https://example.com/thumb.jpg")
+        val result = MovieResult(
+            name = "X",
+            url = "x",
+            providerId = "local",
+            posterUrl = "https://example.com/thumb.jpg"
+        )
         assertThat(result.toSearchResultUi().thumbnailUrl).isEqualTo("https://example.com/thumb.jpg")
     }
 
@@ -122,8 +143,8 @@ class SearchMappingsTest {
     // ── SearchError → UiText ─────────────────────────────────────────────────
 
     @Test
-    fun `SearchFailed maps to non-empty UiText`() {
+    fun `SearchFailed maps to string resource`() {
         val text = SearchError.SearchFailed.toUiText()
-        assertThat(text).isEqualTo(UiText.DynamicString("Search failed. Please try again."))
+        assertThat(text).isEqualTo(UiText.StringResourceId(Res.string.search_error_search_failed))
     }
 }
