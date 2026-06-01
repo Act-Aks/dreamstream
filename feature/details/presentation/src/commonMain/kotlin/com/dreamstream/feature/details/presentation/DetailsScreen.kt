@@ -32,15 +32,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.component.GlassCard
-import com.dreamstream.core.designsystem.component.GlassSurface
-import com.dreamstream.core.designsystem.component.GlassTopBar
-import com.dreamstream.core.designsystem.component.GradientBackground
+import com.dreamstream.core.designsystem.components.GlassCard
+import com.dreamstream.core.designsystem.components.GlassSurface
+import com.dreamstream.core.designsystem.components.GlassTopBar
+import com.dreamstream.core.designsystem.components.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.action_back
 import com.dreamstream.core.presentation.resources.action_retry
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
+import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.presentation.model.DetailContentUi
 import com.dreamstream.feature.details.presentation.resources.Res
 import com.dreamstream.feature.details.presentation.resources.details_play_button
@@ -49,7 +51,6 @@ import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
-import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -185,7 +186,7 @@ private fun DetailsContent(
             ) {
                 // Thumbnail placeholder — replaced with AsyncImage once Coil is wired.
                 Text(
-                    text = content.typeName,
+                    text = content.typeName.asString(),
                     style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.graphicsLayer { alpha = 0.6f },
@@ -358,7 +359,7 @@ private fun DetailsScreenContentPreview() {
                         "where the laws of physics bend and the boundaries between dimensions blur.",
                     thumbnailUrl = null,
                     backdropUrl = null,
-                    typeName = "Movie",
+                    typeName = UiText.DynamicString("Movie"),
                     year = "2024",
                     rating = "8.2",
                     genres = listOf("Sci-Fi", "Adventure", "Drama"),

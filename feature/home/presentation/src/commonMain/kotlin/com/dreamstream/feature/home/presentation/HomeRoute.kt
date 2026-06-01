@@ -1,8 +1,8 @@
 package com.dreamstream.feature.home.presentation
 
-import androidx.navigation3.runtime.NavKey
+import com.dreamstream.core.presentation.navigation.AppRoute
 import kotlinx.serialization.Serializable
 
 /** Type-safe Navigation3 route for the Home screen. */
 @Serializable
-data object HomeRoute : NavKey
+data object HomeRoute : AppRoute

@@ -1,5 +1,7 @@
 package com.dreamstream.feature.home.presentation.model
 
+import com.dreamstream.core.presentation.ui.UiText
+
 /**
  * Presentation-layer model for a single piece of content.
  *
@@ -14,7 +16,7 @@ data class ContentUi(
     val title: String,
     val thumbnailUrl: String?,
     /** Singular content type label, e.g. "Movie", "TV Series". */
-    val typeName: String,
+    val typeName: UiText,
     /** Formatted year string, e.g. "2024". Empty string if unknown. */
     val year: String,
     /** Formatted rating string, e.g. "8.2". Empty string if unknown. */

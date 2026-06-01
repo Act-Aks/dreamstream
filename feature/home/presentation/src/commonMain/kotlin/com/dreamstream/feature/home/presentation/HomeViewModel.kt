@@ -2,8 +2,8 @@ package com.dreamstream.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dreamstream.core.domain.util.onFailure
-import com.dreamstream.core.domain.util.onSuccess
+import com.dreamstream.core.domain.extensions.onFailure
+import com.dreamstream.core.domain.extensions.onSuccess
 import com.dreamstream.feature.home.domain.repository.HomeRepository
 import com.dreamstream.feature.home.presentation.util.toHomeSectionUi
 import com.dreamstream.feature.home.presentation.util.toUiText

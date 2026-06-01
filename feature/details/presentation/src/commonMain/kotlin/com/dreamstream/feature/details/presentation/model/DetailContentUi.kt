@@ -1,5 +1,7 @@
 package com.dreamstream.feature.details.presentation.model
 
+import com.dreamstream.core.presentation.ui.UiText
+
 /**
  * UI representation of [DetailContent] — all display formatting is done in
  * the mapper so the composable receives ready-to-render strings.
@@ -10,7 +12,7 @@ data class DetailContentUi(
     val synopsis: String,
     val thumbnailUrl: String?,
     val backdropUrl: String?,
-    val typeName: String,
+    val typeName: UiText,
     val year: String,
     val rating: String,
     val genres: List<String>,

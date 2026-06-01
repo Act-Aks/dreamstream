@@ -39,11 +39,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.component.GlassCard
-import com.dreamstream.core.designsystem.component.GlassTopBar
-import com.dreamstream.core.designsystem.component.GradientBackground
+import com.dreamstream.core.designsystem.components.GlassCard
+import com.dreamstream.core.designsystem.components.GlassTopBar
+import com.dreamstream.core.designsystem.components.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.action_search
 import com.dreamstream.core.presentation.resources.action_settings
 import com.dreamstream.core.presentation.resources.app_name
@@ -57,7 +58,6 @@ import com.dreamstream.feature.home.presentation.resources.home_empty_message
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -282,7 +282,7 @@ private fun ContentCard(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = content.typeName,
+                    text = content.typeName.asString(),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -374,7 +374,7 @@ private fun HomeScreenContentPreview() {
                                 id = "1",
                                 title = "Cosmic Odyssey",
                                 thumbnailUrl = null,
-                                typeName = "Movie",
+                                typeName = UiText.DynamicString("Movie"),
                                 year = "2024",
                                 rating = "8.4",
                             ),
@@ -382,7 +382,7 @@ private fun HomeScreenContentPreview() {
                                 id = "2",
                                 title = "Neon City Chronicles",
                                 thumbnailUrl = null,
-                                typeName = "TV Series",
+                                typeName = UiText.DynamicString("TV Series"),
                                 year = "2023",
                                 rating = "9.1",
                             ),
@@ -390,7 +390,7 @@ private fun HomeScreenContentPreview() {
                                 id = "3",
                                 title = "The Last Frontier",
                                 thumbnailUrl = null,
-                                typeName = "Movie",
+                                typeName = UiText.DynamicString("Movie"),
                                 year = "2024",
                                 rating = "7.8",
                             ),
@@ -404,7 +404,7 @@ private fun HomeScreenContentPreview() {
                                 id = "4",
                                 title = "Echo Chamber",
                                 thumbnailUrl = null,
-                                typeName = "TV Series",
+                                typeName = UiText.DynamicString("Movie"),
                                 year = "2024",
                                 rating = "",
                             ),
@@ -412,7 +412,7 @@ private fun HomeScreenContentPreview() {
                                 id = "5",
                                 title = "Dark Horizon",
                                 thumbnailUrl = null,
-                                typeName = "Movie",
+                                typeName = UiText.DynamicString("Movie"),
                                 year = "2024",
                                 rating = "8.0",
                             ),

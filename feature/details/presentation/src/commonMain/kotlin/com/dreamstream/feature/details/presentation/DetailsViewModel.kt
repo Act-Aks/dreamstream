@@ -2,8 +2,8 @@ package com.dreamstream.feature.details.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dreamstream.core.domain.util.onFailure
-import com.dreamstream.core.domain.util.onSuccess
+import com.dreamstream.core.domain.extensions.onFailure
+import com.dreamstream.core.domain.extensions.onSuccess
 import com.dreamstream.feature.details.domain.repository.DetailsRepository
 import com.dreamstream.feature.details.presentation.util.toDetailContentUi
 import com.dreamstream.feature.details.presentation.util.toUiText

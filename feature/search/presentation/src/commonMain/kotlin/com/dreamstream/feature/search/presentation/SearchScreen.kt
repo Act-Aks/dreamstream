@@ -43,14 +43,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.component.GlassCard
-import com.dreamstream.core.designsystem.component.GlassTopBar
-import com.dreamstream.core.designsystem.component.GradientBackground
+import com.dreamstream.core.designsystem.components.GlassCard
+import com.dreamstream.core.designsystem.components.GlassTopBar
+import com.dreamstream.core.designsystem.components.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.action_back
 import com.dreamstream.core.presentation.resources.action_clear
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
+import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.search.presentation.model.SearchResultUi
 import com.dreamstream.feature.search.presentation.resources.Res
 import com.dreamstream.feature.search.presentation.resources.search_hint
@@ -61,7 +63,6 @@ import com.dreamstream.feature.search.presentation.resources.search_prompt_messa
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events
@@ -290,7 +291,7 @@ private fun SearchResultRow(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = result.typeName,
+                    text = result.typeName.asString(),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -428,7 +429,7 @@ private fun SearchScreenResultsPreview() {
                         id = "t1",
                         title = "Cosmic Drift",
                         thumbnailUrl = null,
-                        typeName = "Movie",
+                        typeName = UiText.DynamicString("Movie"),
                         year = "2024",
                         rating = "8.2",
                     ),
@@ -436,7 +437,7 @@ private fun SearchScreenResultsPreview() {
                         id = "t3",
                         title = "The Last Horizon",
                         thumbnailUrl = null,
-                        typeName = "Movie",
+                        typeName = UiText.DynamicString("Movie"),
                         year = "2024",
                         rating = "9.0",
                     ),

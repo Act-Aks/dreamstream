@@ -3,6 +3,7 @@ package com.dreamstream.feature.search.presentation.util
 import com.dreamstream.core.model.search.SearchResult
 import com.dreamstream.core.model.search.displayRating
 import com.dreamstream.core.model.search.year
+import com.dreamstream.core.presentation.model.displayName
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.search.domain.error.SearchError
 import com.dreamstream.feature.search.presentation.model.SearchResultUi

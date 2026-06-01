@@ -3,8 +3,8 @@ package com.dreamstream.feature.search.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dreamstream.core.domain.util.onFailure
-import com.dreamstream.core.domain.util.onSuccess
+import com.dreamstream.core.domain.extensions.onFailure
+import com.dreamstream.core.domain.extensions.onSuccess
 import com.dreamstream.feature.search.domain.repository.SearchRepository
 import com.dreamstream.feature.search.presentation.util.toSearchResultUi
 import com.dreamstream.feature.search.presentation.util.toUiText

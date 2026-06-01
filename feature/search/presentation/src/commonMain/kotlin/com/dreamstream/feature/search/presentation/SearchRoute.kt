@@ -1,8 +1,8 @@
 package com.dreamstream.feature.search.presentation
 
-import androidx.navigation3.runtime.NavKey
+import com.dreamstream.core.presentation.navigation.AppRoute
 import kotlinx.serialization.Serializable
 
 /** Type-safe Navigation3 route for the Search screen. */
 @Serializable
-data object SearchRoute : NavKey
+data object SearchRoute : AppRoute
