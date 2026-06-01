@@ -4,22 +4,22 @@ import com.dreamstream.core.domain.util.Error
 import com.dreamstream.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 /**
  * Converts a [Flow] into a [Result] flow.
  *
  * - Emits [Result.Success] for each value emitted by the flow
- * - Emits [Result.Error] on exception (wrapped as [E])
+ * - Emits [Result.Error] on exception, mapped to [E] by [onError]
  *
- * @note Loading state is not included. Handle loading separately via [onStart] in your UI.
+ * @param onError Maps a thrown [Throwable] to a typed [E]. Called whenever the
+ * upstream flow throws an exception.
+ *
+ * @note Loading state is not included. Handle loading separately via `onStart` in your UI.
  */
-fun <T, E : Error> Flow<T>.asResult(): Flow<Result<T, E>> = this
-    .map { Result.Success(it) }
-    .catch { e -> emit(Result.Error(e as E)) }
+fun <T, E : Error> Flow<T>.asResult(onError: (Throwable) -> E): Flow<Result<T, E>> = this
+    .map<T, Result<T, E>> { Result.Success(it) }
+    .catch { e -> emit(Result.Error(onError(e))) }
 
 /**
  * Executes [action] when a [Result.Success] is emitted, preserving the original flow.
@@ -58,19 +58,3 @@ fun <T, R, E : Error> Flow<Result<T, E>>.mapResult(
         is Result.Error -> result
     }
 }
-
-/**
- * Converts a [Flow] into a [Result] flow with explicit loading state.
- *
- * - Emits loading indicator at the start (via [onStart])
- * - Emits [Result.Success] for each value
- * - Emits [Result.Error] on exception
- *
- * @param loadingIndicator A value to emit at the start to signal loading state.
- *        Typically used with UI state wrappers.
- */
-fun <T, E : Error> Flow<T>.asResultWithLoading(
-    loadingIndicator: Flow<Unit> = flowOf(Unit),
-): Flow<Result<T, E>> = this
-    .asResult()
-    .onStart { loadingIndicator.collect() }

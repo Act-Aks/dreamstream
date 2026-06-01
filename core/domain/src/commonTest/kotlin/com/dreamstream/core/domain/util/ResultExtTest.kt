@@ -31,7 +31,8 @@ class ResultExtTest {
         val mapped = result.map { it * 5 }
 
         assertThat(mapped).isInstanceOf(Result.Error::class)
-        assertThat((mapped as Result.Error).error).isEqualTo(TestError.BOOM)
+        assertThat((mapped as Result.Error).error)
+            .isEqualTo(TestError.BOOM)
     }
 
     @Test
