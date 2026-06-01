@@ -27,11 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.component.GlassCard
-import com.dreamstream.core.designsystem.component.GlassSurface
-import com.dreamstream.core.designsystem.component.GlassTopBar
-import com.dreamstream.core.designsystem.component.GradientBackground
+import com.dreamstream.core.designsystem.components.GlassCard
+import com.dreamstream.core.designsystem.components.GlassSurface
+import com.dreamstream.core.designsystem.components.GlassTopBar
+import com.dreamstream.core.designsystem.components.GradientBackground
 import com.dreamstream.core.designsystem.theme.GlassDefaults
+import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.action_back
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
 import com.dreamstream.feature.settings.domain.model.AppLanguage
@@ -43,7 +44,6 @@ import com.dreamstream.feature.settings.presentation.resources.settings_title
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import com.dreamstream.core.presentation.resources.Res as CoreRes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root — injects ViewModel, observes events

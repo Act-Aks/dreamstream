@@ -3,7 +3,7 @@ package com.dreamstream.feature.settings.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dreamstream.feature.settings.domain.model.AppLanguage
-import com.dreamstream.feature.settings.domain.repository.LanguageRepository
+import com.dreamstream.feature.settings.domain.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val languageRepository: LanguageRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
-        SettingsState(currentLanguage = languageRepository.getCurrentLanguage()),
+        SettingsState(currentLanguage = settingsRepository.getCurrentLanguage()),
     )
     val state = _state.asStateFlow()
 
@@ -32,7 +32,7 @@ class SettingsViewModel(
 
     private fun applyLanguage(language: AppLanguage) {
         _state.update { it.copy(currentLanguage = language) }
-        languageRepository.applyLanguage(language)
+        settingsRepository.applyLanguage(language)
     }
 
     private fun navigateBack() {
