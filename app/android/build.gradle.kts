@@ -18,19 +18,5 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.domain)
-    implementation(projects.core.presentation)
-    implementation(projects.core.designSystem)
-    implementation(projects.feature.home.domain)
-    implementation(projects.feature.home.data)
-    implementation(projects.feature.home.presentation)
-    implementation(projects.feature.details.domain)
-    implementation(projects.feature.details.data)
-    implementation(projects.feature.details.presentation)
-    implementation(projects.feature.search.domain)
-    implementation(projects.feature.search.data)
-    implementation(projects.feature.search.presentation)
-    implementation(projects.feature.settings.domain)
-    implementation(projects.feature.settings.data)
-    implementation(projects.feature.settings.presentation)
+    implementation(projects.app.shared)
 }

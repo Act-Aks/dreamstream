@@ -2,16 +2,8 @@ package com.dreamstream
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.dreamstream.feature.details.data.di.detailsDataModule
-import com.dreamstream.feature.details.presentation.di.detailsPresentationModule
-import com.dreamstream.feature.home.data.di.homeDataModule
-import com.dreamstream.feature.home.presentation.di.homePresentationModule
-import com.dreamstream.feature.search.data.di.searchDataModule
-import com.dreamstream.feature.search.presentation.di.searchPresentationModule
-import com.dreamstream.feature.settings.data.di.settingsDataModule
-import com.dreamstream.feature.settings.presentation.di.settingsPresentationModule
+import di.initKoin
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
 
 class DreamStreamApplication : Application() {
 
@@ -23,18 +15,8 @@ class DreamStreamApplication : Application() {
         // explicit reapplication. On API 33+ this is handled by the system.)
         AppCompatDelegate.setApplicationLocales(AppCompatDelegate.getApplicationLocales())
 
-        startKoin {
+        initKoin {
             androidContext(this@DreamStreamApplication)
-            modules(
-                homeDataModule,
-                homePresentationModule,
-                detailsDataModule,
-                detailsPresentationModule,
-                searchDataModule,
-                searchPresentationModule,
-                settingsDataModule,
-                settingsPresentationModule,
-            )
         }
     }
 }
