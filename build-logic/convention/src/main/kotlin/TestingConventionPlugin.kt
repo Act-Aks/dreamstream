@@ -48,11 +48,6 @@ class TestingConventionPlugin : Plugin<Project> {
                     implementation(lib("junit-jupiter-params").get())
                     runtimeOnly(lib("junit-jupiter-engine").get())
                 }
-                sourceSets.androidUnitTest.dependencies {
-                    implementation(lib("junit-jupiter-api").get())
-                    implementation(lib("junit-jupiter-params").get())
-                    runtimeOnly(lib("junit-jupiter-engine").get())
-                }
             }
         } else {
             dependencies {
