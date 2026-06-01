@@ -5,6 +5,10 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
+import com.dreamstream.core.domain.extensions.asEmptyResult
+import com.dreamstream.core.domain.extensions.map
+import com.dreamstream.core.domain.extensions.onFailure
+import com.dreamstream.core.domain.extensions.onSuccess
 import kotlin.test.Test
 
 private enum class TestError : Error { BOOM }

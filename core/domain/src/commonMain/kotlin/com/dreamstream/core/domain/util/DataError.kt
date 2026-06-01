@@ -17,24 +17,36 @@ sealed interface DataError : Error {
     /** Errors that originate from network I/O or HTTP responses. */
     enum class Network : DataError {
         BAD_REQUEST,
-        REQUEST_TIMEOUT,
-        UNAUTHORIZED,
+        CONFLICT,
         FORBIDDEN,
         NOT_FOUND,
-        CONFLICT,
-        TOO_MANY_REQUESTS,
         NO_INTERNET,
         PAYLOAD_TOO_LARGE,
+        REQUEST_TIMEOUT,
+        SERIALIZATION,
         SERVER_ERROR,
         SERVICE_UNAVAILABLE,
-        SERIALIZATION,
+        TOO_MANY_REQUESTS,
+        UNAUTHORIZED,
         UNKNOWN,
     }
 
     /** Errors that originate from local storage (DB, disk, preferences). */
     enum class Local : DataError {
+        CORRUPTED,
         DISK_FULL,
         NOT_FOUND,
+        PERMISSION_DENIED,
         UNKNOWN,
+    }
+
+    /** Errors that originate from plugin. */
+    enum class Plugin : DataError {
+        CLASS_NOT_FOUND,
+        INCOMPATIBLE_VERSION,
+        INVALID_MANIFEST,
+        LOAD_FAILED,
+        SIGNATURE_INVALID,
+        UNKNOWN
     }
 }
