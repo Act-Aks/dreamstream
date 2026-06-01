@@ -32,4 +32,33 @@
     <string name="error_local_not_found">Lokal nicht gefunden.</string>
     <string name="error_local_unknown">Unbekannter lokaler Fehler.</string>
 
+    <!-- DataError.Plugin -->
+    <string name="error_plugin_class_not_found">Plugin-Klasse nicht gefunden.</string>
+    <string name="error_plugin_corrupted">Plugin ist beschädigt.</string>
+    <string name="error_plugin_incompatible_version">Plugin-Version ist inkompatibel.</string>
+    <string name="error_plugin_invalid_manifest">Plugin-Manifest ist ungültig.</string>
+    <string name="error_plugin_load_failed">Plugin konnte nicht geladen werden.</string>
+    <string name="error_plugin_permission_denied">Plugin-Berechtigung verweigert.</string>
+    <string name="error_plugin_signature_invalid">Plugin-Signatur ist ungültig.</string>
+    <string name="error_plugin_unknown">Unbekannter Plugin-Fehler.</string>
+
+    <!-- ── Core Model extensions strings  ─── -->
+    <string name="anime">Anime</string>
+    <string name="anime_movie">Anime-Film</string>
+    <string name="documentary">Dokumentation</string>
+    <string name="live">Live</string>
+    <string name="movie">Film</string>
+    <string name="music">Musik</string>
+    <string name="others">Sonstige</string>
+    <string name="tv_series">TV-Serie</string>
+
+    <string name="episode">Folge %s</string>
+    <string name="season">Staffel %s</string>
+
+    <string name="status_ongoing">Laufend</string>
+    <string name="status_completed">Abgeschlossen</string>
+    <string name="status_cancelled">Abgebrochen</string>
+    <string name="status_hiatus">In Pause</string>
+    <string name="status_unknown">Unbekannt</string>
+
 </resources>

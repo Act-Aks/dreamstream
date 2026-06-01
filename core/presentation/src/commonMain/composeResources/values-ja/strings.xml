@@ -32,4 +32,33 @@
     <string name="error_local_not_found">ローカルに見つかりません。</string>
     <string name="error_local_unknown">不明なローカルエラー。</string>
 
+    <!-- DataError.Plugin -->
+    <string name="error_plugin_class_not_found">プラグインクラスが見つかりません。</string>
+    <string name="error_plugin_corrupted">プラグインが破損しています。</string>
+    <string name="error_plugin_incompatible_version">プラグインバージョンが非互換です。</string>
+    <string name="error_plugin_invalid_manifest">プラグインマニフェストが無効です。</string>
+    <string name="error_plugin_load_failed">プラグインのロードに失敗しました。</string>
+    <string name="error_plugin_permission_denied">プラグインの権限が拒否されました。</string>
+    <string name="error_plugin_signature_invalid">プラグイン署名が無効です。</string>
+    <string name="error_plugin_unknown">不明なプラグインエラー。</string>
+
+    <!-- ── Core Model extensions strings  ── -->
+    <string name="anime">アニメ</string>
+    <string name="anime_movie">アニメ映画</string>
+    <string name="documentary">ドキュメンタリー</string>
+    <string name="live">ライブ</string>
+    <string name="movie">映画</string>
+    <string name="music">音楽</string>
+    <string name="others">その他</string>
+    <string name="tv_series">テレビシリーズ</string>
+
+    <string name="episode">エピソード %s</string>
+    <string name="season">シーズン %s</string>
+
+    <string name="status_ongoing">進行中</string>
+    <string name="status_completed">完了</string>
+    <string name="status_cancelled">キャンセル済み</string>
+    <string name="status_hiatus">休止中</string>
+    <string name="status_unknown">不明</string>
+
 </resources>

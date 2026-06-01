@@ -32,4 +32,33 @@
     <string name="error_local_not_found">स्थानीय रूप से नहीं मिला।</string>
     <string name="error_local_unknown">अज्ञात स्थानीय त्रुटि।</string>
 
+    <!-- DataError.Plugin -->
+    <string name="error_plugin_class_not_found">प्लगइन क्लास नहीं मिला।</string>
+    <string name="error_plugin_corrupted">प्लगइन दूषित हो गया है।</string>
+    <string name="error_plugin_incompatible_version">प्लगइन संस्करण असंगत है।</string>
+    <string name="error_plugin_invalid_manifest">प्लगइन मैनिफेस्ट अमान्य है।</string>
+    <string name="error_plugin_load_failed">प्लगइन लोड करने में विफल।</string>
+    <string name="error_plugin_permission_denied">प्लगइन की अनुमति अस्वीकार की गई।</string>
+    <string name="error_plugin_signature_invalid">प्लगइन सिग्नेचर अमान्य है।</string>
+    <string name="error_plugin_unknown">अज्ञात प्लगइन त्रुटि।</string>
+
+    <!-- ── Core Model extensions strings  ── -->
+    <string name="anime">एनीमे</string>
+    <string name="anime_movie">एनीमे मूवी</string>
+    <string name="documentary">डॉक्यूमेंट्री</string>
+    <string name="live">लाइव</string>
+    <string name="movie">मूवी</string>
+    <string name="music">संगीत</string>
+    <string name="others">अन्य</string>
+    <string name="tv_series">टीवी सीरीज</string>
+
+    <string name="episode">एपिसोड %s</string>
+    <string name="season">सीज़न %s</string>
+
+    <string name="status_ongoing">चालू</string>
+    <string name="status_completed">पूरा हुआ</string>
+    <string name="status_cancelled">रद्द किया गया</string>
+    <string name="status_hiatus">स्थगित</string>
+    <string name="status_unknown">अज्ञात</string>
+
 </resources>

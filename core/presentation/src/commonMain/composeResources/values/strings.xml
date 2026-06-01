@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   core:presentation — shared string resources
   These strings are public (publicResClass = true) and accessible to all feature modules
   that depend on :core:presentation.
@@ -40,5 +39,34 @@
     <string name="error_disk_full">Storage is full.</string>
     <string name="error_local_not_found">Not found locally.</string>
     <string name="error_local_unknown">Unknown local error.</string>
+
+    <!-- ── DataError.Plugin messages ──────────────────────────────────────── -->
+    <string name="error_plugin_class_not_found">Plugin class not found.</string>
+    <string name="error_plugin_corrupted">Plugin is corrupted.</string>
+    <string name="error_plugin_incompatible_version">Plugin version is incompatible.</string>
+    <string name="error_plugin_invalid_manifest">Plugin manifest is invalid.</string>
+    <string name="error_plugin_load_failed">Failed to load plugin.</string>
+    <string name="error_plugin_permission_denied">Plugin permission was denied.</string>
+    <string name="error_plugin_signature_invalid">Plugin signature is invalid.</string>
+    <string name="error_plugin_unknown">Unknown plugin error.</string>
+
+    <!-- ── Core Model extensions strings  ─────────────────────────────────── -->
+    <string name="anime">Anime</string>
+    <string name="anime_movie">Anime Movie</string>
+    <string name="documentary">Documentary</string>
+    <string name="live">Live</string>
+    <string name="movie">Movie</string>
+    <string name="music">Music</string>
+    <string name="others">Others</string>
+    <string name="tv_series">TV Series</string>
+
+    <string name="episode">Episode %s</string>
+    <string name="season">Season %s</string>
+
+    <string name="status_ongoing">Ongoing</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_hiatus">On Hiatus</string>
+    <string name="status_unknown">Unknown</string>
 
 </resources>
