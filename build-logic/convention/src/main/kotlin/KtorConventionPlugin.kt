@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -22,14 +23,13 @@ class KtorConventionPlugin : Plugin<Project> {
         with(target) {
             applyPlugins("dreamstream-serialization")
 
-            val isKmp = extensions.findByType(KotlinMultiplatformExtension::class.java) != null
+            val isKmp = extensions.findByType<KotlinMultiplatformExtension>() != null
             if (isKmp) {
                 extensions.configure<KotlinMultiplatformExtension> {
                     sourceSets.commonMain.dependencies {
                         implementation(lib("ktor-client-core").get())
                         implementation(lib("ktor-client-content-negotiation").get())
                         implementation(lib("ktor-client-logging").get())
-                        implementation(lib("ktor-client-auth").get())
                         implementation(lib("ktor-serialization-kotlinx-json").get())
                     }
                     sourceSets.androidMain.dependencies {
