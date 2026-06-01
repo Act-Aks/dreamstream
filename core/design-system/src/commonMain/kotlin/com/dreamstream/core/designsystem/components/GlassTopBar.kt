@@ -1,4 +1,4 @@
-package com.dreamstream.core.designsystem.component
+package com.dreamstream.core.designsystem.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api

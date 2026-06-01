@@ -1,11 +1,12 @@
-package com.dreamstream.core.designsystem.component
+package com.dreamstream.core.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,29 +24,43 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
 
 /**
- * Non-clickable glassmorphic surface container.
+ * Clickable glassmorphic card.
  *
- * Semantically equivalent to Material's [Surface] but with glassmorphic
- * rendering. Apply [GlassCard] when the container must respond to clicks.
+ * Applies a [hazeEffect] blur over whatever [HazeState] source is behind this
+ * card, then overlays a frosted white + brand-violet tint. The translucent
+ * border adds the characteristic rim-light of real frosted glass.
+ *
+ * Requires a [HazeState] that is connected via [Modifier.hazeSource] to the
+ * content rendered beneath this card — typically a [GradientBackground].
  *
  * ```kotlin
- * GlassSurface(
- *     hazeState = hazeState,
- *     style = GlassDefaults.thick,
- * ) {
- *     Column(modifier = Modifier.padding(16.dp)) { ... }
+ * val hazeState = remember { HazeState() }
+ *
+ * Box {
+ *     GradientBackground(hazeState = hazeState)
+ *
+ *     GlassCard(
+ *         hazeState = hazeState,
+ *         onClick = { /* navigate */ },
+ *     ) {
+ *         Text("Content", modifier = Modifier.padding(16.dp))
+ *     }
  * }
  * ```
+ *
+ * For a non-clickable glass container see [GlassSurface].
  */
 @Composable
-fun GlassSurface(
+fun GlassCard(
     hazeState: HazeState,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: GlassStyle = GlassDefaults.regular,
     shape: Shape = MaterialTheme.shapes.large,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Surface(
+    Card(
+        onClick = onClick,
         modifier = modifier
             .clip(shape)
             .hazeEffect(
@@ -53,11 +68,12 @@ fun GlassSurface(
                 style = style.toHazeStyle(),
             ),
         shape = shape,
-        color = Color.Transparent,
         border = BorderStroke(
             width = style.borderWidth,
             color = Color.White.copy(alpha = style.borderAlpha),
         ),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Box(content = content)
     }
@@ -69,20 +85,20 @@ fun GlassSurface(
 
 @Preview(showBackground = false, widthDp = 360, heightDp = 260)
 @Composable
-private fun GlassSurfacePreview() {
+private fun GlassCardPreview() {
     DreamStreamTheme {
         val hazeState = remember { HazeState() }
         GradientBackground(
             hazeState = hazeState,
             modifier = Modifier,
         ) {
-            GlassSurface(
+            GlassCard(
                 hazeState = hazeState,
-                style = GlassDefaults.thick,
+                onClick = {},
                 modifier = Modifier.padding(32.dp),
             ) {
                 Text(
-                    text = "Glass Surface",
+                    text = "Glass Card",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     modifier = Modifier.padding(20.dp),

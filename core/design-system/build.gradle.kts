@@ -43,6 +43,6 @@ kotlin {
 }
 
 compose.resources {
-    publicResClass = true
+    publicResClass = false
     packageOfResClass = "$moduleName.resources"
 }
