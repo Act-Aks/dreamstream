@@ -44,7 +44,7 @@ include(":core:design-system")
 include(":core:domain")
 include(":core:model")
 //include(":core:player")
-//include(":core:plugin-api")
+include(":core:plugin-api")
 include(":core:presentation")
 
 /********************* All The Feature Modules **************************/
@@ -68,5 +68,6 @@ include(":feature:settings:presentation")
 
 /********************* All The Apps **************************/
 include(":app:android")
+include(":app:shared")
 //include(":app:desktop")
 //include(":app:tv")
