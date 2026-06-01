@@ -13,30 +13,50 @@ DreamStream should be designed as a long-lived, modular KMP application that can
 The following modules and infrastructure are complete and compiled:
 
 - `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities
-- `:core:domain` — `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local), `ResultExtensions`, `DreamLogger`; tests passing
-- `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`
+- `:core:domain` — core primitives and KMP extension helpers:
+  - `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local + Plugin), `DreamLogger`; tests passing
+  - `DataError.Plugin` sealed enum: `CLASS_NOT_FOUND`, `INCOMPATIBLE_VERSION`, `INVALID_MANIFEST`, `LOAD_FAILED`, `SIGNATURE_INVALID`, `UNKNOWN`
+  - `DataError.Local` gains `CORRUPTED` and `PERMISSION_DENIED`
+  - `DispatcherProvider` interface + `DefaultDispatcherProvider` for injecting coroutine dispatchers
+  - Extension helpers in `extensions/` package: `FlowExtensions` (asResult, onSuccess, onFailure, mapResult), `ListExtensions` (chunkedOrEmpty, distinctByKey, safeSubList, indexOfFirstOrNull), `NumberExtensions` (toReadableDuration, toReadableMinutes, toReadableFileSize), `StringExtensions` (URL/Base64/HTML utilities)
+  - `ResultExtensions` moved from `util/` to `extensions/` package
+- `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`:
+  - All 24 `DataError` variants (Network + Local + Plugin) mapped to localized `StringResourceId`
+  - Display name helpers: `ContentTypeDisplayName`, `EpisodeDisplayName`, `SeasonDisplayName`, `ShowStatusDisplayName`, `StreamLinkDisplayName`, `SubtitleDisplayName`, `PluginRepositoryDisplayName` — bridge `core:model` types to localized `UiText`
+  - `NavigationItem(icon, label)` data class for design-system navigation bar
+  - `AppRoute` sealed hierarchy for top-level navigation type safety
+  - **4 locales expanded** — English, German (`values-de`), Hindi (`values-hi`), Japanese (`values-ja`) now include plugin error messages, content-type labels, episode/season formats, and show-status strings
 - `:core:design-system` — full glassmorphic design system:
   - **Color tokens** — vibrant electric palette: `Primary` violet `#A855F7`, `Secondary` cyan `#06B6D4`, `Tertiary` pink `#F472B6`; deep-space dark surfaces; ambient glow sources for gradient backdrops; glass tint tokens
   - **Shape tokens** — more-rounded ramp: `extraSmall 8dp` → `extraLarge 32dp`
   - **Glass token system** — `GlassStyle` data class with five named presets (`GlassDefaults.ultraThin` → `ultraThick`); `toHazeStyle()` converts to a Haze `HazeStyle` mixing white frosted tint + brand-violet tint
   - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
-  - **Components** — `GradientBackground` (ambient purple/cyan/pink glow blobs, registers as `hazeSource`), `GlassCard` (clickable frosted glass card), `GlassSurface` (non-clickable frosted container), `GlassTopBar` (glassmorphic top app bar)
+  - **Components** (package `designsystem.components`) — `GradientBackground`, `GlassCard`, `GlassSurface`, `GlassTopBar`, `GlassNavigationBar` (full-width bottom nav driven by `NavigationItem` list with HazeState blur), `GlassNavigationBarItem`
   - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
-- `:core:model` — shared domain types used across feature modules:
+- `:core:model` — shared domain types used across feature modules (all enriched with full KDoc and business-logic properties):
   - `catalog/` — `Actor`, `ContentType` (with `displayName` singular label and `isEpisodic` flag), `Episode`, `Quality`, `Season`, `SubtitleFormat`, `ThemeMode`
   - `detail/` — `ContentDetail` sealed hierarchy (`AnimeDetail`, `LiveDetail`, `MovieDetail`, `SeriesDetail`), `ShowStatus`, `displayRating` extension
+  - `filter/` — `FilterOption`, `BooleanFilter`, `SingleSelectFilter`, `TextSearchFilter` for catalog/search filter UI models
   - `media/` — `StreamLink`, `Subtitle`
   - `plugin/` — `DreamError`, `InstalledPlugin`, `PluginManifest`, `PluginRepository`, `PluginStatus`, `RepositoryManifest`
   - `search/` — `SearchResult` sealed hierarchy (`AnimeResult`, `LiveResult`, `MovieResult`, `SeriesResult`), `SearchResultExtensions` (`year`, `rating`, `displayRating`)
+  - `user/` — `Bookmark`, `BookmarkCategory`, `UserPreferences`, `WatchHistory` for user-state domain models
+- `:core:plugin-api` — KMP module providing the plugin integration surface:
+  - `DreamPlugin` / `PluginMetadata` / `PluginApiVersion` / `PluginContext` — plugin lifecycle contract
+  - `ContentProvider` interface — catalog sections, search, detail, and stream resolution contracts using `Result<T, DataError>`
+  - `ProviderType` enum (ANIME, MOVIE, TV, LIVE, MUSIC) and `VpnStatus` model
+  - API models: `CatalogRequest/Response/Section`, `ApiContentDetail` sealed hierarchy, `ApiSearchResult` sealed hierarchy
+  - `Extractor` and `ApiMapper` interfaces for HTML/JSON source integration
+  - Depends on `ktor-client-core`, `kotlinx-serialization-json`, `kotlinx-datetime`, `ksoup`; exposes `core:model` as `api`
 - `:feature:home` — first vertical slice, fully tested and wired into `:app:android`:
   - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`; depends on `:core:model` for shared types
   - `:feature:home:data` — `InMemoryHomeRepository` (hardcoded stub returning 3 sections, 10 items)
-  - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; Koin module; `HomeRoute`
+  - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; `ContentUi.typeName` is `UiText` (localized via `ContentTypeDisplayName`); Koin module; `HomeRoute`
   - **Tests** — 38 passing: `HomeViewModelTest` (7), `HomeMappingsTest` (20), `InMemoryHomeRepositoryTest` (11)
 - `:feature:details` — second vertical slice, fully tested and wired into `:app:android`:
   - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`; depends on `:core:model` for shared types
   - `:feature:details:data` — `InMemoryDetailsRepository` (full detail records for all 10 catalog IDs from the home stub; returns `DetailsError.NotFound` for unknown IDs)
-  - `:feature:details:presentation` — `DetailsViewModel` (reads `contentId` from `SavedStateHandle`; `OnBackClick` → `NavigateBack` event; `OnRetry` → reload), `DetailsScreen` (glassmorphic hero card, metadata + genre tags, synopsis, play button placeholder), `DetailsRoute(contentId: String)`, Koin module
+  - `:feature:details:presentation` — `DetailsViewModel` (reads `contentId` from `SavedStateHandle`; `OnBackClick` → `NavigateBack` event; `OnRetry` → reload), `DetailsScreen` (glassmorphic hero card, metadata + genre tags, synopsis, play button placeholder); `DetailContentUi.typeName` is `UiText`; Koin module
   - **Tests** — 38 passing: `DetailsViewModelTest` (6), `DetailsMappingsTest` (23), `InMemoryDetailsRepositoryTest` (9)
 - `:feature:search` — third vertical slice, fully tested and wired into `:app:android`:
   - `:feature:search:domain` — `SearchRepository` contract, `SearchError` (`EmptyQuery` | `NoResults` | `Unknown`)
@@ -44,20 +64,24 @@ The following modules and infrastructure are complete and compiled:
   - `:feature:search:presentation` — `SearchViewModel` (MVI with `SearchState`, `SearchAction`, `SearchEvent`), `SearchScreen` (glassmorphic search bar + result grid using `GlassCard`), `SearchRoute`, Koin modules
   - **Tests** — 39 passing: `SearchViewModelTest` (9), `SearchMappingsTest` (18), `InMemorySearchRepositoryTest` (12)
 - `:feature:settings` — fourth feature, wired into `:app:android`:
-  - `:feature:settings:domain` — `AppLanguage` sealed class (6 languages: English, German, Hindi, Japanese, Taiwanese Mandarin, System Default), `LanguageRepository` contract
-  - `:feature:settings:data` — `AppCompatLanguageRepository` using `AppCompatDelegate.setApplicationLocales()` for runtime language switching
+  - `:feature:settings:domain` — `AppLanguage` sealed class (6 languages: English, German, Hindi, Japanese, Taiwanese Mandarin, System Default), `SettingsRepository` contract (language + dark mode + notifications)
+  - `:feature:settings:data` — KMP-split: `commonMain` Koin module; `androidMain` → `AndroidSettingsRepository` (AppCompatDelegate locale + night mode); `desktopMain` → `DesktopSettingsRepository` stub
   - `:feature:settings:presentation` — `SettingsViewModel` (MVI with `SettingsState`, `SettingsAction`), `SettingsScreen` (language picker with check indicators), `SettingsRoute`, Koin module
-  - **Tests** — none yet (requires Android instrumentation for `AppCompatLanguageRepository`)
+  - **Tests** — none yet (requires Android instrumentation)
 - **Localization infrastructure**:
   - `LocalizationConventionPlugin` — registers Compose Multiplatform resource source sets and generates `LocaleConfig` for Android
   - `LocalizationValidationTask` — Gradle task validating every feature's `composeResources/values/strings.xml` against a required-keys schema
   - **4 locales** — English, German (`values-de`), Hindi (`values-hi`), Japanese (`values-ja`) across `:core:presentation` and all feature presentation modules
-- `:core:presentation` — `DataError.toUiText()` fully migrated from `DynamicString` to `StringResourceId`; all 16 `DataError` variants now use localized compose resources
-- `:app:android` — `MainActivity` with `DreamStreamTheme`, `AppNavigation` (home→details, search, settings tabs), and all Koin modules assembled; debug APK builds and runs
+- `:app:shared` — KMP module hosting shared app wiring:
+  - `App.kt` — shared Compose entry point wrapping `DreamStreamTheme` + `AppNavigation`
+  - `di/InitKoin.kt` + `di/AppModule.kt` — platform-agnostic Koin startup helpers
+  - `navigation/AppNavigation.kt` — Navigation3 `NavDisplay` inside a `Box` with an animated `GlassNavigationBar` that slides in/out based on back-stack depth (visible only at tab roots)
+  - `navigation/BottomTab.kt` — enum mapping each tab (Home, Search, Settings) to its Navigation3 route, Material icon, and label; `switchTab` clears the back stack before pushing the new root
+- `:app:android` — `MainActivity` delegates to `App()` from `:app:shared`; `DreamStreamApplication` initialises Koin via `initKoin`; debug APK builds and runs
 
-**120 unit tests pass** across the project (5 core/domain + 38 home + 38 details + 39 search).
+**122 unit tests pass** across the project (5 core/domain + 1 core/model + 1 core/presentation + 38 home + 38 details + 39 search).
 
-All foundation steps and the first three feature slices (home, details, search) are complete, with the settings feature adding real platform API integration (AppCompat). The next area to explore is real data integration (Ktor networking, a live content source, or Room persistence) or expanding discovery with a catalog/browsing feature.
+All foundation steps and the first four feature slices are complete. The project has a glassmorphic bottom navigation bar, a KMP-shared app module, a plugin-API contract module, rich domain models, and KMP-split settings data layer. The next areas to explore are: real data integration (Ktor networking, a live content source), Room persistence, or a catalog/browsing feature.
 
 ## Architecture Source Of Truth
 
@@ -93,13 +117,15 @@ If this file and a skill appear to disagree, prefer the skill for detailed imple
 Use this structure as the target architecture once implementation begins:
 
 ```text
-:app
+:app:android
+:app:shared
 :build-logic
 :core:domain
 :core:data
 :core:model
 :core:presentation
 :core:design-system
+:core:plugin-api
 :core:database        optional when Room is introduced
 :core:media           optional for playback abstractions and media session logic
 :core:network         optional only if networking grows beyond core:data
