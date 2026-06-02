@@ -173,10 +173,10 @@ abstract class ContentProvider {
      * - Shared interceptors (logging, auth, user-agent)
      * - Proper resource management
      *
-     * Initialized by the plugin host before any provider methods are called.
+     * Initialized by the plugin host via [inject] before any provider methods are called.
      */
     lateinit var client: HttpClient
-        internal set
+        private set
 
     /**
      * Plugin context for storage, logging, and shared resources.
@@ -186,10 +186,21 @@ abstract class ContentProvider {
      * - Shared disk storage for caching
      * - Plugin lifecycle management
      *
-     * Initialized by the plugin host before any provider methods are called.
+     * Initialized by the plugin host via [inject] before any provider methods are called.
      */
     lateinit var pluginContext: PluginContext
-        internal set
+        private set
+
+    /**
+     * Called by the plugin host (`:core:plugin-runtime`) after provider instantiation
+     * and before any provider method is invoked.
+     *
+     * **Not intended for plugin authors** — the host calls this automatically.
+     */
+    fun inject(client: HttpClient, context: PluginContext) {
+        this.client = client
+        this.pluginContext = context
+    }
 
     // ---- API Methods ----
 
@@ -325,10 +336,18 @@ abstract class ContentProvider {
     // ---- HTTP convenience methods ----
 
     /**
-     * Simplified GET request with headers, parameters, and default User-Agent.
+     * Simplified GET request with headers, parameters, and browser-like defaults.
+     *
+     * [BROWSER_HEADERS] are applied first so any entry in [headers] can override a
+     * default (e.g. a provider can supply its own `Accept-Language`).
+     *
+     * Cloudflare and many other CDN/WAF products perform HTTP-header fingerprinting in
+     * addition to TLS fingerprinting. Sending only a `User-Agent` is enough for them to
+     * issue a TCP RST ("Connection reset"). The defaults below match what Chrome 120
+     * sends for a top-level page navigation and are sufficient to pass basic bot checks.
      *
      * @param url Request URL
-     * @param headers Additional HTTP headers
+     * @param headers Additional HTTP headers (override defaults where keys overlap)
      * @param params Query parameters
      * @return [HttpResponse]
      */
@@ -337,16 +356,17 @@ abstract class ContentProvider {
         headers: Map<String, String> = emptyMap(),
         params: Map<String, String> = emptyMap(),
     ): HttpResponse = client.get(url) {
+        // Browser defaults first — caller headers win on collision.
+        BROWSER_HEADERS.forEach { (key, value) -> header(key, value) }
         headers.forEach { (key, value) -> header(key, value) }
         params.forEach { (key, value) -> parameter(key, value) }
-        header("User-Agent", DEFAULT_USER_AGENT)
     }
 
     /**
-     * Simplified POST request with headers, form data, and optional body.
+     * Simplified POST request with headers, form data, and browser-like defaults.
      *
      * @param url Request URL
-     * @param headers Additional HTTP headers
+     * @param headers Additional HTTP headers (override defaults where keys overlap)
      * @param data Form parameters (application/x-www-form-urlencoded)
      * @param body JSON or raw body (optional)
      * @return [HttpResponse]
@@ -357,8 +377,9 @@ abstract class ContentProvider {
         data: Map<String, String> = emptyMap(),
         body: Any? = null,
     ): HttpResponse = client.post(url) {
+        // Browser defaults first — caller headers win on collision.
+        BROWSER_HEADERS.forEach { (key, value) -> header(key, value) }
         headers.forEach { (key, value) -> header(key, value) }
-        header("User-Agent", DEFAULT_USER_AGENT)
         if (body != null) setBody(body)
         if (data.isNotEmpty() && body == null) {
             // Use formData for form-urlencoded data
@@ -387,12 +408,70 @@ abstract class ContentProvider {
 
     companion object {
         /**
-         * Default User-Agent string for HTTP requests.
+         * User-Agent string mimicking Chrome 120 on Windows 10.
          *
-         * Mimics Chrome 120 on Windows 10 to avoid bot detection.
+         * Exposed as a constant so provider subclasses can reference it when building
+         * custom header maps (e.g. for `Referer` or `Origin` headers).
          */
         const val DEFAULT_USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " + "AppleWebKit/537.36 (KHTML, like Gecko) " + "Chrome/120.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                "Chrome/120.0.0.0 Safari/537.36"
+
+        /**
+         * Browser-like HTTP headers sent with every [get] and [post] request.
+         *
+         * These match what Chrome 120 sends for a top-level page navigation (user
+         * typing a URL directly into the address bar). Cloudflare and similar CDN/WAF
+         * products fingerprint HTTP headers at multiple levels and issue a TCP RST when a
+         * request does not look sufficiently browser-like.
+         *
+         * ### Why each group is here
+         *
+         * **`sec-ch-ua` / `sec-ch-ua-Mobile` / `sec-ch-ua-Platform`** — Chrome Client
+         * Hints that identify the browser brand and version. Their *absence* is an
+         * immediate Cloudflare bot signal for requests that claim Chrome via User-Agent.
+         *
+         * **`Accept`** — Exact Chrome 120 value for a top-level document navigation.
+         * The [com.dreamstream.core.data.network.HttpClientFactory] intentionally omits
+         * Ktor's ContentNegotiation plugin to prevent it from appending `application/json`
+         * here and corrupting this value.
+         *
+         * **`Sec-Fetch-Dest` / `Sec-Fetch-Mode` / `Sec-Fetch-Site` / `Sec-Fetch-User`**
+         * — Fetch metadata headers. Chrome sends these for every navigation. Cloudflare
+         * checks them as part of its H1 header fingerprint. Values here reflect a direct
+         * navigation (`none` site, user-activated). Providers making XHR-like sub-requests
+         * should override `Sec-Fetch-Site` with `same-origin` or `cross-site` and drop
+         * `Sec-Fetch-User` via their own `headers` map argument.
+         *
+         * **`Connection`** is intentionally omitted — it is a hop-by-hop header forbidden
+         * in HTTP/2 (RFC 7540 §8.1.2.2). Sending it over an HTTP/2 connection causes a
+         * PROTOCOL_ERROR stream reset.
+         *
+         * **`Accept-Encoding`** is limited to `gzip, deflate`. Adding `br` (Brotli)
+         * requires the `com.squareup.okhttp3:okhttp-brotli` interceptor; without it,
+         * a Brotli-encoded response body would arrive undecodable. OkHttp handles gzip
+         * and deflate transparently.
+         */
+        val BROWSER_HEADERS: Map<String, String> = mapOf(
+            "User-Agent"             to DEFAULT_USER_AGENT,
+            // Chrome Client Hints — absence flags non-browser to Cloudflare.
+            "sec-ch-ua"              to "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
+            "sec-ch-ua-Mobile"       to "?0",
+            "sec-ch-ua-Platform"     to "\"Windows\"",
+            "Upgrade-Insecure-Requests" to "1",
+            "Accept"                 to "text/html,application/xhtml+xml,application/xml;" +
+                "q=0.9,image/avif,image/webp,image/apng,*/*;" +
+                "q=0.8,application/signed-exchange;v=b3;q=0.7",
+            // Sec-Fetch metadata — Chrome sends these for every navigation.
+            "Sec-Fetch-Site"         to "none",
+            "Sec-Fetch-Mode"         to "navigate",
+            "Sec-Fetch-User"         to "?1",
+            "Sec-Fetch-Dest"         to "document",
+            "Accept-Encoding"        to "gzip, deflate",
+            "Accept-Language"        to "en-US,en;q=0.9",
+            "Cache-Control"          to "max-age=0",
+        )
     }
 }
 

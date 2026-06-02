@@ -105,7 +105,7 @@ import kotlinx.serialization.Serializable
  * - Installed plugin: [InstalledPlugin]
  * - Manager: ***`PluginManager`***
  * - Provider: ***`ContentProvider`***
- * - Error: [DreamError.RepositoryFetchFailed]
+ * - Error: [com.dreamstream.core.domain.util.DreamError.RepositoryFetchFailed]
  *
  * @since 1.0.0
  * @author DreamStream Team

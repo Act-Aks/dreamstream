@@ -117,7 +117,7 @@ import kotlinx.serialization.Serializable
  * - Provider: ***`ContentProvider`***
  * - Status enum: [PluginStatus]
  * - Content type: [ContentType]
- * - Error: [DreamError.ChecksumMismatch]
+ * - Error: [com.dreamstream.core.domain.util.DreamError.ChecksumMismatch]
  *
  * @since 1.0.0
  * @author DreamStream Team
@@ -231,7 +231,7 @@ data class PluginManifest(
      * SHA-256 checksum of the plugin artifact.
      *
      * ***Required***. Used to verify integrity **after download** and **before loading**.
-     * If mismatch, throw [DreamError.ChecksumMismatch].
+     * If mismatched, throw [com.dreamstream.core.domain.util.DreamError.ChecksumMismatch].
      * Example: `"abc123def456..."` (64-character hex string)
      */
     val sha256: String = "",

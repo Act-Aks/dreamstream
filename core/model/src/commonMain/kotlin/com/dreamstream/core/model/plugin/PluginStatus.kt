@@ -68,7 +68,7 @@ import kotlinx.serialization.Serializable
  * ## Related:
  * - Manifest: [PluginManifest]
  * - Installed plugin: [InstalledPlugin]
- * - Error: [DreamError.PluginLoadFailed], [DreamError.ChecksumMismatch]
+ * - Error: [com.dreamstream.core.domain.util.DreamError.PluginLoadFailed], [com.dreamstream.core.domain.util.DreamError.ChecksumMismatch]
  * - Manager: ***`PluginManager`***
  *
  * @since 1.0.0
@@ -120,7 +120,7 @@ enum class PluginStatus {
      * Plugin failed to load or is corrupted.
      *
      * ***Meaning***: Plugin artifact exists but loading threw an exception
-     * ([DreamError.PluginLoadFailed]), checksum failed ([DreamError.ChecksumMismatch]),
+     * ([com.dreamstream.core.domain.util.DreamError.PluginLoadFailed]), checksum failed ([com.dreamstream.core.domain.util.DreamError.ChecksumMismatch]),
      * or DSL parsing error. Plugin is non-functional.
      *
      * ***UI Action***: Show warning icon, display error message, offer "Reinstall" or "Remove".
