@@ -2,68 +2,85 @@ package com.dreamstream.feature.settings.data.repository
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import com.dreamstream.feature.settings.domain.model.AppLanguage
 import com.dreamstream.feature.settings.domain.repository.SettingsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+
+private val KEY_DARK_MODE     = booleanPreferencesKey("dark_mode")
+private val KEY_NOTIFICATIONS = booleanPreferencesKey("notifications")
 
 /**
  * Android implementation of [SettingsRepository].
  *
- * Locale is applied using AppCompat's per-app language API, which persists the
- * selection and lets the framework handle the resulting configuration change.
- * Theme is applied using AppCompat's default night mode API.
+ * - **Language** — applied and persisted by AppCompat's per-app language API
+ *   ([AppCompatDelegate.setApplicationLocales]). Language changes cause a config
+ *   change that Compose Navigation handles automatically. Exposed as a
+ *   [MutableStateFlow] updated on each write so the UI flow never reads from disk.
+ *
+ * - **Dark mode** — persisted in [DataStore] and applied immediately on the main
+ *   thread via [AppCompatDelegate.setDefaultNightMode].
+ *
+ * - **Notifications** — persisted in [DataStore] only (no OS-level side effect here;
+ *   integrate with NotificationManagerCompat when needed).
  */
-class AndroidSettingsRepository : SettingsRepository {
+class AndroidSettingsRepository(
+    private val dataStore: DataStore<Preferences>,
+) : SettingsRepository {
 
-    /**
-     * Returns the language currently applied to the app on Android.
-     */
-    override fun getCurrentLanguage(): AppLanguage {
+    // ── Language ───────────────────────────────────────────────────────────────
+
+    private val _language = MutableStateFlow(readCurrentLanguage())
+
+    override fun languageFlow(): Flow<AppLanguage> = _language
+
+    override suspend fun applyLanguage(language: AppLanguage) {
+        val localeList = when (language) {
+            AppLanguage.SYSTEM -> LocaleListCompat.getEmptyLocaleList()
+            else               -> LocaleListCompat.forLanguageTags(language.tag)
+        }
+        withContext(Dispatchers.Main) {
+            AppCompatDelegate.setApplicationLocales(localeList)
+        }
+        _language.value = language
+    }
+
+    // ── Dark mode ──────────────────────────────────────────────────────────────
+
+    override fun darkModeFlow(): Flow<Boolean> =
+        dataStore.data.map { prefs -> prefs[KEY_DARK_MODE] ?: false }
+
+    override suspend fun setDarkModeEnabled(enabled: Boolean) {
+        dataStore.edit { it[KEY_DARK_MODE] = enabled }
+        withContext(Dispatchers.Main) {
+            AppCompatDelegate.setDefaultNightMode(
+                if (enabled) AppCompatDelegate.MODE_NIGHT_YES
+                else         AppCompatDelegate.MODE_NIGHT_NO,
+            )
+        }
+    }
+
+    // ── Notifications ──────────────────────────────────────────────────────────
+
+    override fun notificationsFlow(): Flow<Boolean> =
+        dataStore.data.map { prefs -> prefs[KEY_NOTIFICATIONS] ?: true }
+
+    override suspend fun setNotificationsEnabled(enabled: Boolean) {
+        dataStore.edit { it[KEY_NOTIFICATIONS] = enabled }
+    }
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+
+    private fun readCurrentLanguage(): AppLanguage {
         val localeList = AppCompatDelegate.getApplicationLocales()
         val tag = if (localeList.isEmpty) "" else localeList.get(0)?.toLanguageTag() ?: ""
         return AppLanguage.fromTag(tag)
-    }
-
-    /**
-     * Applies the given [language] to the app on Android.
-     */
-    override fun applyLanguage(language: AppLanguage) {
-        val localeList = when (language) {
-            AppLanguage.SYSTEM -> LocaleListCompat.getEmptyLocaleList()
-            else -> LocaleListCompat.forLanguageTags(language.tag)
-        }
-        AppCompatDelegate.setApplicationLocales(localeList)
-    }
-
-    /**
-     * Returns whether dark mode is currently enabled.
-     */
-    override fun isDarkModeEnabled(): Boolean {
-        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-    }
-
-    /**
-     * Enables or disables dark mode for the app.
-     */
-    override fun setDarkModeEnabled(enabled: Boolean) {
-        AppCompatDelegate.setDefaultNightMode(
-            if (enabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-        )
-    }
-
-    /**
-     * Returns whether notifications are enabled.
-     *
-     * Replace the placeholder implementation with stored user preference if needed.
-     */
-    override fun isNotificationsEnabled(): Boolean = true
-
-    /**
-     * Enables or disables notifications in Android settings.
-     *
-     * Replace the placeholder implementation with persistence and any platform
-     * notification integration you need.
-     */
-    override fun setNotificationsEnabled(enabled: Boolean) {
-        // Persist and/or integrate with Android notification settings here.
     }
 }

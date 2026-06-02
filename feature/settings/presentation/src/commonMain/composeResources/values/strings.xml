@@ -9,6 +9,10 @@
 <resources>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_dark_mode_label">Dark mode</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_label">Enable notifications</string>
     <string name="settings_language_section_title">Language</string>
     <string name="settings_language_subtitle">Choose your preferred language</string>
     <string name="settings_language_system_default">System default</string>

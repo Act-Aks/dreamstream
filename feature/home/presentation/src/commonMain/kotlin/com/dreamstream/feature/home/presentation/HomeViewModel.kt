@@ -50,7 +50,7 @@ class HomeViewModel(
                     }
                 }
                 .onFailure { error ->
-                    _state.update { it.copy(isLoading = false) }
+                    _state.update { it.copy(isLoading = false, error = error.toUiText()) }
                     _events.send(HomeEvent.ShowError(error.toUiText()))
                 }
         }

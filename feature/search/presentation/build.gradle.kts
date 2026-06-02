@@ -23,7 +23,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.feature.search.domain)
+                // Exposed as api: SearchState and SearchRoute reference domain types
+                // (SearchError) that callers such as app:shared need to see.
+                api(projects.feature.search.domain)
             }
         }
     }

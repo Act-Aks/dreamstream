@@ -3,8 +3,10 @@
  * :feature:home:data
  *
  * Data layer for the home feature. Provides repository implementations that
- * back the domain contracts. Currently uses an in-memory fake; real network
- * data sources will be added once a content API is integrated.
+ * back the domain contracts. Uses PluginHomeRepository backed by PluginRegistry,
+ * which fans out home page requests to all loaded content provider plugins.
+ *
+ * InMemoryHomeRepository is kept as a standalone class for unit tests.
  * =============================================================================
  */
 
@@ -21,8 +23,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
-                implementation(projects.feature.home.domain)
+                api(projects.core.domain)
+                api(projects.feature.home.domain)
+                implementation(projects.core.pluginRuntime)
             }
         }
     }

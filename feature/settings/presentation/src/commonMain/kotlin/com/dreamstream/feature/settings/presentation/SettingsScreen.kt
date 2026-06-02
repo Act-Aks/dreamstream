@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,9 +39,13 @@ import com.dreamstream.core.presentation.resources.action_back
 import com.dreamstream.core.presentation.ui.ObserveAsEvents
 import com.dreamstream.feature.settings.domain.model.AppLanguage
 import com.dreamstream.feature.settings.presentation.resources.Res
+import com.dreamstream.feature.settings.presentation.resources.settings_appearance_title
+import com.dreamstream.feature.settings.presentation.resources.settings_dark_mode_label
 import com.dreamstream.feature.settings.presentation.resources.settings_language_section_title
 import com.dreamstream.feature.settings.presentation.resources.settings_language_subtitle
 import com.dreamstream.feature.settings.presentation.resources.settings_language_system_default
+import com.dreamstream.feature.settings.presentation.resources.settings_notifications_label
+import com.dreamstream.feature.settings.presentation.resources.settings_notifications_title
 import com.dreamstream.feature.settings.presentation.resources.settings_title
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
@@ -109,11 +115,25 @@ fun SettingsScreen(
             },
         ) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
+                AppearanceSection(
+                    isDarkModeEnabled = state.isDarkModeEnabled,
+                    onDarkModeToggled = { onAction(SettingsAction.OnDarkModeToggled(it)) },
+                    hazeState = hazeState,
+                )
+
+                NotificationsSection(
+                    isNotificationsEnabled = state.isNotificationsEnabled,
+                    onNotificationsToggled = { onAction(SettingsAction.OnNotificationsToggled(it)) },
+                    hazeState = hazeState,
+                )
+
                 LanguageSection(
                     currentLanguage = state.currentLanguage,
                     onLanguageSelected = { onAction(SettingsAction.OnLanguageSelected(it)) },
@@ -127,6 +147,85 @@ fun SettingsScreen(
 // ─────────────────────────────────────────────────────────────────────────────
 // Private composable helpers
 // ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun AppearanceSection(
+    isDarkModeEnabled: Boolean,
+    onDarkModeToggled: (Boolean) -> Unit,
+    hazeState: HazeState,
+) {
+    GlassSurface(
+        hazeState = hazeState,
+        style = GlassDefaults.thin,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(Res.string.settings_appearance_title),
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            ToggleRow(
+                label = stringResource(Res.string.settings_dark_mode_label),
+                checked = isDarkModeEnabled,
+                onCheckedChange = onDarkModeToggled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun NotificationsSection(
+    isNotificationsEnabled: Boolean,
+    onNotificationsToggled: (Boolean) -> Unit,
+    hazeState: HazeState,
+) {
+    GlassSurface(
+        hazeState = hazeState,
+        style = GlassDefaults.thin,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(Res.string.settings_notifications_title),
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            ToggleRow(
+                label = stringResource(Res.string.settings_notifications_label),
+                checked = isNotificationsEnabled,
+                onCheckedChange = onNotificationsToggled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ToggleRow(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.White,
+            modifier = Modifier.weight(1f),
+        )
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+        )
+    }
+}
 
 @Composable
 private fun LanguageSection(
@@ -208,5 +307,5 @@ private fun LanguageOption(
 @Composable
 private fun languageDisplayName(language: AppLanguage): String = when (language) {
     AppLanguage.SYSTEM -> stringResource(Res.string.settings_language_system_default)
-    else -> language.displayName
+    else               -> language.displayName
 }

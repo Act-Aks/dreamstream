@@ -14,9 +14,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -53,8 +57,10 @@ import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.presentation.model.ContentUi
 import com.dreamstream.feature.home.presentation.model.HomeSectionUi
 import com.dreamstream.feature.home.presentation.resources.Res
+import com.dreamstream.feature.home.presentation.resources.home_action_reload
 import com.dreamstream.feature.home.presentation.resources.home_empty_heading
 import com.dreamstream.feature.home.presentation.resources.home_empty_message
+import com.dreamstream.feature.home.presentation.resources.home_retry_button
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -106,12 +112,13 @@ fun HomeRoot(
 // Screen — pure state + callbacks, previewable
 // ─────────────────────────────────────────────────────────────────────────────
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     state: HomeState,
+    modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onAction: (HomeAction) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     // hazeState is Compose-owned: connects GradientBackground (source) to
     // GlassTopBar and GlassCards (children) for the blur-through-glass effect.
@@ -139,6 +146,13 @@ fun HomeScreen(
                     },
                     hazeState = hazeState,
                     actions = {
+                        IconButton(onClick = { onAction(HomeAction.OnRefresh) }) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = stringResource(Res.string.home_action_reload),
+                                tint = Color.White,
+                            )
+                        }
                         IconButton(onClick = { onAction(HomeAction.OnSettingsClick) }) {
                             Icon(
                                 imageVector = Icons.Default.Settings,
@@ -172,15 +186,25 @@ fun HomeScreen(
                     }
 
                     state.sections.isEmpty() -> {
-                        EmptyHomeState(modifier = Modifier.align(Alignment.Center))
+                        EmptyHomeState(
+                            modifier = Modifier.align(Alignment.Center),
+                            error = state.error,
+                            onRetry = { onAction(HomeAction.OnRefresh) },
+                        )
                     }
 
                     else -> {
-                        HomeSectionList(
-                            sections = state.sections,
-                            hazeState = hazeState,
-                            onContentClick = { id -> onAction(HomeAction.OnContentClick(id)) },
-                        )
+                        PullToRefreshBox(
+                            isRefreshing = state.isLoading,
+                            onRefresh = { onAction(HomeAction.OnRefresh) },
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            HomeSectionList(
+                                sections = state.sections,
+                                hazeState = hazeState,
+                                onContentClick = { id -> onAction(HomeAction.OnContentClick(id)) },
+                            )
+                        }
                     }
                 }
             }
@@ -313,7 +337,11 @@ private fun ContentCard(
 }
 
 @Composable
-private fun EmptyHomeState(modifier: Modifier = Modifier) {
+private fun EmptyHomeState(
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+    error: UiText? = null,
+) {
     Column(
         modifier = modifier.padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -325,10 +353,14 @@ private fun EmptyHomeState(modifier: Modifier = Modifier) {
             color = Color.White,
         )
         Text(
-            text = stringResource(Res.string.home_empty_message),
+            text = error?.asString() ?: stringResource(Res.string.home_empty_message),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onRetry) {
+            Text(text = stringResource(Res.string.home_retry_button))
+        }
     }
 }
 

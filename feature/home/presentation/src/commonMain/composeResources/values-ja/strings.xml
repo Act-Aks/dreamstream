@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- feature:home:presentation — Japanese (ja) translations -->
 <resources>
-
     <string name="home_title">DreamStream</string>
     <string name="home_empty_heading">まだ表示するものがありません</string>
     <string name="home_empty_message">ソースが設定されるとコンテンツが表示されます。</string>
     <string name="home_error_no_content">現在利用可能なコンテンツはありません。</string>
     <string name="home_error_load_failed">コンテンツの読み込みに失敗しました。再試行してください。</string>
-
+    <string name="home_retry_button">再試行</string>
+    <string name="home_action_reload">コンテンツを再読み込み</string>
 </resources>

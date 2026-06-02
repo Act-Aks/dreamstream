@@ -3,6 +3,10 @@
 <resources>
 
     <string name="settings_title">Einstellungen</string>
+    <string name="settings_appearance_title">Erscheinungsbild</string>
+    <string name="settings_dark_mode_label">Dunkelmodus</string>
+    <string name="settings_notifications_title">Benachrichtigungen</string>
+    <string name="settings_notifications_label">Benachrichtigungen aktivieren</string>
     <string name="settings_language_section_title">Sprache</string>
     <string name="settings_language_subtitle">Bevorzugte Sprache wählen</string>
     <string name="settings_language_system_default">Systemstandard</string>

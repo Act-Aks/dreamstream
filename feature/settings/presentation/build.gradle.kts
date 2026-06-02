@@ -12,7 +12,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.feature.settings.domain)
+                // Exposed as api: SettingsState and SettingsRoute reference domain types
+                // (AppLanguage, SettingsRepository) that callers such as app:shared need to see.
+                api(projects.feature.settings.domain)
             }
         }
     }

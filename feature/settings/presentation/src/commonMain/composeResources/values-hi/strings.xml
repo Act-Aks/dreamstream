@@ -3,6 +3,10 @@
 <resources>
 
     <string name="settings_title">सेटिंग्स</string>
+    <string name="settings_appearance_title">दिखावट</string>
+    <string name="settings_dark_mode_label">डार्क मोड</string>
+    <string name="settings_notifications_title">सूचनाएं</string>
+    <string name="settings_notifications_label">सूचनाएं सक्षम करें</string>
     <string name="settings_language_section_title">भाषा</string>
     <string name="settings_language_subtitle">अपनी पसंदीदा भाषा चुनें</string>
     <string name="settings_language_system_default">सिस्टम डिफ़ॉल्ट</string>

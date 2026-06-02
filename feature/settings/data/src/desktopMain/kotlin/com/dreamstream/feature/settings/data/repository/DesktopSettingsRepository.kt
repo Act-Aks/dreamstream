@@ -2,59 +2,51 @@ package com.dreamstream.feature.settings.data.repository
 
 import com.dreamstream.feature.settings.domain.model.AppLanguage
 import com.dreamstream.feature.settings.domain.repository.SettingsRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Locale
 
 /**
  * Desktop implementation of [SettingsRepository].
  *
- * Locale changes update the JVM default locale so the app can render resources
- * and format dates, numbers, and text consistently on desktop.
+ * All settings are stored in-memory as [MutableStateFlow]s. There is no file-system
+ * persistence on desktop yet — values reset when the process exits.
+ *
+ * Language changes update the JVM default [Locale] so the app formats dates,
+ * numbers, and resources consistently.
  */
 class DesktopSettingsRepository : SettingsRepository {
 
-    /**
-     * Returns the language currently applied to the desktop app.
-     */
-    override fun getCurrentLanguage(): AppLanguage {
-        return AppLanguage.fromTag(Locale.getDefault().toLanguageTag())
-    }
+    private val _language      = MutableStateFlow(AppLanguage.fromTag(Locale.getDefault().toLanguageTag()))
+    private val _darkMode      = MutableStateFlow(false)
+    private val _notifications = MutableStateFlow(true)
 
-    /**
-     * Applies the given [language] to the desktop app.
-     */
-    override fun applyLanguage(language: AppLanguage) {
+    // ── Language ───────────────────────────────────────────────────────────────
+
+    override fun languageFlow(): Flow<AppLanguage> = _language
+
+    override suspend fun applyLanguage(language: AppLanguage) {
         val locale = when (language) {
             AppLanguage.SYSTEM -> Locale.getDefault()
-            else -> Locale.forLanguageTag(language.tag)
+            else               -> Locale.forLanguageTag(language.tag)
         }
         Locale.setDefault(locale)
+        _language.value = language
     }
 
-    /**
-     * Returns whether dark mode is enabled.
-     *
-     * Replace with your own desktop theme state if you persist this setting.
-     */
-    override fun isDarkModeEnabled(): Boolean = false
+    // ── Dark mode ──────────────────────────────────────────────────────────────
 
-    /**
-     * Enables or disables dark mode for the desktop app.
-     *
-     * Replace with persistence or theme-state updates if needed.
-     */
-    override fun setDarkModeEnabled(enabled: Boolean) {
-        // Store in desktop settings state if needed.
+    override fun darkModeFlow(): Flow<Boolean> = _darkMode
+
+    override suspend fun setDarkModeEnabled(enabled: Boolean) {
+        _darkMode.value = enabled
     }
 
-    /**
-     * Returns whether notifications are enabled.
-     */
-    override fun isNotificationsEnabled(): Boolean = true
+    // ── Notifications ──────────────────────────────────────────────────────────
 
-    /**
-     * Enables or disables notifications in desktop settings.
-     */
-    override fun setNotificationsEnabled(enabled: Boolean) {
-        // Persist in desktop settings state if needed.
+    override fun notificationsFlow(): Flow<Boolean> = _notifications
+
+    override suspend fun setNotificationsEnabled(enabled: Boolean) {
+        _notifications.value = enabled
     }
 }

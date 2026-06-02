@@ -21,8 +21,10 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
-                implementation(projects.feature.details.domain)
+                // Exposed as api: InMemoryDetailsRepository implements DetailsRepository
+                // and DetailsError, so app:shared needs these on its compile classpath.
+                api(projects.core.domain)
+                api(projects.feature.details.domain)
             }
         }
     }

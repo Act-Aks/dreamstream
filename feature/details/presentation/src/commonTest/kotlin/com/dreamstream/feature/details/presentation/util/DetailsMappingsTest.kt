@@ -2,6 +2,7 @@ package com.dreamstream.feature.details.presentation.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import com.dreamstream.core.model.catalog.ContentType
 import com.dreamstream.core.model.detail.ContentDetail
@@ -72,43 +73,51 @@ class DetailsMappingsTest {
     // ── Type display names ────────────────────────────────────────────────────
 
     @Test
-    fun `toDetailContentUi maps Movie type to display name`() {
-        assertThat(content(type = ContentType.Movie).toDetailContentUi().typeName).isEqualTo("Movie")
+    fun `toDetailContentUi maps Movie type to localized display name`() {
+        val result = content(type = ContentType.Movie).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps TvSeries type to display name`() {
-        assertThat(content(type = ContentType.TvSeries).toDetailContentUi().typeName).isEqualTo("TV Series")
+    fun `toDetailContentUi maps TvSeries type to localized display name`() {
+        val result = content(type = ContentType.TvSeries).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps Anime type to display name`() {
-        assertThat(content(type = ContentType.Anime).toDetailContentUi().typeName).isEqualTo("Anime")
+    fun `toDetailContentUi maps Anime type to localized display name`() {
+        val result = content(type = ContentType.Anime).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps Documentary type to display name`() {
-        assertThat(content(type = ContentType.Documentary).toDetailContentUi().typeName).isEqualTo("Documentary")
+    fun `toDetailContentUi maps Documentary type to localized display name`() {
+        val result = content(type = ContentType.Documentary).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps Others type to display name`() {
-        assertThat(content(type = ContentType.Others).toDetailContentUi().typeName).isEqualTo("Others")
+    fun `toDetailContentUi maps Others type to localized display name`() {
+        val result = content(type = ContentType.Others).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps AnimeMovie type to display name`() {
-        assertThat(content(type = ContentType.AnimeMovie).toDetailContentUi().typeName).isEqualTo("Anime Movie")
+    fun `toDetailContentUi maps AnimeMovie type to localized display name`() {
+        val result = content(type = ContentType.AnimeMovie).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps Live type to display name`() {
-        assertThat(content(type = ContentType.Live).toDetailContentUi().typeName).isEqualTo("Live")
+    fun `toDetailContentUi maps Live type to localized display name`() {
+        val result = content(type = ContentType.Live).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toDetailContentUi maps Music type to display name`() {
-        assertThat(content(type = ContentType.Music).toDetailContentUi().typeName).isEqualTo("Music")
+    fun `toDetailContentUi maps Music type to localized display name`() {
+        val result = content(type = ContentType.Music).toDetailContentUi().typeName
+        assertThat(result).isInstanceOf(UiText.StringResourceId::class)
     }
 
     // ── Duration formatting ───────────────────────────────────────────────────
@@ -142,20 +151,19 @@ class DetailsMappingsTest {
 
     @Test
     fun `toUiText maps NotFound to string resource`() {
-        assertThat(DetailsError.NotFound.toUiText())
-            .isEqualTo(UiText.StringResourceId(Res.string.details_error_not_found))
+        assertThat(DetailsError.NotFound.toUiText()).isEqualTo(UiText.StringResourceId(Res.string.details_error_not_found))
     }
 
     @Test
     fun `toUiText maps LoadFailed to string resource`() {
-        assertThat(DetailsError.LoadFailed.toUiText())
-            .isEqualTo(UiText.StringResourceId(Res.string.details_error_load_failed))
+        assertThat(DetailsError.LoadFailed.toUiText()).isEqualTo(UiText.StringResourceId(Res.string.details_error_load_failed))
     }
 
     @Test
     fun `toUiText NotFound and LoadFailed produce different messages`() {
-        assertThat(DetailsError.NotFound.toUiText() == DetailsError.LoadFailed.toUiText())
-            .isEqualTo(false)
+        assertThat(DetailsError.NotFound.toUiText() == DetailsError.LoadFailed.toUiText()).isEqualTo(
+            false
+        )
     }
 
     // ─────────────────────────────────────────────────────────────────────────

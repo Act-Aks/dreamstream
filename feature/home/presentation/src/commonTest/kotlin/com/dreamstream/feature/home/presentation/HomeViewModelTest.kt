@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.domain.util.Result
@@ -86,7 +87,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `init sets empty sections and no error in state when repository fails`() = runTest {
+    fun `init sets empty sections and error in state when repository fails`() = runTest {
         fakeRepository.error = HomeError.LoadFailed
 
         val viewModel = HomeViewModel(fakeRepository)
@@ -95,7 +96,7 @@ class HomeViewModelTest {
             val state = awaitItem()
             assertThat(state.isLoading).isFalse()
             assertThat(state.sections).isEmpty()
-            assertThat(state.error).isNull()
+            assertThat(state.error).isNotNull()
             cancelAndConsumeRemainingEvents()
         }
     }

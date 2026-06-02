@@ -3,8 +3,10 @@
  * :feature:search:data
  *
  * Data layer for the search feature. Provides the SearchRepository
- * implementation. Currently backed by in-memory hardcoded data; replaced by
- * a real network/database source once a content API is integrated.
+ * implementation. Uses PluginSearchRepository backed by PluginRegistry,
+ * which fans out search queries to all loaded content provider plugins.
+ *
+ * InMemorySearchRepository is kept as a standalone class for unit tests.
  * =============================================================================
  */
 
@@ -21,8 +23,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
-                implementation(projects.feature.search.domain)
+                api(projects.core.domain)
+                api(projects.feature.search.domain)
+                implementation(projects.core.pluginRuntime)
             }
         }
     }

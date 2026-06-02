@@ -2,6 +2,7 @@ package com.dreamstream.feature.home.presentation.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import com.dreamstream.core.model.catalog.ContentType
 import com.dreamstream.core.model.search.MovieResult
@@ -63,43 +64,51 @@ class HomeMappingsTest {
     }
 
     @Test
-    fun `toContentUi maps Movie type to singular display name`() {
-        assertThat(content(type = ContentType.Movie).toContentUi().typeName).isEqualTo("Movie")
+    fun `toContentUi maps Movie type to localized display name`() {
+        val result = content(type = ContentType.Movie).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps TvSeries type to display name`() {
-        assertThat(content(type = ContentType.TvSeries).toContentUi().typeName).isEqualTo("TV Series")
+    fun `toContentUi maps TvSeries type to localized display name`() {
+        val result = content(type = ContentType.TvSeries).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps Anime type to display name`() {
-        assertThat(content(type = ContentType.Anime).toContentUi().typeName).isEqualTo("Anime")
+    fun `toContentUi maps Anime type to localized display name`() {
+        val result = content(type = ContentType.Anime).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps Documentary type to display name`() {
-        assertThat(content(type = ContentType.Documentary).toContentUi().typeName).isEqualTo("Documentary")
+    fun `toContentUi maps Documentary type to localized display name`() {
+        val result = content(type = ContentType.Documentary).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps Others type to display name`() {
-        assertThat(content(type = ContentType.Others).toContentUi().typeName).isEqualTo("Others")
+    fun `toContentUi maps Others type to localized display name`() {
+        val result = content(type = ContentType.Others).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps AnimeMovie type to display name`() {
-        assertThat(content(type = ContentType.AnimeMovie).toContentUi().typeName).isEqualTo("Anime Movie")
+    fun `toContentUi maps AnimeMovie type to localized display name`() {
+        val result = content(type = ContentType.AnimeMovie).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps Live type to display name`() {
-        assertThat(content(type = ContentType.Live).toContentUi().typeName).isEqualTo("Live")
+    fun `toContentUi maps Live type to localized display name`() {
+        val result = content(type = ContentType.Live).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     @Test
-    fun `toContentUi maps Music type to display name`() {
-        assertThat(content(type = ContentType.Music).toContentUi().typeName).isEqualTo("Music")
+    fun `toContentUi maps Music type to localized display name`() {
+        val result = content(type = ContentType.Music).toContentUi()
+        assertThat(result.typeName).isInstanceOf(UiText.StringResourceId::class)
     }
 
     // ── HomeSection.toHomeSectionUi() ─────────────────────────────────────────

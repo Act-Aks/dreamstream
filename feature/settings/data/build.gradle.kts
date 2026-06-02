@@ -11,12 +11,16 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.feature.settings.domain)
+                // Exposed as api: AndroidSettingsRepository implements SettingsRepository,
+                // so app:shared needs the domain on its compile classpath.
+                api(projects.feature.settings.domain)
             }
         }
         androidMain {
             dependencies {
                 implementation(libs.androidx.appcompat)
+                // DataStore type used in AndroidSettingsRepository constructor.
+                implementation(libs.androidx.datastore.preferences.core)
             }
         }
     }

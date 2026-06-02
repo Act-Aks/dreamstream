@@ -24,7 +24,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.feature.home.domain)
+                // Exposed as api: HomeState, ContentUi, and HomeRoute reference domain
+                // types (Content, HomeError) that callers such as app:shared need to see.
+                api(projects.feature.home.domain)
             }
         }
     }

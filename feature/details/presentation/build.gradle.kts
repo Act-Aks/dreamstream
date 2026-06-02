@@ -23,7 +23,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.feature.details.domain)
+                // Exposed as api: DetailsState and DetailsRoute reference domain types
+                // (DetailContent, DetailsError) that callers such as app:shared need to see.
+                api(projects.feature.details.domain)
             }
         }
     }

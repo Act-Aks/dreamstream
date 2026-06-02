@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  feature:home:presentation — English (default) strings.
-  Feature-local strings only. Common strings (retry, back, etc.) come from
-  :core:presentation via its public Res class.
--->
 <resources>
-
     <string name="home_title">DreamStream</string>
     <string name="home_empty_heading">Nothing to show yet</string>
     <string name="home_empty_message">Content will appear here once sources are configured.</string>
     <string name="home_error_no_content">No content available right now.</string>
     <string name="home_error_load_failed">Failed to load content. Please try again.</string>
-
+    <string name="home_retry_button">Retry</string>
+    <string name="home_action_reload">Reload content</string>
 </resources>
