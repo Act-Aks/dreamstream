@@ -23,6 +23,12 @@ kotlin {
             implementation(projects.core.domain)
             implementation(projects.core.presentation)
             implementation(projects.core.designSystem)
+
+            // Plugin infrastructure: runtime + first bundled plugin
+            implementation(projects.core.data)
+            implementation(projects.core.pluginRuntime)
+            implementation(projects.plugin.flixhq)
+
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.data)
             implementation(projects.feature.home.presentation)
