@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- **Build infrastructure — dependency-analysis audit and convention-plugin fixes**:
+  - Configured `com.autonomousapps.dependency-analysis` (DAGP) in root `build.gradle.kts`; `assertModuleGraph` enforces architectural rules (max height, no cross-feature direct deps); `buildHealth` runs at `warn` severity; `docs/module-graph.md` is now auto-generated as a Mermaid dependency diagram.
+  - `Compose.kt` convention plugin: removed duplicate `androidx.lifecycle` bundle (lifecycle is already transitive via Compose Multiplatform); promoted `compose-components-resources` to `api`.
+  - `DomainModuleConventionPlugin.kt`: removed unused `kermit` and `kotlinx-datetime` injections; promoted `kotlinx-coroutines-core` to `api` so downstream modules receive it transitively.
+  - `SerializationConventionPlugin.kt`: promoted `kotlinx-serialization-core` to `api`.
+  - `FeatureConventionPlugin.kt`: promoted `core:presentation` to `api` via a new `asApi` parameter on the `addProjectIfPresent` helper.
+  - Root `build.gradle.kts`: added `subprojects { resolutionStrategy }` block that pins all `androidx.lifecycle` artifacts to `2.10.0`, preventing Koin from upgrading them to `2.11.0-beta01` and causing a `LocalViewModelStoreOwner` classpath conflict.
+  - `core:design-system`: removed unused `coil.compose`, `coil.network.ktor3`, and `haze.materials` dependencies (not imported in source); promoted `core:presentation` to `api`.
+  - All feature presentation `build.gradle.kts` files: feature-domain dependency promoted to `api`.
+  - All feature data `build.gradle.kts` files: domain and `core:domain` dependencies promoted to `api`.
+  - `core:presentation/build.gradle.kts`: `core:domain` and `core:model` promoted to `api`; `compose.navigation3.ui` added as an explicit `api` dependency.
+
 ### Added
 
 - **Settings screen** (`:feature:settings` — domain, data, presentation):

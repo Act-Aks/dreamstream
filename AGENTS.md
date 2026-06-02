@@ -12,7 +12,13 @@ DreamStream should be designed as a long-lived, modular KMP application that can
 
 The following modules and infrastructure are complete and compiled:
 
-- `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities
+- `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities; **build-health audited and fixed**:
+  - `Compose.kt`: removed duplicate `androidx.lifecycle` bundle (already transitive via CMP); `compose-components-resources` promoted to `api`
+  - `DomainModuleConventionPlugin.kt`: removed unused `kermit` and `kotlinx-datetime`; `kotlinx-coroutines-core` promoted to `api`
+  - `SerializationConventionPlugin.kt`: `kotlinx-serialization-core` promoted to `api`
+  - `FeatureConventionPlugin.kt`: `core:presentation` promoted to `api` via new `asApi` param on `addProjectIfPresent`
+  - Root `build.gradle.kts`: `subprojects { resolutionStrategy }` pins all `androidx.lifecycle` artifacts to `2.10.0` to prevent Koin pulling `2.11.0-beta01` and causing a `LocalViewModelStoreOwner` classpath conflict
+  - **DAGP** (`com.autonomousapps.dependency-analysis`) configured in root build; `assertModuleGraph` passes all architectural rules (max height, no cross-feature deps); `buildHealth` runs at `warn` severity with 894 lines of non-fatal findings; `docs/module-graph.md` auto-generated (Mermaid diagram)
 - `:core:domain` — core primitives and KMP extension helpers:
   - `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local + Plugin), `DreamLogger`; tests passing
   - `DataError.Plugin` sealed enum: `CLASS_NOT_FOUND`, `INCOMPATIBLE_VERSION`, `INVALID_MANIFEST`, `LOAD_FAILED`, `SIGNATURE_INVALID`, `UNKNOWN`
