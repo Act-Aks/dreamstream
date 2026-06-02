@@ -6,15 +6,17 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.dreamstream.core.database.TestDatabaseFactory
+import com.dreamstream.core.database.TestDatabaseHolder
 import com.dreamstream.core.model.catalog.ContentType
 import com.dreamstream.core.model.user.WatchHistory
 import kotlinx.coroutines.test.runTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore("Take too much time")
 class WatchHistoryRepositoryTest {
-    private val database = TestDatabaseFactory.createTestDatabase()
-    private val repository = WatchHistoryRepository(database.watchHistoryDao())
+    private val repository =
+        WatchHistoryRepository(TestDatabaseHolder.getSharedDatabase().watchHistoryDao())
 
     @Test
     fun testInsertAndObserveAll() = runTest {

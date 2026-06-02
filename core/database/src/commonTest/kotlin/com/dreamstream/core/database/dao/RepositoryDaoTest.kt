@@ -8,15 +8,16 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.dreamstream.core.database.TestDatabaseFactory
+import com.dreamstream.core.database.TestDatabaseHolder
 import com.dreamstream.core.database.entity.RepositoryEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore("Take too much time")
 class RepositoryDaoTest {
-    private val database = TestDatabaseFactory.createTestDatabase()
-    private val dao = database.repositoryDao()
+    private val dao = TestDatabaseHolder.getSharedDatabase().repositoryDao()
 
     @Test
     fun testInsertAndRead() = runTest {

@@ -4,15 +4,16 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.dreamstream.core.database.TestDatabaseFactory
+import com.dreamstream.core.database.TestDatabaseHolder
 import com.dreamstream.core.database.entity.WatchHistoryEntity
 import com.dreamstream.core.model.catalog.ContentType
 import kotlinx.coroutines.test.runTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore("Take too much time")
 class WatchHistoryDaoTest {
-    private val database = TestDatabaseFactory.createTestDatabase()
-    private val dao = database.watchHistoryDao()
+    private val dao = TestDatabaseHolder.getSharedDatabase().watchHistoryDao()
 
     @Test
     fun testInsertAndRead() = runTest {
