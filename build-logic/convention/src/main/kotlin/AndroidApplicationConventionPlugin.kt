@@ -26,6 +26,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 "android-application",
                 "dreamstream-detekt",
                 "dreamstream-testing",
+                "dreamstream-dependency-analysis",
             )
 
             extensions.configure<ApplicationExtension> {

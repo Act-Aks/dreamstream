@@ -14,7 +14,10 @@ class SerializationConventionPlugin : Plugin<Project> {
             applyPlugins("kotlin-serialization")
 
             dependencies {
-                "commonMainImplementation"(lib("kotlinx-serialization-core").get())
+                // Promoted to api: modules that apply dreamstream-serialization expose
+                // @Serializable types in their public API, so consumers need the
+                // kotlinx-serialization-core annotations on their compile classpath.
+                "commonMainApi"(lib("kotlinx-serialization-core").get())
                 "commonMainImplementation"(lib("kotlinx-serialization-json").get())
             }
         }

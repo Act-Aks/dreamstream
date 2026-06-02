@@ -109,5 +109,9 @@ gradlePlugin {
             id = "com.dreamstream.localization"
             implementationClass = "LocalizationConventionPlugin"
         }
+        register("dependencyAnalysis") {
+            id = "com.dreamstream.dependency.analysis"
+            implementationClass = "DependencyAnalysisConventionPlugin"
+        }
     }
 }

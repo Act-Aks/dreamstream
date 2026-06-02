@@ -22,6 +22,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                 "android-kotlin-multiplatform-library",
                 "dreamstream-detekt",
                 "dreamstream-testing",
+                "dreamstream-dependency-analysis",
             )
 
             extensions.configure<KotlinMultiplatformExtension> {

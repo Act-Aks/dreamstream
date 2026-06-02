@@ -46,10 +46,11 @@ koin                        = "4.2.1"
 ktor                        = "3.5.0"
 
 # ── HTML Parsing ──────────────────────────────────────────────────────────────
-ksoup = "0.1.2"
+ksoup = "0.2.6"
 
 # ── Local Storage ───────────────────────────────────────────────────────────
 room                        = "3.0.0-alpha05"
+sqlite                      = "2.6.2"
 datastore                   = "1.2.1"
 
 # ── Kotlinx - Coroutines, Serialization, Datetime ───────────────────────────
@@ -74,6 +75,9 @@ material-icons              = "1.7.3"
 
 # ── Code Quality ────────────────────────────────────────────────────────────
 detekt                      = "2.0.0-alpha.3"
+dependency-analysis         = "3.14.0"   # Unused/misconfigured dep detection
+module-graph                = "0.12.1"   # Mermaid module dependency visualization
+module-graph-assert         = "2.9.1"    # Architectural rule enforcement
 
 # ── Testing ─────────────────────────────────────────────────────────────────
 junit                       = "6.1.0"
@@ -167,6 +171,7 @@ ktor-client-okhttp              = { group = "io.ktor", name = "ktor-client-okhtt
 ktor-client-java                = { group = "io.ktor", name = "ktor-client-java",                   version.ref = "ktor" }   # Desktop JVM
 ktor-client-mock                = { group = "io.ktor", name = "ktor-client-mock",                   version.ref = "ktor" }   # Test
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation",    version.ref = "ktor" }
+ktor-client-encoding            = { group = "io.ktor", name = "ktor-client-encoding",               version.ref = "ktor" }
 ktor-client-auth                = { group = "io.ktor", name = "ktor-client-auth",                   version.ref = "ktor" }
 ktor-client-logging             = { group = "io.ktor", name = "ktor-client-logging",                version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json",    version.ref = "ktor" }
@@ -179,9 +184,13 @@ ksoup-network                = { group = "com.fleeksoft.ksoup", name = "ksoup-ne
 androidx-room3-runtime       = { group = "androidx.room3", name = "room3-runtime",   version.ref = "room" }
 androidx-room3-compiler      = { group = "androidx.room3", name = "room3-compiler",  version.ref = "room" }  # ksp
 
+# ── SQLite bundled driver ───────────────────────────────────────────────────
+androidx-sqlite-bundled      = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+
 # ── DataStore ───────────────────────────────────────────────────────────────
-androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences",  version.ref = "datastore" }
-androidx-datastore-core        = { group = "androidx.datastore", name = "datastore-core",         version.ref = "datastore" }
+androidx-datastore-preferences      = { group = "androidx.datastore", name = "datastore-preferences",       version.ref = "datastore" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core",  version.ref = "datastore" }
+androidx-datastore-core             = { group = "androidx.datastore", name = "datastore-core",              version.ref = "datastore" }
 
 # ── Media3 / ExoPlayer ──────────────────────────────────────────────────────
 androidx-media3-exoplayer           = { group = "androidx.media3", name = "media3-exoplayer",           version.ref = "media3" }
@@ -317,6 +326,9 @@ kotlin-multiplatform                = { id = "org.jetbrains.kotlin.multiplatform
 kotlin-serialization                = { id = "org.jetbrains.kotlin.plugin.serialization",       version.ref = "kotlin" }
 ksp                                 = { id = "com.google.devtools.ksp",                         version.ref = "ksp" }
 room                                = { id = "androidx.room3",                                  version.ref = "room" }
+dependency-analysis                 = { id = "com.autonomousapps.dependency-analysis",           version.ref = "dependency-analysis" }
+module-graph                        = { id = "dev.iurysouza.modulegraph",                        version.ref = "module-graph" }
+module-graph-assert                 = { id = "com.jraska.module.graph.assertion",                version.ref = "module-graph-assert" }
 
 # ── DreamStream convention plugins (resolved from :build-logic) ────────────
 dreamstream-android-app             = { id = "com.dreamstream.android.app",         version = "unspecified"  }
@@ -333,3 +345,4 @@ dreamstream-localization            = { id = "com.dreamstream.localization",    
 dreamstream-room                    = { id = "com.dreamstream.room",                version = "unspecified"  }
 dreamstream-serialization           = { id = "com.dreamstream.serialization",       version = "unspecified"  }
 dreamstream-testing                 = { id = "com.dreamstream.testing",             version = "unspecified"  }
+dreamstream-dependency-analysis     = { id = "com.dreamstream.dependency.analysis",  version = "unspecified"  }

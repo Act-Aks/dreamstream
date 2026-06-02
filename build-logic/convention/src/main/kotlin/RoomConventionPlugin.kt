@@ -1,13 +1,10 @@
 import androidx.room3.gradle.RoomExtension
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.bundle
 import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.findByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
  * Room convention plugin.
@@ -31,34 +28,12 @@ class RoomConventionPlugin : Plugin<Project> {
                 schemaDirectory("$projectDir/schemas")
             }
 
-            val isKmp = extensions.findByType<KotlinMultiplatformExtension>() != null
-            if (isKmp) {
-                extensions.configure<KotlinMultiplatformExtension> {
-                    sourceSets.commonMain.dependencies {
-                        implementation(lib("room-runtime").get())
-                        implementation(lib("room-ktx").get())
-                        implementation(lib("room-paging").get())
-                    }
-                    sourceSets.commonTest.dependencies {
-                        implementation(lib("room-testing").get())
-                    }
-                }
-                // KSP must be configured per Android target source set.
-                dependencies {
-                    add("kspAndroid", lib("room-compiler"))
-                    findConfigurationName("kspDesktop")?.let { add(it, lib("room-compiler")) }
-                }
-            } else {
-                dependencies {
-                    bundle("room-runtime").get().forEach { "implementation"(it) }
-                    "ksp"(lib("room-compiler").get())
-                    "testImplementation"(lib("room-testing").get())
-                    "androidTestImplementation"(lib("room-testing").get())
-                }
+            dependencies {
+                "commonMainImplementation"(lib("androidx-room3-runtime").get())
+                "commonMainImplementation"(lib("androidx-sqlite-bundled").get())
+                "kspAndroid"(lib("androidx-room3-compiler").get())
+                "kspDesktop"(lib("androidx-room3-compiler").get())
             }
         }
     }
-
-    private fun Project.findConfigurationName(name: String): String? =
-        configurations.findByName(name)?.name
 }

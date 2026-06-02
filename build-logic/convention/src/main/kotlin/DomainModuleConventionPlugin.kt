@@ -26,9 +26,13 @@ class DomainModuleConventionPlugin : Plugin<Project> {
 
             dependencies {
                 "commonMainImplementation"(lib("kotlin-stdlib").get())
-                "commonMainImplementation"(lib("kotlinx-coroutines-core").get())
-                "commonMainImplementation"(lib("kotlinx-datetime").get())
-                "commonMainImplementation"(lib("kermit").get())
+                // Exposed as api: domain modules declare Flow/StateFlow in repository
+                // interfaces, so consumers need coroutines on their compile classpath.
+                "commonMainApi"(lib("kotlinx-coroutines-core").get())
+                // kermit and kotlinx-datetime are intentionally NOT injected here.
+                // Domain modules are pure Kotlin; they log via the DreamLogger interface
+                // (no Kermit import) and currently carry no date/time domain types.
+                // Add those deps directly in the modules that actually need them.
             }
         }
     }

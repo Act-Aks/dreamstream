@@ -35,7 +35,10 @@ class FeatureConventionPlugin : Plugin<Project> {
             extensions.configure<KotlinMultiplatformExtension> {
                 sourceSets.commonMain.dependencies {
                     addProjectIfPresent(outer, ":core:domain")
-                    addProjectIfPresent(outer, ":core:presentation")
+                    // Exposed as api: feature presentation modules leak UiText, ObserveAsEvents
+                    // and other core:presentation types through their public composable/ViewModel
+                    // signatures, so consumers need it on their compile classpath.
+                    addProjectIfPresent(outer, ":core:presentation", asApi = true)
                     addProjectIfPresent(outer, ":core:design-system")
 
                     implementation(lib("kermit").get())
@@ -47,14 +50,14 @@ class FeatureConventionPlugin : Plugin<Project> {
         }
     }
 
-    /**
-     * Defensively `implementation(project(path))` only if that module is
-     * included in the build. Lets the convention plugin be applied during early
-     * bootstrap when not all core modules exist yet.
-     */
-    private fun KotlinDependencyHandler.addProjectIfPresent(target: Project, path: String) {
+    private fun KotlinDependencyHandler.addProjectIfPresent(
+        target: Project,
+        path: String,
+        asApi: Boolean = false,
+    ) {
         if (target.rootProject.findProject(path) != null) {
-            implementation(target.project(path))
+            if (asApi) api(target.project(path))
+            else implementation(target.project(path))
         }
     }
 }

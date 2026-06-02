@@ -39,8 +39,13 @@ internal fun Project.configureComposeDependencies() {
                 implementation(lib("compose-ui-graphics").get())
                 implementation(lib("compose-ui-tooling").get())
                 implementation(lib("compose-ui-tooling-preview").get())
-                implementation(lib("compose-components-resources").get())
-                bundle("lifecycle-compose").get().forEach { implementation(it) }
+                // Exposed as api so feature/presentation modules can access string resources
+                // from the compose-components-resources artifact without re-declaring it.
+                api(lib("compose-components-resources").get())
+                // Lifecycle deps (runtime, viewmodel, etc.) are provided transitively by
+                // Compose Multiplatform. Adding them explicitly caused duplicate-class
+                // conflicts between androidx.lifecycle and org.jetbrains.androidx.lifecycle
+                // artifacts on the desktopMain classpath (LocalViewModelStoreOwner clash).
             }
             findByName("desktopMain")?.dependencies {
                 implementation(lib("compose-desktop-jvm").get())
