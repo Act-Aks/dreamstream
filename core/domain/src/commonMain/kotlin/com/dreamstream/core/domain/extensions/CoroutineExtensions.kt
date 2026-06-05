@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 /** Debounce a flow by [waitMs] milliseconds */
 @OptIn(FlowPreview::class)
@@ -25,7 +26,7 @@ fun <T> Flow<T>.retryWithBackoff(
     factor: Double = 2.0,
 ): Flow<T> = retry(maxRetries.toLong()) { cause ->
     if (cause is CancellationException) throw cause
-    delay(initialDelay.coerceAtMost(maxDelay))
+    delay(initialDelay.coerceAtMost(maxDelay).milliseconds)
     true
 }
 
