@@ -2,9 +2,6 @@ package di
 
 import com.dreamstream.core.data.di.coreDataModule
 import com.dreamstream.core.data.di.platformCoreDataModule
-import com.dreamstream.core.runtime.di.pluginRuntimeModule
-import com.dreamstream.core.runtime.loader.BundledPluginLoader
-import com.dreamstream.core.runtime.loader.PluginLoader
 import com.dreamstream.feature.details.data.di.detailsDataModule
 import com.dreamstream.feature.details.presentation.di.detailsPresentationModule
 import com.dreamstream.feature.home.data.di.homeDataModule
@@ -13,7 +10,6 @@ import com.dreamstream.feature.search.data.di.searchDataModule
 import com.dreamstream.feature.search.presentation.di.searchPresentationModule
 import com.dreamstream.feature.settings.data.di.settingsDataModule
 import com.dreamstream.feature.settings.presentation.di.settingsPresentationModule
-import com.dreamstream.plugin.flixhq.FlixHqPlugin
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -30,19 +26,12 @@ import org.koin.dsl.KoinAppDeclaration
  * @param config Optional Koin app declaration for platform-specific setup
  *   (e.g. `androidContext(this)` on Android).
  */
-fun initKoin(
-    additionalPluginLoaders: List<PluginLoader> = emptyList(),
-    config: KoinAppDeclaration? = null,
-) {
-    val allLoaders: List<PluginLoader> =
-        listOf(BundledPluginLoader(listOf(FlixHqPlugin()))) + additionalPluginLoaders
-
+fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
             coreDataModule,
             platformCoreDataModule,
-            pluginRuntimeModule(allLoaders),
             appModule,
             homeDataModule,
             homePresentationModule,
