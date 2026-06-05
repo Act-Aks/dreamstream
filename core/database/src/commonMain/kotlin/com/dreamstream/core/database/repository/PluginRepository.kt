@@ -2,9 +2,9 @@ package com.dreamstream.core.database.repository
 
 import com.dreamstream.core.database.dao.PluginDao
 import com.dreamstream.core.database.entity.InstalledPluginEntity
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.plugin.InstalledPlugin
-import com.dreamstream.core.model.plugin.PluginManifest
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.plugin.InstalledPlugin
+import com.dreamstream.core.domain.model.plugin.PluginManifest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json

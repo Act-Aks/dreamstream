@@ -7,8 +7,8 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import com.dreamstream.core.database.TestDatabaseHolder
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.user.Bookmark
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.user.Bookmark
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Ignore

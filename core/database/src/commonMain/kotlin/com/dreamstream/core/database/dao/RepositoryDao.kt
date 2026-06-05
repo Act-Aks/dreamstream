@@ -35,7 +35,7 @@ interface RepositoryDao {
     suspend fun updateLastFetched(
         lastFetched: Long,
         name: String,
-        description: String,
+        description: String?,
         url: String
     )
 

@@ -2,7 +2,7 @@ package com.dreamstream.core.database.repository
 
 import com.dreamstream.core.database.dao.WatchHistoryDao
 import com.dreamstream.core.database.entity.WatchHistoryEntity
-import com.dreamstream.core.model.user.WatchHistory
+import com.dreamstream.core.domain.model.user.WatchHistory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

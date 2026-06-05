@@ -1,7 +1,7 @@
 package com.dreamstream.core.database.adapters
 
 import androidx.room3.TypeConverter
-import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.ContentType
 import kotlinx.serialization.json.Json
 
 class ContentTypeConverter {

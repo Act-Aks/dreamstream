@@ -2,7 +2,7 @@ package com.dreamstream.core.database.repository
 
 import com.dreamstream.core.database.dao.RepositoryDao
 import com.dreamstream.core.database.entity.RepositoryEntity
-import com.dreamstream.core.model.plugin.PluginRepository
+import com.dreamstream.core.domain.model.plugin.PluginRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -26,7 +26,7 @@ class RepositoryRepository(private val dao: RepositoryDao) {
         url: String,
         lastFetched: Long,
         name: String,
-        description: String
+        description: String?
     ) = dao.updateLastFetched(lastFetched, name, description, url)
 
     suspend fun deleteByUrl(url: String) = dao.deleteByUrl(url)

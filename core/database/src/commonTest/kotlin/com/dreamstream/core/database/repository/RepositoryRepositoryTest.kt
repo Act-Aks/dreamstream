@@ -10,7 +10,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.database.TestDatabaseHolder
-import com.dreamstream.core.model.plugin.PluginRepository
+import com.dreamstream.core.domain.model.plugin.PluginRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Ignore

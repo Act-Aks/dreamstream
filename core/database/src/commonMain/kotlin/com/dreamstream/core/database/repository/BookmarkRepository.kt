@@ -2,7 +2,7 @@ package com.dreamstream.core.database.repository
 
 import com.dreamstream.core.database.dao.BookmarkDao
 import com.dreamstream.core.database.entity.BookmarkEntity
-import com.dreamstream.core.model.user.Bookmark
+import com.dreamstream.core.domain.model.user.Bookmark
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

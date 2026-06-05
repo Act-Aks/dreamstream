@@ -38,7 +38,6 @@ abstract class DreamstreamDatabase : RoomDatabase() {
     abstract fun repositoryDao(): RepositoryDao
 }
 
-@Suppress("KotlinNoActualForExpect")
 expect object DreamstreamDatabaseConstructor : RoomDatabaseConstructor<DreamstreamDatabase> {
     override fun initialize(): DreamstreamDatabase
 }

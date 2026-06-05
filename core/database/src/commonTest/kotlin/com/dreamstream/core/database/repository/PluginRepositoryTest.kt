@@ -7,9 +7,9 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.dreamstream.core.database.TestDatabaseHolder
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.plugin.InstalledPlugin
-import com.dreamstream.core.model.plugin.PluginManifest
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.plugin.InstalledPlugin
+import com.dreamstream.core.domain.model.plugin.PluginManifest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Ignore
 import kotlin.test.Test

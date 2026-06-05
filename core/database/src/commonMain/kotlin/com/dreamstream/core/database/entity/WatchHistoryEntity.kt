@@ -4,7 +4,7 @@ import androidx.room3.ColumnInfo
 import androidx.room3.Entity
 import androidx.room3.Index
 import androidx.room3.PrimaryKey
-import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.ContentType
 
 @Entity(
     tableName = "WatchHistory",

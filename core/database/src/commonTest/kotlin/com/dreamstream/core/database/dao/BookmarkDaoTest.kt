@@ -9,7 +9,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.database.TestDatabaseHolder
 import com.dreamstream.core.database.entity.BookmarkEntity
-import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.ContentType
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Ignore
