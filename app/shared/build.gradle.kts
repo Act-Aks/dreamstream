@@ -26,7 +26,6 @@ kotlin {
 
             // Plugin infrastructure: runtime + first bundled plugin
             implementation(projects.core.data)
-            implementation(projects.core.pluginRuntime)
             implementation(projects.plugin.flixhq)
 
             implementation(projects.feature.home.domain)

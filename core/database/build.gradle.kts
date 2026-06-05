@@ -11,11 +11,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.core.data)
-            api(projects.core.model)
-        }
-        desktopMain.dependencies {
-            implementation(libs.androidx.datastore.preferences.core)
+            api(projects.core.domain)
         }
 
         all {

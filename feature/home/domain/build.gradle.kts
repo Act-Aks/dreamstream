@@ -18,14 +18,9 @@ kotlin {
     android {
         namespace = "com.dreamstream.feature.home.domain"
     }
-
     sourceSets {
-        commonMain {
-            dependencies {
-                // api: SearchResponse is part of HomeSection's public API so
-                // data and presentation layers see core:model transitively.
-                api(projects.core.model)
-            }
+        commonMain.dependencies {
+            api(projects.core.domain)
         }
     }
 }

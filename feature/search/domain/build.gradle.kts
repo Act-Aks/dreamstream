@@ -16,14 +16,9 @@ kotlin {
     android {
         namespace = "com.dreamstream.feature.search.domain"
     }
-
     sourceSets {
-        commonMain {
-            dependencies {
-                // api: SearchResult is part of SearchRepository's public API so
-                // data and presentation layers see core:model transitively.
-                api(projects.core.model)
-            }
+        commonMain.dependencies {
+            api(projects.core.domain)
         }
     }
 }

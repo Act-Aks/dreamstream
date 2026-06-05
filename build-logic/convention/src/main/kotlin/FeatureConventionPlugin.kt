@@ -41,8 +41,6 @@ class FeatureConventionPlugin : Plugin<Project> {
                     addProjectIfPresent(outer, ":core:presentation", asApi = true)
                     addProjectIfPresent(outer, ":core:design-system")
 
-                    implementation(lib("kermit").get())
-                    implementation(lib("compose-navigation3-ui").get())
                     implementation(lib("compose-navigation3-ui").get())
                     bundle("coil").get().forEach { implementation(it) }
                 }

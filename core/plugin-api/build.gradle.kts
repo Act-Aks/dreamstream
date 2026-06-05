@@ -32,14 +32,13 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.kotlinx.coroutines.core)
-            api(libs.kotlinx.serialization.json)
             api(libs.kotlinx.datetime)
-            api(libs.ktor.client.core)
-            api(libs.ktor.client.content.negotiation)
-            api(libs.ktor.serialization.kotlinx.json)
+            api(libs.kotlinx.serialization.json)
             api(libs.ksoup)
-
-            api(projects.core.model)
+            api(libs.ktor.client.content.negotiation)
+            api(libs.ktor.client.core)
+            api(libs.ktor.serialization.kotlinx.json)
+            api(projects.core.domain)
         }
     }
 }

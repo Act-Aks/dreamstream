@@ -19,5 +19,4 @@ plugins {
 
 dependencies {
     implementation(projects.app.shared)
-    implementation(projects.core.pluginRuntime)
 }

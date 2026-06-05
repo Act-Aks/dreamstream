@@ -28,7 +28,6 @@ kotlin {
         // Result/Error/DataError types from core:domain and model types from core:model
         // in their signatures. Consumers must see these on their compile classpath.
         api(projects.core.domain)
-        api(projects.core.model)
         // AppRoute implements NavKey; expose navigation3 so callers can use it as a route type.
         api(libs.compose.navigation3.ui)
     }

@@ -49,7 +49,7 @@ internal fun Project.configureAndroid(extension: CommonExtension) {
  *
  * @param defaultConfig the DSL block to configure.
  */
-internal fun Project.configureDefaultConfig(defaultConfig: DefaultConfig) {
+private fun Project.configureDefaultConfig(defaultConfig: DefaultConfig) {
     defaultConfig.apply {
         minSdk {
             version = release(minSdkVersion)
@@ -67,7 +67,7 @@ internal fun Project.configureDefaultConfig(defaultConfig: DefaultConfig) {
  *
  * @param compileOptions the DSL block to configure.
  */
-internal fun Project.configureCompileOptions(compileOptions: CompileOptions) {
+private fun Project.configureCompileOptions(compileOptions: CompileOptions) {
     compileOptions.apply {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
@@ -80,7 +80,7 @@ internal fun Project.configureCompileOptions(compileOptions: CompileOptions) {
  *
  * @param buildFeatures the DSL block to configure.
  */
-internal fun Project.configureBuildFeatures(buildFeatures: BuildFeatures) {
+private fun configureBuildFeatures(buildFeatures: BuildFeatures) {
     buildFeatures.apply {
         buildConfig = true
     }
@@ -91,7 +91,7 @@ internal fun Project.configureBuildFeatures(buildFeatures: BuildFeatures) {
  *
  * @param packaging the DSL block to configure.
  */
-internal fun Project.configurePackaging(packaging: Packaging) {
+private fun configurePackaging(packaging: Packaging) {
     packaging.apply {
         resources {
             excludes += defaultPackagingExcludes
@@ -106,7 +106,7 @@ internal fun Project.configurePackaging(packaging: Packaging) {
  *
  * @param testOptions the DSL block to configure.
  */
-internal fun Project.configureTestOptions(testOptions: TestOptions) {
+private fun configureTestOptions(testOptions: TestOptions) {
     testOptions.apply {
         unitTests {
             isReturnDefaultValues = true
@@ -128,7 +128,7 @@ internal fun Project.configureCoreLibraryDesugaring() {
 /**
  * Adds the android core dependencies
  */
-internal fun Project.configureAndroidCoreDependencies() {
+private fun Project.configureAndroidCoreDependencies() {
     dependencies {
         "implementation"(lib("androidx-activity-compose").get())
         "implementation"(lib("androidx-appcompat").get())

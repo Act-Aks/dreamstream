@@ -25,7 +25,6 @@ kotlin {
             dependencies {
                 api(projects.core.domain)
                 api(projects.feature.search.domain)
-                implementation(projects.core.pluginRuntime)
             }
         }
     }

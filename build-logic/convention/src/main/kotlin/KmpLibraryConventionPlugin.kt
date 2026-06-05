@@ -22,8 +22,13 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                 "android-kotlin-multiplatform-library",
                 "dreamstream-detekt",
                 "dreamstream-testing",
-                "dreamstream-dependency-analysis",
-            )
+            ).also {
+                if (providers.gradleProperty("dreamstream.enableDependencyAnalysisForSubProjects")
+                        .map { it.toBoolean() }.orElse(false).get()
+                ) {
+                    applyPlugins("dreamstream-dependency-analysis")
+                }
+            }
 
             extensions.configure<KotlinMultiplatformExtension> {
                 configureAndroidLibraryTarget(this)

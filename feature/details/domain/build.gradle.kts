@@ -16,14 +16,9 @@ kotlin {
     android {
         namespace = "com.dreamstream.feature.details.domain"
     }
-
-    sourceSets {
-        commonMain {
-            dependencies {
-                // api: LoadResponse is part of DetailsRepository's public API so
-                // data and presentation layers see core:model transitively.
-                api(projects.core.model)
-            }
+    sourceSets{
+        commonMain.dependencies {
+            api(projects.core.domain)
         }
     }
 }

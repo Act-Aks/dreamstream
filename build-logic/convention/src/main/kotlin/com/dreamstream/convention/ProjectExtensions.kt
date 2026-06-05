@@ -2,8 +2,8 @@ package com.dreamstream.convention
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.provider.Provider
@@ -21,10 +21,12 @@ internal val Project.libs: VersionCatalog
     get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 internal fun Project.lib(alias: String): Provider<MinimalExternalModuleDependency> =
-    libs.findLibrary(alias).orElseThrow { IllegalStateException("Library alias '$alias' not found in libs.versions.toml") }
+    libs.findLibrary(alias)
+        .orElseThrow { IllegalStateException("Library alias '$alias' not found in libs.versions.toml") }
 
 internal fun Project.bundle(alias: String): Provider<ExternalModuleDependencyBundle> =
-    libs.findBundle(alias).orElseThrow { IllegalStateException("Bundle alias '$alias' not found in libs.versions.toml") }
+    libs.findBundle(alias)
+        .orElseThrow { IllegalStateException("Bundle alias '$alias' not found in libs.versions.toml") }
 
 internal fun Project.pluginId(alias: String): String =
     libs.findPlugin(alias)
@@ -93,8 +95,9 @@ internal val Project.jvmTarget: JvmTarget
  * libs.versions.toml). The alias does NOT need a version (DreamStream convention
  * plugins are versionless).
  */
-internal fun Project.applyPlugins(vararg aliases: String) {
+internal fun Project.applyPlugins(vararg aliases: String): Project {
     with(pluginManager) {
         aliases.forEach { apply(pluginId(it)) }
     }
+    return this
 }

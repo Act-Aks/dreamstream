@@ -10,13 +10,16 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            // core:domain provides Result, DataError, DreamLogger, and coroutines (api).
             api(projects.core.domain)
+            api(projects.core.database)
+            api(projects.core.pluginApi)
+            api(projects.core.pluginLoader)
             // Kermit — implements DreamLogger for structured logging.
             implementation(libs.kermit)
             implementation(libs.ktor.client.encoding)
             // DataStore (KMP-compatible artifact) — preferences persistence.
-            implementation(libs.androidx.datastore.preferences.core)
+            implementation(libs.androidx.datastore.core)
+            implementation(libs.androidx.datastore.preferences)
         }
     }
 }

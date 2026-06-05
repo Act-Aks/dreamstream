@@ -25,7 +25,6 @@ kotlin {
             dependencies {
                 api(projects.core.domain)
                 api(projects.feature.home.domain)
-                implementation(projects.core.pluginRuntime)
             }
         }
     }

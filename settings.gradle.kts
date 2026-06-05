@@ -38,14 +38,13 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "DreamStream"
 
 /*********************** All The Core Modules ***************************/
+//include(":core:player")
 include(":core:data")
 include(":core:database")
 include(":core:design-system")
 include(":core:domain")
-include(":core:model")
-//include(":core:player")
 include(":core:plugin-api")
-include(":core:plugin-runtime")
+include(":core:plugin-loader")
 include(":core:presentation")
 
 /************************ All The Plugins *******************************/
