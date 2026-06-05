@@ -1,6 +1,7 @@
 package com.dreamstream.core.data.di
 
 import com.dreamstream.core.data.logging.KermitDreamLogger
+import com.dreamstream.core.data.logging.KermitDreamLoggerFactory
 import com.dreamstream.core.data.network.DreamHttpClientFactory
 import com.dreamstream.core.domain.logger.DreamLogger
 import io.ktor.client.HttpClient
@@ -23,7 +24,9 @@ import org.koin.dsl.module
  */
 val coreDataModule: Module = module {
     includes(platformCoreDataModule)
-    single<DreamLogger> { KermitDreamLogger }
+    single<DreamLogger> { KermitDreamLogger.Default }
+    singleOf(::KermitDreamLoggerFactory)
+    includes(coreDataPreferencesModule)
     singleOf(::DreamHttpClientFactory)
     single<HttpClient> { get<DreamHttpClientFactory>().create(get()) }
 }

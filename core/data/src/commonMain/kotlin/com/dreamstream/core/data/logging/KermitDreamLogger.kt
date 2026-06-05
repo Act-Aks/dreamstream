@@ -14,9 +14,17 @@ import com.dreamstream.core.domain.logger.DreamLogger
  * Callers depend only on [DreamLogger] — Kermit is an implementation detail of
  * `:core:data` and never leaks into domain or feature modules.
  */
-object KermitDreamLogger : DreamLogger {
-    override fun debug(message: String) = Logger.d(message)
-    override fun info(message: String) = Logger.i(message)
-    override fun warn(message: String) = Logger.w(message)
-    override fun error(message: String, throwable: Throwable?) = Logger.e(message, throwable)
+class KermitDreamLogger private constructor(tag: String) : DreamLogger {
+    private val logger = Logger.withTag(tag)
+
+    override fun debug(message: String) = logger.d { message }
+    override fun error(message: String, throwable: Throwable?) = logger.e(throwable) { message }
+    override fun info(message: String) = logger.i { message }
+    override fun verbose(message: String) = logger.v { message }
+    override fun warn(message: String) = logger.w { message }
+
+    companion object {
+        val Default: DreamLogger = KermitDreamLogger("DreamStreamLogger")
+        operator fun invoke(tag: String): DreamLogger = KermitDreamLogger(tag)
+    }
 }

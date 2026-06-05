@@ -2,7 +2,7 @@ package com.dreamstream.core.data.network
 
 import kotlinx.serialization.json.Json
 
-internal val DreamJson = Json {
+val DreamJson = Json {
     isLenient = true
     ignoreUnknownKeys = true
     encodeDefaults = true
