@@ -1,6 +1,6 @@
 package com.dreamstream.plugin.api.model.search
 
-import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.ContentType
 
 sealed class ApiSearchResult {
     abstract val name: String

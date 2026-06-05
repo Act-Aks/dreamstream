@@ -1,16 +1,17 @@
 package com.dreamstream.plugin.api.provider
 
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.catalog.SubtitleFormat
-import com.dreamstream.core.model.filter.FilterOption
-import com.dreamstream.core.model.media.StreamLink
-import com.dreamstream.core.model.media.Subtitle
-import com.dreamstream.plugin.api.model.catalog.CatalogRequest
-import com.dreamstream.plugin.api.model.catalog.CatalogResponse
+import com.dreamstream.core.domain.model.catalog.CatalogRequest
+import com.dreamstream.core.domain.model.catalog.CatalogResponse
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.SubtitleFormat
+import com.dreamstream.core.domain.model.filter.FilterOption
+import com.dreamstream.core.domain.model.media.StreamLink
+import com.dreamstream.core.domain.model.media.Subtitle
 import com.dreamstream.plugin.api.model.detail.ApiContentDetail
 import com.dreamstream.plugin.api.model.search.ApiSearchResult
 import com.dreamstream.plugin.api.plugin.LogLevel
 import com.dreamstream.plugin.api.plugin.PluginContext
+import com.dreamstream.plugin.api.provider.ContentProvider.Companion.BROWSER_HEADERS
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
@@ -94,7 +95,7 @@ abstract class ContentProvider {
     /**
      * Whether this provider offers a categorized home page with sections.
      *
-     * When `true`, [getMainPage] will be called to populate the home screen
+     * When `true`, [getHomePage] will be called to populate the home screen
      * with sections like "Trending", "New Releases", "Genres", etc.
      *
      * Default: `false`
@@ -217,7 +218,7 @@ abstract class ContentProvider {
      * @param request Contains section name for loading more items in that section
      * @return [CatalogResponse] with sections and content, or `null` on failure
      */
-    open suspend fun getMainPage(
+    open suspend fun getHomePage(
         page: Int,
         request: CatalogRequest,
     ): CatalogResponse? = null
@@ -275,7 +276,7 @@ abstract class ContentProvider {
      *
      * Called when user taps on a search result or home page item.
      *
-     * @param url URL or ID returned from [search] or [getMainPage]
+     * @param url URL or ID returned from [search] or [getHomePage]
      * @return [ApiContentDetail] with full content details (title, episodes, metadata),
      *         or `null` on failure
      *
@@ -414,9 +415,7 @@ abstract class ContentProvider {
          * custom header maps (e.g. for `Referer` or `Origin` headers).
          */
         const val DEFAULT_USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/120.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " + "AppleWebKit/537.36 (KHTML, like Gecko) " + "Chrome/120.0.0.0 Safari/537.36"
 
         /**
          * Browser-like HTTP headers sent with every [get] and [post] request.
@@ -454,23 +453,21 @@ abstract class ContentProvider {
          * and deflate transparently.
          */
         val BROWSER_HEADERS: Map<String, String> = mapOf(
-            "User-Agent"             to DEFAULT_USER_AGENT,
+            "User-Agent" to DEFAULT_USER_AGENT,
             // Chrome Client Hints — absence flags non-browser to Cloudflare.
-            "sec-ch-ua"              to "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
-            "sec-ch-ua-Mobile"       to "?0",
-            "sec-ch-ua-Platform"     to "\"Windows\"",
+            "sec-ch-ua" to "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
+            "sec-ch-ua-Mobile" to "?0",
+            "sec-ch-ua-Platform" to "\"Windows\"",
             "Upgrade-Insecure-Requests" to "1",
-            "Accept"                 to "text/html,application/xhtml+xml,application/xml;" +
-                "q=0.9,image/avif,image/webp,image/apng,*/*;" +
-                "q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "Accept" to "text/html,application/xhtml+xml,application/xml;" + "q=0.9,image/avif,image/webp,image/apng,*/*;" + "q=0.8,application/signed-exchange;v=b3;q=0.7",
             // Sec-Fetch metadata — Chrome sends these for every navigation.
-            "Sec-Fetch-Site"         to "none",
-            "Sec-Fetch-Mode"         to "navigate",
-            "Sec-Fetch-User"         to "?1",
-            "Sec-Fetch-Dest"         to "document",
-            "Accept-Encoding"        to "gzip, deflate",
-            "Accept-Language"        to "en-US,en;q=0.9",
-            "Cache-Control"          to "max-age=0",
+            "Sec-Fetch-Site" to "none",
+            "Sec-Fetch-Mode" to "navigate",
+            "Sec-Fetch-User" to "?1",
+            "Sec-Fetch-Dest" to "document",
+            "Accept-Encoding" to "gzip, deflate",
+            "Accept-Language" to "en-US,en;q=0.9",
+            "Cache-Control" to "max-age=0",
         )
     }
 }

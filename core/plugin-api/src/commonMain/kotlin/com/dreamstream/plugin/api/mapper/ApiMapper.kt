@@ -1,14 +1,14 @@
 package com.dreamstream.plugin.api.mapper
 
-import com.dreamstream.core.model.detail.AnimeDetail
-import com.dreamstream.core.model.detail.ContentDetail
-import com.dreamstream.core.model.detail.MovieDetail
-import com.dreamstream.core.model.detail.SeriesDetail
-import com.dreamstream.core.model.search.AnimeResult
-import com.dreamstream.core.model.search.LiveResult
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SearchResult
-import com.dreamstream.core.model.search.SeriesResult
+import com.dreamstream.core.domain.model.detail.AnimeDetail
+import com.dreamstream.core.domain.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.MovieDetail
+import com.dreamstream.core.domain.model.detail.SeriesDetail
+import com.dreamstream.core.domain.model.search.AnimeResult
+import com.dreamstream.core.domain.model.search.LiveResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import com.dreamstream.plugin.api.model.detail.ApiAnimeDetail
 import com.dreamstream.plugin.api.model.detail.ApiContentDetail
 import com.dreamstream.plugin.api.model.detail.ApiMovieDetail

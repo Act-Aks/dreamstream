@@ -1,9 +1,9 @@
 package com.dreamstream.plugin.api.model.detail
 
-import com.dreamstream.core.model.catalog.Actor
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.catalog.Episode
-import com.dreamstream.core.model.detail.ShowStatus
+import com.dreamstream.core.domain.model.catalog.Actor
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.Episode
+import com.dreamstream.core.domain.model.detail.ShowStatus
 import com.dreamstream.plugin.api.model.search.ApiSearchResult
 
 data class ApiAnimeDetail(

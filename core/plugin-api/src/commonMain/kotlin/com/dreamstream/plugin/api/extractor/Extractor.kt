@@ -1,7 +1,7 @@
 package com.dreamstream.plugin.api.extractor
 
-import com.dreamstream.core.model.media.StreamLink
-import com.dreamstream.core.model.media.Subtitle
+import com.dreamstream.core.domain.model.media.StreamLink
+import com.dreamstream.core.domain.model.media.Subtitle
 import io.ktor.client.HttpClient
 
 /**
