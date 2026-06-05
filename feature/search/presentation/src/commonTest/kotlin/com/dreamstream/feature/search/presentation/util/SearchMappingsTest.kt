@@ -4,11 +4,11 @@ import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.search.AnimeResult
-import com.dreamstream.core.model.search.LiveResult
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SeriesResult
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.search.AnimeResult
+import com.dreamstream.core.domain.model.search.LiveResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.search.domain.error.SearchError
 import com.dreamstream.feature.search.presentation.resources.Res

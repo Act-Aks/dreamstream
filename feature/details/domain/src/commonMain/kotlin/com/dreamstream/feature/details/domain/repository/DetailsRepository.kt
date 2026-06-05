@@ -1,7 +1,7 @@
 package com.dreamstream.feature.details.domain.repository
 
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.ContentDetail
 import com.dreamstream.feature.details.domain.error.DetailsError
 
 /**

@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.catalog.Episode
+import com.dreamstream.core.domain.model.catalog.Episode
 import com.dreamstream.core.presentation.ui.UiText
 import kotlin.test.Test
 import kotlin.test.assertEquals

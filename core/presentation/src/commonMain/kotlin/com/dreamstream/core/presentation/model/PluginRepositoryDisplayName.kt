@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.plugin.PluginRepository
+import com.dreamstream.core.domain.model.plugin.PluginRepository
 import com.dreamstream.core.presentation.ui.UiText
 
 /**

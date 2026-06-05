@@ -11,7 +11,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.MovieResult
 import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.domain.repository.HomeRepository

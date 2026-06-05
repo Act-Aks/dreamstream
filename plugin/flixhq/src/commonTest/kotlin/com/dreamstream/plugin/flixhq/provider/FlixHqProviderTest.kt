@@ -6,6 +6,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
+import com.dreamstream.core.domain.model.catalog.CatalogRequest
 import com.dreamstream.plugin.api.plugin.LogLevel
 import com.dreamstream.plugin.api.plugin.PluginContext
 import io.ktor.client.HttpClient
@@ -56,8 +57,7 @@ class FlixHqProviderTest {
     ): FlixHqProvider {
         val engine = MockEngine { request ->
             val key = request.url.encodedPath
-            val (status, body) = responses[key]
-                ?: (HttpStatusCode.NotFound to "Not Found")
+            val (status, body) = responses[key] ?: (HttpStatusCode.NotFound to "Not Found")
             respond(
                 content = body,
                 status = status,
@@ -77,36 +77,38 @@ class FlixHqProviderTest {
         return FlixHqProvider().also { it.inject(client, context) }
     }
 
-    // ── getMainPage ────────────────────────────────────────────────────────────
+    // ── getHomePage ────────────────────────────────────────────────────────────
 
     @Test
-    fun `getMainPage returns non-null catalog response on success`() = runTest {
+    fun `getHomePage returns non-null catalog response on success`() = runTest {
         val provider = providerWith(mapOf("/home" to (HttpStatusCode.OK to HOME_HTML)))
-        val result = provider.getMainPage(1, com.dreamstream.plugin.api.model.catalog.CatalogRequest(1))
+        val result = provider.getHomePage(1, CatalogRequest(1))
         assertThat(result).isNotNull()
     }
 
     @Test
-    fun `getMainPage returns sections parsed from HTML`() = runTest {
+    fun `getHomePage returns sections parsed from HTML`() = runTest {
         val provider = providerWith(mapOf("/home" to (HttpStatusCode.OK to HOME_HTML)))
-        val result = provider.getMainPage(1, com.dreamstream.plugin.api.model.catalog.CatalogRequest(1))
+        val result = provider.getHomePage(1, CatalogRequest(1))
         assertThat(result!!.sections).hasSize(1)
         assertThat(result.sections[0].name).isEqualTo("Trending")
     }
 
     @Test
-    fun `getMainPage returns catalog response with empty sections when HTML has no blocks`() = runTest {
-        val provider = providerWith(mapOf("/home" to (HttpStatusCode.OK to "<html><body></body></html>")))
-        val result = provider.getMainPage(1, com.dreamstream.plugin.api.model.catalog.CatalogRequest(1))
-        assertThat(result).isNotNull()
-        assertThat(result!!.sections).isEmpty()
-    }
+    fun `getHomePage returns catalog response with empty sections when HTML has no blocks`() =
+        runTest {
+            val provider =
+                providerWith(mapOf("/home" to (HttpStatusCode.OK to "<html><body></body></html>")))
+            val result = provider.getHomePage(1, CatalogRequest(1))
+            assertThat(result).isNotNull()
+            assertThat(result!!.sections).isEmpty()
+        }
 
     @Test
-    fun `getMainPage returns null when network throws`() = runTest {
-        val result = failingProvider().getMainPage(
+    fun `getHomePage returns null when network throws`() = runTest {
+        val result = failingProvider().getHomePage(
             1,
-            com.dreamstream.plugin.api.model.catalog.CatalogRequest(1),
+            CatalogRequest(1),
         )
         assertThat(result).isNull()
     }
@@ -116,7 +118,8 @@ class FlixHqProviderTest {
     @Test
     fun `search encodes query and returns results`() = runTest {
         // "inception" query → path "/search/inception"
-        val provider = providerWith(mapOf("/search/inception" to (HttpStatusCode.OK to SEARCH_HTML)))
+        val provider =
+            providerWith(mapOf("/search/inception" to (HttpStatusCode.OK to SEARCH_HTML)))
         val results = provider.search("inception")
         assertThat(results).hasSize(1)
     }

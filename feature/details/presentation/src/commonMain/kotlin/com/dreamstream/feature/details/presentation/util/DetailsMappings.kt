@@ -1,7 +1,7 @@
 package com.dreamstream.feature.details.presentation.util
 
-import com.dreamstream.core.model.detail.ContentDetail
-import com.dreamstream.core.model.detail.MovieDetail
+import com.dreamstream.core.domain.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.MovieDetail
 import com.dreamstream.core.presentation.model.displayName
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.details.domain.error.DetailsError

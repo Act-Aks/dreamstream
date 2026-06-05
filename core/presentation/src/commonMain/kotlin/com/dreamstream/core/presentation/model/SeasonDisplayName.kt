@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.catalog.Season
+import com.dreamstream.core.domain.model.catalog.Season
 import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.season
 import com.dreamstream.core.presentation.ui.UiText

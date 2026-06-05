@@ -12,8 +12,8 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import androidx.lifecycle.SavedStateHandle
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SearchResult
 import com.dreamstream.feature.search.domain.error.SearchError
 import com.dreamstream.feature.search.domain.repository.SearchRepository
 import kotlinx.coroutines.Dispatchers

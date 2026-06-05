@@ -6,7 +6,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.ContentDetail
 import com.dreamstream.feature.details.domain.error.DetailsError
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

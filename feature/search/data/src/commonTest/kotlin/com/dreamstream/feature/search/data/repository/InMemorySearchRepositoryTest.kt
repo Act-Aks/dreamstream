@@ -6,9 +6,9 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.search.AnimeResult
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SeriesResult
+import com.dreamstream.core.domain.model.search.AnimeResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 

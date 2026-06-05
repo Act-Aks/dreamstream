@@ -4,9 +4,9 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SearchResult
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SearchResult
 import com.dreamstream.core.presentation.ui.UiText
 import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection

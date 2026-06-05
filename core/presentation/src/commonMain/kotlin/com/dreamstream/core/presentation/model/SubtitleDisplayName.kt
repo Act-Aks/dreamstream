@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.media.Subtitle
+import com.dreamstream.core.domain.model.media.Subtitle
 import com.dreamstream.core.presentation.ui.UiText
 
 /**

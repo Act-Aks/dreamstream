@@ -1,6 +1,6 @@
 package com.dreamstream.feature.home.domain.model
 
-import com.dreamstream.core.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.SearchResult
 
 /**
  * A named horizontal row of content items displayed on the home screen.

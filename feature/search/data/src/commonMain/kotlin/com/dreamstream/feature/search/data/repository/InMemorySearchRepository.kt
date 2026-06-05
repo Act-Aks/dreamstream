@@ -1,11 +1,11 @@
 package com.dreamstream.feature.search.data.repository
 
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.search.AnimeResult
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SearchResult
-import com.dreamstream.core.model.search.SeriesResult
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.search.AnimeResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import com.dreamstream.feature.search.domain.error.SearchError
 import com.dreamstream.feature.search.domain.repository.SearchRepository
 

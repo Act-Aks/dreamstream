@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.catalog.Episode
+import com.dreamstream.core.domain.model.catalog.Episode
 import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.episode
 import com.dreamstream.core.presentation.ui.UiText

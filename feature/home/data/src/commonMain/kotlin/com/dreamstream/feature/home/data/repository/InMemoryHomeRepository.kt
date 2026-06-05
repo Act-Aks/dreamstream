@@ -1,10 +1,10 @@
 package com.dreamstream.feature.home.data.repository
 
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.search.AnimeResult
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SeriesResult
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.search.AnimeResult
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.domain.repository.HomeRepository

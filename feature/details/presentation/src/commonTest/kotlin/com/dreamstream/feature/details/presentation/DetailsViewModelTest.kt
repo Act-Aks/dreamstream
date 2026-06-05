@@ -9,9 +9,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.detail.ContentDetail
-import com.dreamstream.core.model.detail.MovieDetail
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.MovieDetail
 import com.dreamstream.feature.details.domain.error.DetailsError
 import com.dreamstream.feature.details.domain.repository.DetailsRepository
 import kotlinx.coroutines.Dispatchers

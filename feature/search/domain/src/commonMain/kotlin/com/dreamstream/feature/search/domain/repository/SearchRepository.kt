@@ -1,7 +1,7 @@
 package com.dreamstream.feature.search.domain.repository
 
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.SearchResult
 import com.dreamstream.feature.search.domain.error.SearchError
 
 /**

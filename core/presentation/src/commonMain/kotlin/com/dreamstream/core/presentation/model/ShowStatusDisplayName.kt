@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.detail.ShowStatus
+import com.dreamstream.core.domain.model.detail.ShowStatus
 import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.status_cancelled
 import com.dreamstream.core.presentation.resources.status_completed

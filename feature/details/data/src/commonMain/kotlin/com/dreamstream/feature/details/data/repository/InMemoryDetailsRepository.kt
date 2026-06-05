@@ -1,12 +1,12 @@
 package com.dreamstream.feature.details.data.repository
 
 import com.dreamstream.core.domain.util.Result
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.detail.AnimeDetail
-import com.dreamstream.core.model.detail.ContentDetail
-import com.dreamstream.core.model.detail.MovieDetail
-import com.dreamstream.core.model.detail.SeriesDetail
-import com.dreamstream.core.model.detail.ShowStatus
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.detail.AnimeDetail
+import com.dreamstream.core.domain.model.detail.ContentDetail
+import com.dreamstream.core.domain.model.detail.MovieDetail
+import com.dreamstream.core.domain.model.detail.SeriesDetail
+import com.dreamstream.core.domain.model.detail.ShowStatus
 import com.dreamstream.feature.details.domain.error.DetailsError
 import com.dreamstream.feature.details.domain.repository.DetailsRepository
 

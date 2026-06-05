@@ -1,14 +1,14 @@
 package com.dreamstream.plugin.flixhq.provider
 
-import com.dreamstream.core.model.catalog.ContentType
-import com.dreamstream.core.model.media.StreamLink
-import com.dreamstream.core.model.media.Subtitle
-import com.dreamstream.core.model.search.MovieResult
-import com.dreamstream.core.model.search.SearchResult
-import com.dreamstream.core.model.search.SeriesResult
-import com.dreamstream.plugin.api.model.catalog.CatalogRequest
-import com.dreamstream.plugin.api.model.catalog.CatalogResponse
-import com.dreamstream.plugin.api.model.catalog.CatalogSection
+import com.dreamstream.core.domain.model.catalog.CatalogRequest
+import com.dreamstream.core.domain.model.catalog.CatalogResponse
+import com.dreamstream.core.domain.model.catalog.CatalogSection
+import com.dreamstream.core.domain.model.catalog.ContentType
+import com.dreamstream.core.domain.model.media.StreamLink
+import com.dreamstream.core.domain.model.media.Subtitle
+import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.model.search.SearchResult
+import com.dreamstream.core.domain.model.search.SeriesResult
 import com.dreamstream.plugin.api.model.detail.ApiContentDetail
 import com.dreamstream.plugin.api.model.search.ApiMovieResult
 import com.dreamstream.plugin.api.model.search.ApiSearchResult
@@ -42,7 +42,7 @@ class FlixHqProvider : ContentProvider() {
 
     // ── Home page ─────────────────────────────────────────────────────────────
 
-    override suspend fun getMainPage(page: Int, request: CatalogRequest): CatalogResponse? {
+    override suspend fun getHomePage(page: Int, request: CatalogRequest): CatalogResponse? {
         return try {
             val html = get("$mainUrl${FlixHqConfig.HOME_PATH}").bodyAsText()
             val sections = HomePageParser.parse(html, mainUrl)
@@ -55,7 +55,10 @@ class FlixHqProvider : ContentProvider() {
                 },
             )
         } catch (e: Exception) {
-            log("getMainPage failed: ${e.message}", com.dreamstream.plugin.api.plugin.LogLevel.ERROR)
+            log(
+                "getHomePage failed: ${e.message}",
+                com.dreamstream.plugin.api.plugin.LogLevel.ERROR
+            )
             null
         }
     }
@@ -68,7 +71,8 @@ class FlixHqProvider : ContentProvider() {
             val encodedQuery = query.trim()
                 .replace(" ", "-")
                 .lowercase()
-            val url = "$mainUrl${FlixHqConfig.SEARCH_PATH_TEMPLATE.replace("{query}", encodedQuery)}"
+            val url =
+                "$mainUrl${FlixHqConfig.SEARCH_PATH_TEMPLATE.replace("{query}", encodedQuery)}"
             val html = get(url).bodyAsText()
             SearchParser.parse(html, mainUrl).map { it.toApiSearchResult() }
         } catch (e: Exception) {
@@ -119,7 +123,7 @@ class FlixHqProvider : ContentProvider() {
         }
 
     /**
-     * Converts a parsed [FlixHqItem] directly to a domain [SearchResult] (used by [getMainPage],
+     * Converts a parsed [FlixHqItem] directly to a domain [SearchResult] (used by [getHomePage],
      * which populates [CatalogSection.items] with domain types directly).
      */
     private fun FlixHqItem.toSearchResult(): SearchResult =

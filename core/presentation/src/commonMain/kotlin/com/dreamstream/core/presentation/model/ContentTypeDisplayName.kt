@@ -1,6 +1,6 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.catalog.ContentType
+import com.dreamstream.core.domain.model.catalog.ContentType
 import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.anime
 import com.dreamstream.core.presentation.resources.anime_movie

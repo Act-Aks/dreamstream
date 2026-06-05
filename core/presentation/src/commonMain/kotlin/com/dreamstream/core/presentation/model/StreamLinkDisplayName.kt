@@ -1,7 +1,7 @@
 package com.dreamstream.core.presentation.model
 
-import com.dreamstream.core.model.catalog.Quality
-import com.dreamstream.core.model.media.StreamLink
+import com.dreamstream.core.domain.model.catalog.Quality
+import com.dreamstream.core.domain.model.media.StreamLink
 import com.dreamstream.core.presentation.ui.UiText
 
 /**
