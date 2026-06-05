@@ -19,16 +19,27 @@ The following modules and infrastructure are complete and compiled:
   - `FeatureConventionPlugin.kt`: `core:presentation` promoted to `api` via new `asApi` param on `addProjectIfPresent`
   - Root `build.gradle.kts`: `subprojects { resolutionStrategy }` pins all `androidx.lifecycle` artifacts to `2.10.0` to prevent Koin pulling `2.11.0-beta01` and causing a `LocalViewModelStoreOwner` classpath conflict
   - **DAGP** (`com.autonomousapps.dependency-analysis`) configured in root build; `assertModuleGraph` passes all architectural rules (max height, no cross-feature deps); `buildHealth` runs at `warn` severity with 894 lines of non-fatal findings; `docs/module-graph.md` auto-generated (Mermaid diagram)
-- `:core:domain` — core primitives and KMP extension helpers:
+- `:core:domain` — core primitives, domain models, repository contracts, and KMP extension helpers:
   - `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local + Plugin), `DreamLogger`; tests passing
   - `DataError.Plugin` sealed enum: `CLASS_NOT_FOUND`, `INCOMPATIBLE_VERSION`, `INVALID_MANIFEST`, `LOAD_FAILED`, `SIGNATURE_INVALID`, `UNKNOWN`
   - `DataError.Local` gains `CORRUPTED` and `PERMISSION_DENIED`
   - `DispatcherProvider` interface + `DefaultDispatcherProvider` for injecting coroutine dispatchers
-  - Extension helpers in `extensions/` package: `FlowExtensions` (asResult, onSuccess, onFailure, mapResult), `ListExtensions` (chunkedOrEmpty, distinctByKey, safeSubList, indexOfFirstOrNull), `NumberExtensions` (toReadableDuration, toReadableMinutes, toReadableFileSize), `StringExtensions` (URL/Base64/HTML utilities)
+  - Extension helpers in `extensions/` package: `FlowExtensions` (asResult, onSuccess, onFailure, mapResult), `ListExtensions` (chunkedOrEmpty, distinctByKey, safeSubList, indexOfFirstOrNull), `NumberExtensions` (toReadableDuration, toReadableMinutes, toReadableFileSize), `StringExtensions` (URL/Base64/HTML utilities), `DreamLoggerExtensions` (info, warn, error shorthand)
   - `ResultExtensions` moved from `util/` to `extensions/` package
+  - `LoggerFactory` interface for DI-friendly logger construction (implemented by `KermitDreamLoggerFactory` in `:core:data`)
+  - **Domain models** (package `model/`) — all shared types previously in `:core:model`, now consolidated here:
+    - `catalog/` — `Actor`, `ContentType`, `Episode`, `Quality`, `Season`, `SubtitleFormat`, `ThemeMode`, `CatalogRequest`, `CatalogResponse`, `CatalogSection` (the last three moved from `:core:plugin-api`)
+    - `detail/` — `ContentDetail` sealed hierarchy (`AnimeDetail`, `LiveDetail`, `MovieDetail`, `SeriesDetail`), `ShowStatus`
+    - `filter/` — `FilterOption`, `BooleanFilter`, `SingleSelectFilter`, `TextSearchFilter`
+    - `media/` — `StreamLink`, `Subtitle`
+    - `plugin/` — `InstalledPlugin`, `PluginManifest`, `PluginRepository`, `PluginStatus`, `RepositoryManifest`
+    - `search/` — `SearchResult` sealed hierarchy (`AnimeResult`, `LiveResult`, `MovieResult`, `SeriesResult`), `SearchResultExtensions`
+    - `user/` — `Bookmark`, `BookmarkCategory`, `UserPreferences`, `WatchHistory`
+  - **Repository contracts** (package `repository/`) — `ContentRepository`, `BookmarkRepository`, `PluginRepository` (domain-level, not to be confused with the DB DAO), `PreferencesRepository`, `WatchHistoryRepository`, `StreamResult`
+  - **System interfaces** (package `system/`) — `AppStorageProvider`, `PlatformInfo`, `TimeProvider`, `UuidProvider`
 - `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`:
   - All 24 `DataError` variants (Network + Local + Plugin) mapped to localized `StringResourceId`
-  - Display name helpers: `ContentTypeDisplayName`, `EpisodeDisplayName`, `SeasonDisplayName`, `ShowStatusDisplayName`, `StreamLinkDisplayName`, `SubtitleDisplayName`, `PluginRepositoryDisplayName` — bridge `core:model` types to localized `UiText`
+  - Display name helpers: `ContentTypeDisplayName`, `EpisodeDisplayName`, `SeasonDisplayName`, `ShowStatusDisplayName`, `StreamLinkDisplayName`, `SubtitleDisplayName`, `PluginRepositoryDisplayName` — bridge `:core:domain` model types to localized `UiText`
   - `NavigationItem(icon, label)` data class for design-system navigation bar
   - `AppRoute` sealed hierarchy for top-level navigation type safety
   - **4 locales expanded** — English, German (`values-de`), Hindi (`values-hi`), Japanese (`values-ja`) now include plugin error messages, content-type labels, episode/season formats, and show-status strings
@@ -39,28 +50,40 @@ The following modules and infrastructure are complete and compiled:
   - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
   - **Components** (package `designsystem.components`) — `GradientBackground`, `GlassCard`, `GlassSurface`, `GlassTopBar`, `GlassNavigationBar` (full-width bottom nav driven by `NavigationItem` list with HazeState blur), `GlassNavigationBarItem`
   - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
-- `:core:model` — shared domain types used across feature modules (all enriched with full KDoc and business-logic properties):
-  - `catalog/` — `Actor`, `ContentType` (with `displayName` singular label and `isEpisodic` flag), `Episode`, `Quality`, `Season`, `SubtitleFormat`, `ThemeMode`
-  - `detail/` — `ContentDetail` sealed hierarchy (`AnimeDetail`, `LiveDetail`, `MovieDetail`, `SeriesDetail`), `ShowStatus`, `displayRating` extension
-  - `filter/` — `FilterOption`, `BooleanFilter`, `SingleSelectFilter`, `TextSearchFilter` for catalog/search filter UI models
-  - `media/` — `StreamLink`, `Subtitle`
-  - `plugin/` — `DreamError`, `InstalledPlugin`, `PluginManifest`, `PluginRepository`, `PluginStatus`, `RepositoryManifest`
-  - `search/` — `SearchResult` sealed hierarchy (`AnimeResult`, `LiveResult`, `MovieResult`, `SeriesResult`), `SearchResultExtensions` (`year`, `rating`, `displayRating`)
-  - `user/` — `Bookmark`, `BookmarkCategory`, `UserPreferences`, `WatchHistory` for user-state domain models
+- `:core:data` — KMP data layer providing repository and system implementations:
+  - `UserPreferencesDataSource` + `UserPreferencesDataSourceImpl` — reads/writes `UserPreferences` via DataStore
+  - `UserPreferencesKeys` — type-safe DataStore preference keys
+  - `ContentRepositoryImpl` — coordinates plugin providers via `PluginRegistry` to serve catalog, search, detail, and stream links
+  - `BookmarkRepositoryImpl` — delegates to `:core:database` bookmark DAO
+  - `WatchHistoryRepositoryImpl` — delegates to `:core:database` watch-history DAO
+  - `PluginRepositoryImpl` — wraps `PluginManager` to expose install/uninstall/list operations
+  - `PreferencesRepositoryImpl` — reads/writes all user preferences via `UserPreferencesDataSource`
+  - `KermitDreamLoggerFactory` — implements `LoggerFactory` using Kermit
+  - System impls: `AppStorageProviderImpl`, `PlatformInfoImpl`, `TimeProviderImpl`, `UuidProviderImpl`
+  - `CoreDataModule` + `CoreDataPreferencesModule` — Koin modules
 - `:core:plugin-api` — KMP module providing the plugin integration surface:
   - `DreamPlugin` / `PluginMetadata` / `PluginApiVersion` / `PluginContext` — plugin lifecycle contract
   - `ContentProvider` interface — catalog sections, search, detail, and stream resolution contracts using `Result<T, DataError>`
   - `ProviderType` enum (ANIME, MOVIE, TV, LIVE, MUSIC) and `VpnStatus` model
-  - API models: `CatalogRequest/Response/Section`, `ApiContentDetail` sealed hierarchy, `ApiSearchResult` sealed hierarchy
+  - API models: `ApiContentDetail` sealed hierarchy, `ApiSearchResult` sealed hierarchy (catalog request/response types moved to `:core:domain`)
   - `Extractor` and `ApiMapper` interfaces for HTML/JSON source integration
-  - Depends on `ktor-client-core`, `kotlinx-serialization-json`, `kotlinx-datetime`, `ksoup`; exposes `core:model` as `api`
+  - Depends on `ktor-client-core`, `kotlinx-serialization-json`, `kotlinx-datetime`, `ksoup`; exposes `:core:domain` as `api`
+- `:core:plugin-loader` — KMP module providing full plugin lifecycle management (replaces `:core:plugin-runtime`):
+  - `PluginManager` — install/uninstall repos, fetch repo manifests via Ktor, manage plugin lifecycle with `StateFlow` of installed plugins
+  - `PluginInstaller` — download and store plugin JARs to okio `Path` storage
+  - `PluginRegistry` — in-memory registry of loaded `DreamPlugin` instances, maps provider ID to `ContentProvider`
+  - `PluginVerifier` — manifest validation and API version compatibility checks
+  - `PluginContextFactory` — creates `PluginContext` with injected Ktor client and logger
+  - `PluginFileManifest` — on-disk manifest format for installed plugins
+  - `PluginConstants` — shared path/filename constants
+  - `PluginClassLoader` (expect/actual) — Android `DexClassLoader` / JVM `URLClassLoader`
 - `:feature:home` — first vertical slice, fully tested and wired into `:app:android`:
-  - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`; depends on `:core:model` for shared types
+  - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`; depends on `:core:domain` for shared types
   - `:feature:home:data` — `InMemoryHomeRepository` (hardcoded stub returning 3 sections, 10 items)
   - `:feature:home:presentation` — `HomeViewModel` (MVI with `HomeState`, `HomeAction`, `HomeEvent`), `HomeScreen` using `GradientBackground` + `GlassTopBar` + `GlassCard`; `ContentUi.typeName` is `UiText` (localized via `ContentTypeDisplayName`); Koin module; `HomeRoute`
   - **Tests** — 38 passing: `HomeViewModelTest` (7), `HomeMappingsTest` (20), `InMemoryHomeRepositoryTest` (11)
 - `:feature:details` — second vertical slice, fully tested and wired into `:app:android`:
-  - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`; depends on `:core:model` for shared types
+  - `:feature:details:domain` — `DetailContent` model (richer than the home list item — adds `synopsis`, `backdropUrl`, `genres`, `durationMinutes`), `DetailMediaType`, `DetailsRepository` contract, `DetailsError`; depends on `:core:domain` for shared types
   - `:feature:details:data` — `InMemoryDetailsRepository` (full detail records for all 10 catalog IDs from the home stub; returns `DetailsError.NotFound` for unknown IDs)
   - `:feature:details:presentation` — `DetailsViewModel` (reads `contentId` from `SavedStateHandle`; `OnBackClick` → `NavigateBack` event; `OnRetry` → reload), `DetailsScreen` (glassmorphic hero card, metadata + genre tags, synopsis, play button placeholder); `DetailContentUi.typeName` is `UiText`; Koin module
   - **Tests** — 38 passing: `DetailsViewModelTest` (6), `DetailsMappingsTest` (23), `InMemoryDetailsRepositoryTest` (9)
@@ -85,9 +108,9 @@ The following modules and infrastructure are complete and compiled:
   - `navigation/BottomTab.kt` — enum mapping each tab (Home, Search, Settings) to its Navigation3 route, Material icon, and label; `switchTab` clears the back stack before pushing the new root
 - `:app:android` — `MainActivity` delegates to `App()` from `:app:shared`; `DreamStreamApplication` initialises Koin via `initKoin`; debug APK builds and runs
 
-**122 unit tests pass** across the project (5 core/domain + 1 core/model + 1 core/presentation + 38 home + 38 details + 39 search).
+**121 unit tests pass** across the project (5 core/domain + 1 core/presentation + 38 home + 38 details + 39 search).
 
-All foundation steps and the first four feature slices are complete. The project has a glassmorphic bottom navigation bar, a KMP-shared app module, a plugin-API contract module, rich domain models, and KMP-split settings data layer. The next areas to explore are: real data integration (Ktor networking, a live content source), Room persistence, or a catalog/browsing feature.
+All foundation steps and the first four feature slices are complete. The project has a glassmorphic bottom navigation bar, a KMP-shared app module, a full plugin-loader infrastructure, rich domain models consolidated into `:core:domain`, and a complete KMP data layer with repository implementations. The next areas to explore are: real data integration (connecting a live content source via `ContentRepositoryImpl` and a plugin), Room persistence testing, or a catalog/browsing feature.
 
 ## Architecture Source Of Truth
 
@@ -128,10 +151,10 @@ Use this structure as the target architecture once implementation begins:
 :build-logic
 :core:domain
 :core:data
-:core:model
 :core:presentation
 :core:design-system
 :core:plugin-api
+:core:plugin-loader
 :core:database        optional when Room is introduced
 :core:media           optional for playback abstractions and media session logic
 :core:network         optional only if networking grows beyond core:data
