@@ -46,6 +46,7 @@ include(":core:domain")
 include(":core:plugin-api")
 include(":core:plugin-loader")
 include(":core:presentation")
+include(":core:testing")
 
 /************************ All The Plugins *******************************/
 include(":plugin:flixhq")
