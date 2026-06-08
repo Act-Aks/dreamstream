@@ -29,9 +29,9 @@ sealed interface InstallState {
 
 class PluginInstaller(
     private val httpClient: HttpClient,
+    private val json: Json,
     private val storageProvider: AppStorageProvider,
     private val verifier: PluginVerifier,
-    private val json: Json,
     loggerFactory: LoggerFactory,
 ) {
 

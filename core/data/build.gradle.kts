@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.dreamstream.kmp.library)
     alias(libs.plugins.dreamstream.koin)
     alias(libs.plugins.dreamstream.ktor)
+    alias(libs.plugins.dreamstream.room)
 }
 
 kotlin {

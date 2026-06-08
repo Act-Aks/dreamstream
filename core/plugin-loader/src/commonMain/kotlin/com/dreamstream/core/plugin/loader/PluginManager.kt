@@ -9,6 +9,7 @@ import com.dreamstream.core.domain.model.plugin.PluginManifest
 import com.dreamstream.core.domain.model.plugin.PluginRepository
 import com.dreamstream.core.domain.model.plugin.PluginStatus
 import com.dreamstream.core.domain.model.plugin.RepositoryManifest
+import com.dreamstream.core.domain.system.AppStorageProvider
 import com.dreamstream.core.domain.util.DreamError
 import com.dreamstream.core.domain.util.Result
 import com.dreamstream.plugin.api.extractor.Extractor
@@ -40,9 +41,9 @@ class PluginManager(
     private val pluginInstaller: PluginInstaller,
     private val pluginRegistry: PluginRegistry,
     private val httpClient: HttpClient,
-    private val pluginsDir: Path,
     private val json: Json,
     private val pluginContextFactory: PluginContextFactory,
+    private val storageProvider: AppStorageProvider,
     loggerFactory: LoggerFactory,
 ) {
     private val logger = loggerFactory.get("PluginManager")
@@ -134,7 +135,7 @@ class PluginManager(
                 flow.collect { state ->
                     if (state is InstallState.Success) {
                         val filePath =
-                            (pluginsDir / "${manifest.id}$PLUGIN_FILE_EXTENSION").toString()
+                            (storageProvider.pluginsDir / "${manifest.id}$PLUGIN_FILE_EXTENSION").toString()
                         val installed = InstalledPlugin(
                             manifest = manifest,
                             filePath = filePath,
