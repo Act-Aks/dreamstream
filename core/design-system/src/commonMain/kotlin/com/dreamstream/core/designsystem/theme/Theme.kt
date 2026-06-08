@@ -25,10 +25,10 @@ import androidx.compose.ui.graphics.Color
  * - **Glass tints** — translucent fills for non-Haze surfaces (nav bar, chips,
  *   overlays) where backdrop blur is not required.
  * - **Text hierarchy** — semantic names for the five text emphasis levels;
- *   prefer these over raw [Color.White] or [MaterialTheme.colorScheme.onSurface].
+ *   prefer these over raw [Color.White] or [ColorScheme.onSurface].
  * - **Navigation** — bottom nav bar background and tab indicator colors.
  * - **Semantic** — success, warning, and info states. Error is already covered
- *   by [MaterialTheme.colorScheme.error].
+ *   by [ColorScheme.error].
  */
 @Immutable
 data class DreamStreamExtendedColors(

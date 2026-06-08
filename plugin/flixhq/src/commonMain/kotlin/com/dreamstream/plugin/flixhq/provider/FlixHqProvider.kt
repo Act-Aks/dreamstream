@@ -86,7 +86,7 @@ class FlixHqProvider : ContentProvider() {
     /**
      * Full detail loading is not yet implemented — the player/extractor module has not
      * been built. Returns `null` so callers fall back gracefully (the details screen
-     * keeps showing its stub data from [InMemoryDetailsRepository]).
+     * keeps showing its stub data from [InMemoryDetailRepository]).
      */
     override suspend fun load(url: String): ApiContentDetail? = null
 
