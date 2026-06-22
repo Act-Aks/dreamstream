@@ -33,8 +33,8 @@ desugar-jdk-libs            = "2.1.5"
 
 # ── Compose (Multiplatform) ─────────────────────────────────────────────────
 compose-lifecycle           = "2.10.0"
-compose-material3           = "1.12.0-alpha01"
-compose-material3-adaptive  = "1.3.0-beta01"    # Window size class (adaptive layouts)
+compose-material3           = "1.12.0-alpha02"
+compose-material3-adaptive  = "1.3.0-beta02"    # Window size class (adaptive layouts)
 compose-multiplatform       = "1.12.0-alpha01"  # Compose Multiplatform governs the JB fork used for Desktop
 compose-navigation3         = "1.1.1"
 
