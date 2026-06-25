@@ -12,19 +12,21 @@ DreamStream should be designed as a long-lived, modular KMP application that can
 
 The following modules and infrastructure are complete and compiled:
 
-- `:build-logic` — 13 convention plugins (android app, tv, desktop, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt) with full support utilities; **build-health audited and fixed**:
+- `:build-logic` — 15 convention plugins (android app, tv, desktop application, compose, domain, kmp library, feature, koin, ktor, room, serialization, testing, detekt, localization, dependency-analysis) with full support utilities; **build-health audited and fixed**:
   - `Compose.kt`: removed duplicate `androidx.lifecycle` bundle (already transitive via CMP); `compose-components-resources` promoted to `api`
   - `DomainModuleConventionPlugin.kt`: removed unused `kermit` and `kotlinx-datetime`; `kotlinx-coroutines-core` promoted to `api`
   - `SerializationConventionPlugin.kt`: `kotlinx-serialization-core` promoted to `api`
   - `FeatureConventionPlugin.kt`: `core:presentation` promoted to `api` via new `asApi` param on `addProjectIfPresent`
   - Root `build.gradle.kts`: `subprojects { resolutionStrategy }` pins all `androidx.lifecycle` artifacts to `2.10.0` to prevent Koin pulling `2.11.0-beta01` and causing a `LocalViewModelStoreOwner` classpath conflict
-  - **DAGP** (`com.autonomousapps.dependency-analysis`) configured in root build; `assertModuleGraph` passes all architectural rules (max height, no cross-feature deps); `buildHealth` runs at `warn` severity with 894 lines of non-fatal findings; `docs/module-graph.md` auto-generated (Mermaid diagram)
+  - **DAGP** (`com.autonomousapps.dependency-analysis`) configured in root build via `DependencyAnalysisConventionPlugin`; `assertModuleGraph` passes all architectural rules (max height, no cross-feature deps); `buildHealth` runs at `warn` severity with 894 lines of non-fatal findings; `docs/module-graph.md` auto-generated (Mermaid diagram)
+  - `DesktopApplicationConventionPlugin` — convention plugin for desktop JVM application targets
 - `:core:domain` — core primitives, domain models, repository contracts, and KMP extension helpers:
   - `Error`, `Result<D,E>`, `EmptyResult`, `DataError` (Network + Local + Plugin), `DreamLogger`; tests passing
   - `DataError.Plugin` sealed enum: `CLASS_NOT_FOUND`, `INCOMPATIBLE_VERSION`, `INVALID_MANIFEST`, `LOAD_FAILED`, `SIGNATURE_INVALID`, `UNKNOWN`
   - `DataError.Local` gains `CORRUPTED` and `PERMISSION_DENIED`
+  - `DreamError` — rich sealed error hierarchy for plugin/provider operations: `Network`, `Plugin`, `NoSources`, `ExtractorFailed`, `NoPluginsInstalled`, `PluginNotFound`, `PluginLoadFailed`, `RepositoryFetchFailed`, `ChecksumMismatch`, `Unknown`; each variant carries a computed `userMessage` for logging
   - `DispatcherProvider` interface + `DefaultDispatcherProvider` for injecting coroutine dispatchers
-  - Extension helpers in `extensions/` package: `FlowExtensions` (asResult, onSuccess, onFailure, mapResult), `ListExtensions` (chunkedOrEmpty, distinctByKey, safeSubList, indexOfFirstOrNull), `NumberExtensions` (toReadableDuration, toReadableMinutes, toReadableFileSize), `StringExtensions` (URL/Base64/HTML utilities), `DreamLoggerExtensions` (info, warn, error shorthand)
+  - Extension helpers in `extensions/` package: `FlowExtensions` (asResult, onSuccess, onFailure, mapResult), `ListExtensions` (chunkedOrEmpty, distinctByKey, safeSubList, indexOfFirstOrNull), `NumberExtensions` (toReadableDuration, toReadableMinutes, toReadableFileSize), `StringExtensions` (URL/Base64/HTML utilities), `DreamLoggerExtensions` (info, warn, error shorthand), `CoroutineExtensions`
   - `ResultExtensions` moved from `util/` to `extensions/` package
   - `LoggerFactory` interface for DI-friendly logger construction (implemented by `KermitDreamLoggerFactory` in `:core:data`)
   - **Domain models** (package `model/`) — all shared types previously in `:core:model`, now consolidated here:
@@ -37,6 +39,7 @@ The following modules and infrastructure are complete and compiled:
     - `user/` — `Bookmark`, `BookmarkCategory`, `UserPreferences`, `WatchHistory`
   - **Repository contracts** (package `repository/`) — `ContentRepository`, `BookmarkRepository`, `PluginRepository` (domain-level, not to be confused with the DB DAO), `PreferencesRepository`, `WatchHistoryRepository`, `StreamResult`
   - **System interfaces** (package `system/`) — `AppStorageProvider`, `PlatformInfo`, `TimeProvider`, `UuidProvider`
+  - **Desktop-only** (`desktopMain`) — `ThemePreference` enum, `ThemePreferences` object for JVM desktop theme persistence
 - `:core:presentation` — `UiText`, `ObserveAsEvents`, `DataErrorUiText.toUiText()`:
   - All 24 `DataError` variants (Network + Local + Plugin) mapped to localized `StringResourceId`
   - Display name helpers: `ContentTypeDisplayName`, `EpisodeDisplayName`, `SeasonDisplayName`, `ShowStatusDisplayName`, `StreamLinkDisplayName`, `SubtitleDisplayName`, `PluginRepositoryDisplayName` — bridge `:core:domain` model types to localized `UiText`
@@ -46,9 +49,13 @@ The following modules and infrastructure are complete and compiled:
 - `:core:design-system` — full glassmorphic design system:
   - **Color tokens** — vibrant electric palette: `Primary` violet `#A855F7`, `Secondary` cyan `#06B6D4`, `Tertiary` pink `#F472B6`; deep-space dark surfaces; ambient glow sources for gradient backdrops; glass tint tokens
   - **Shape tokens** — more-rounded ramp: `extraSmall 8dp` → `extraLarge 32dp`
-  - **Glass token system** — `GlassStyle` data class with five named presets (`GlassDefaults.ultraThin` → `ultraThick`); `toHazeStyle()` converts to a Haze `HazeStyle` mixing white frosted tint + brand-violet tint
+  - **Spacing tokens** — `DreamStreamTheme.spacing` with named size steps (`zero`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`)
+  - **Typography tokens** — `DreamStreamTheme` exposes a Material3-compatible type scale
+  - **Glass token system** — `GlassStyle` data class with five named presets (`GlassDefaults.ultraThin` → `ultraThick`); `toHazeStyle()` converts to a Haze `HazeStyle` mixing white frosted tint + brand-violet tint; `GlossyDefaults` for alternative glossy surface treatments
   - **Gradient brushes** — `DreamStreamGradients`: `contentScrim`, `brandPrimary`, `brandAccent`, `brandTricolor`, `shimmer`, `cardGlow`
-  - **Components** (package `designsystem.components`) — `GradientBackground`, `GlassCard`, `GlassSurface`, `GlassTopBar`, `GlassNavigationBar` (full-width bottom nav driven by `NavigationItem` list with HazeState blur), `GlassNavigationBarItem`
+  - **Glass components** (package `designsystem.components.glass`) — `GradientBackground`, `GlassCard`, `GlassSurface`, `GlassTopBar`, `GlassNavigationBar` (full-width bottom nav driven by `NavigationItem` list with HazeState blur), `GlassNavigationBarItem`, `ShimmerEffect`
+  - **Common components** (package `designsystem.components.common`) — `ContentCard` (glassmorphic card with Coil image, quality badge, bookmark button, and watch-progress bar), `ContentCardSkeleton` (shimmer placeholder), `ContentRow` (horizontal lazy row of `ContentCard`s), `FeatureCarousel` (auto-scrolling hero pager)
+  - **Badge components** (package `designsystem.components.badges`) — `QualityBadge`, `ContentTypeBadge`, `RatingBadge`, `NewBadge`
   - **Blur engine** — `haze:1.7.2` declared as `api` dependency; `HazeState` is available to all feature modules via transitive resolution without re-declaring the dependency
 - `:core:data` — KMP data layer providing repository and system implementations:
   - `UserPreferencesDataSource` + `UserPreferencesDataSourceImpl` — reads/writes `UserPreferences` via DataStore
@@ -58,9 +65,11 @@ The following modules and infrastructure are complete and compiled:
   - `WatchHistoryRepositoryImpl` — delegates to `:core:database` watch-history DAO
   - `PluginRepositoryImpl` — wraps `PluginManager` to expose install/uninstall/list operations
   - `PreferencesRepositoryImpl` — reads/writes all user preferences via `UserPreferencesDataSource`
-  - `KermitDreamLoggerFactory` — implements `LoggerFactory` using Kermit
+  - `KermitDreamLogger` + `KermitDreamLoggerFactory` — implement `DreamLogger` and `LoggerFactory` using Kermit
   - System impls: `AppStorageProviderImpl`, `PlatformInfoImpl`, `TimeProviderImpl`, `UuidProviderImpl`
-  - `CoreDataModule` + `CoreDataPreferencesModule` — Koin modules
+  - **Network layer** — `DreamHttpClientFactory` (Ktor client with cookie storage, JSON, gzip, timeouts, retry, and `DreamLogger`-bridged logging; sanitizes `Authorization`/`Cookie` headers), `DreamJson` (shared `Json` config), `HttpExtensions`, `SafeCall` helper, `NetworkMonitor` interface + `NetworkState`, `PersistentCookieStorage`
+  - **Platform** — `AndroidNetworkMonitor` (Android `ConnectivityManager`), `DesktopNetworkMonitor` stub; `CreateDataStore` (expect/actual for Android/Desktop); `AppDataDirectory`, `DesktopOs`, `FileSystem` (platform-split)
+  - **DI modules** — `CoreDataModule` (root + Android/Desktop platform actualization), `CoreDataPreferencesModule`, `CoreDataRepositoryModule`, `CoreDataDatabaseModule`, `CoreDataDatabaseRepositoryModule`, `CoreDataNetworkModule`, `CoreDataPluginModule`, `CoreDataSystemModule`, `CoreDataLoggerModule`, `CoreDataPlatformModule`
 - `:core:plugin-api` — KMP module providing the plugin integration surface:
   - `DreamPlugin` / `PluginMetadata` / `PluginApiVersion` / `PluginContext` — plugin lifecycle contract
   - `ContentProvider` interface — catalog sections, search, detail, and stream resolution contracts using `Result<T, DataError>`
@@ -77,6 +86,23 @@ The following modules and infrastructure are complete and compiled:
   - `PluginFileManifest` — on-disk manifest format for installed plugins
   - `PluginConstants` — shared path/filename constants
   - `PluginClassLoader` (expect/actual) — Android `DexClassLoader` / JVM `URLClassLoader`
+- `:core:database` — KMP Room database module (fully implemented):
+  - **Entities** — `BookmarkEntity`, `InstalledPluginEntity`, `RepositoryEntity`, `WatchHistoryEntity`
+  - **DAOs** — `BookmarkDao`, `PluginDao`, `RepositoryDao`, `WatchHistoryDao`
+  - **Repositories** — `BookmarkRepository`, `PluginRepository`, `RepositoryRepository`, `WatchHistoryRepository` (DAO-backed implementations)
+  - `DreamstreamDatabase` — Room v1 database; exports schema; `ContentTypeConverter` + `StringListConverter` type converters; `DreamstreamDatabaseConstructor` expect/actual
+  - **Platform builders** — `DatabaseBuilder.android.kt` (Android `Room.databaseBuilder`), `DatabaseBuilder.desktop.kt` (in-memory / file-backed for desktop)
+  - **Tests** — 8 test files: 4 DAO tests (`BookmarkDaoTest`, `PluginDaoTest`, `RepositoryDaoTest`, `WatchHistoryDaoTest`) and 4 repository tests; shared `TestDatabaseFactory`
+- `:core:testing` — KMP shared test utilities module:
+  - `Fixtures` — domain model fixture builders for `MovieResult`, `SeriesResult`, `MovieDetail`, `SeriesDetail`, `StreamLink`, `Subtitle`, `WatchHistory`, `Bookmark`
+  - `TestDispatcherRule` — JUnit5 `BeforeEach`/`AfterEach` rule that installs `UnconfinedTestDispatcher` as the main dispatcher
+  - **Fakes** — `FakeBookmarkRepository`, `FakeContentRepository`, `FakePluginManager`, `FakePreferencesRepository`, `FakeWatchHistoryRepository`
+- `:plugin:flixhq` — first real content plugin (scrapes FlixHQ for movies and TV):
+  - `FlixHqPlugin` — `DreamPlugin` subclass annotated with `@PluginMetadata`; registers a single `FlixHqProvider`
+  - `FlixHqProvider` — implements `ContentProvider`; supports home page sections and keyword search; stream link resolution (`loadLinks`) is stubbed pending the player module
+  - `HomePageParser` + `SearchParser` — Ksoup HTML parsers for FlixHQ home page sections and search results
+  - `FlixHqConfig` — shared URL and provider-ID constants
+  - **Tests** — `FlixHqProviderTest`, `HomePageParserTest`, `SearchParserTest`
 - `:feature:home` — first vertical slice, fully tested and wired into `:app:android`:
   - `:feature:home:domain` — `Content` domain model, `HomeRepository` contract, `HomeError`; depends on `:core:domain` for shared types
   - `:feature:home:data` — `InMemoryHomeRepository` (hardcoded stub returning 3 sections, 10 items)
@@ -110,7 +136,7 @@ The following modules and infrastructure are complete and compiled:
 
 **121 unit tests pass** across the project (5 core/domain + 1 core/presentation + 38 home + 38 details + 39 search).
 
-All foundation steps and the first four feature slices are complete. The project has a glassmorphic bottom navigation bar, a KMP-shared app module, a full plugin-loader infrastructure, rich domain models consolidated into `:core:domain`, and a complete KMP data layer with repository implementations. The next areas to explore are: real data integration (connecting a live content source via `ContentRepositoryImpl` and a plugin), Room persistence testing, or a catalog/browsing feature.
+All foundation steps and the first four feature slices are complete. The project has a glassmorphic bottom navigation bar, a KMP-shared app module, a full plugin-loader infrastructure, rich domain models consolidated into `:core:domain`, a complete KMP data layer with repository implementations, a Room database module, a shared testing utilities module, and the first real content plugin (FlixHQ). The next areas to explore are: wiring the FlixHQ plugin into the live data flow (connecting `ContentRepositoryImpl` to real network calls), completing stream link resolution in `:plugin:flixhq`, building the player screen, or adding a catalog/browsing feature.
 
 ## Architecture Source Of Truth
 
@@ -155,9 +181,11 @@ Use this structure as the target architecture once implementation begins:
 :core:design-system
 :core:plugin-api
 :core:plugin-loader
-:core:database        optional when Room is introduced
+:core:database
+:core:testing          shared test utilities (fakes, fixtures, dispatcher rule)
 :core:media           optional for playback abstractions and media session logic
 :core:network         optional only if networking grows beyond core:data
+:plugin:<name>        one module per content source plugin (e.g. :plugin:flixhq)
 :feature:<name>:domain
 :feature:<name>:data
 :feature:<name>:presentation
