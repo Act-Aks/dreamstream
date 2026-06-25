@@ -1,5 +1,6 @@
 package com.dreamstream.core.designsystem.theme
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -18,7 +19,11 @@ import androidx.compose.ui.graphics.Color
  * - **Hero scrims** — overlays that fade poster art into the background so
  *   text stays legible. Use these for featured banners, poster cards, and
  *   hero sections.
- * - **Utility** — shimmer for skeleton screens, card glow for hover states.
+ * - **Utility** — card glow for hover states.
+ *
+ * Note: Shimmer brushes are not defined here. The animated shimmer effect
+ * is implemented in [ShimmerEffect.kt] using theme-aware colors
+ * ([DreamStreamTheme.colors.shimmerBase] / [DreamStreamTheme.colors.shimmerHighlight]).
  */
 object DreamStreamGradients {
 
@@ -26,19 +31,24 @@ object DreamStreamGradients {
 
     /**
      * Content scrim — vertical fade applied over thumbnails so that text
-     * labels are legible against any image. Run from transparent at the
-     * top to near-opaque at the bottom.
+     * labels are legible against any image.
+     *
+     * Runs from transparent at the top to near-opaque at the bottom.
+     *
+     * Use this over poster images, thumbnails, and content cards where text
+     * overlays the image near the bottom.
      */
     val contentScrim: Brush = Brush.verticalGradient(
         colorStops = arrayOf(
             0.00f to Color.Transparent,
-            0.45f to Color(0x80000000),
-            1.00f to Color(0xE0000000),
+            0.45f to DreamStreamPalette.AmbientBase.copy(alpha = 0.50f),
+            1.00f to DreamStreamPalette.AmbientBase.copy(alpha = 0.88f),
         ),
     )
 
     /**
      * Brand primary — electric violet → electric cyan (left → right).
+     *
      * Used for CTAs, highlighted badges, and interactive progress indicators.
      */
     val brandPrimary: Brush = Brush.linearGradient(
@@ -50,6 +60,7 @@ object DreamStreamGradients {
 
     /**
      * Brand accent — electric violet → vibrant pink (left → right).
+     *
      * Used for featured content labels, "New" badges, and hero accents.
      */
     val brandAccent: Brush = Brush.linearGradient(
@@ -61,6 +72,7 @@ object DreamStreamGradients {
 
     /**
      * Tri-color brand sweep — violet → cyan → pink.
+     *
      * Reserved for splash screens, onboarding headers, and hero moments.
      */
     val brandTricolor: Brush = Brush.linearGradient(
@@ -81,6 +93,7 @@ object DreamStreamGradients {
      * the screen background. The opacity ramp is gradual to avoid a harsh
      * color cut mid-image.
      *
+     * Example usage:
      * ```
      * Box {
      *     AsyncImage(...)          // poster fills the Box
@@ -118,9 +131,9 @@ object DreamStreamGradients {
      * Poster scrim — full-height overlay with a transparency hold in the
      * upper half and a solid fade in the lower half.
      *
-     * Keeps the centre of a poster image clear (good for artwork) while
-     * ensuring the bottom is fully opaque for metadata text. Use on portrait-
-     * oriented content cards where the title sits at the bottom of the image.
+     * Keeps the center of a poster image clear (good for artwork) while
+     * ensuring the bottom is fully opaque for metadata text. Use on portrait-oriented
+     * content cards where the title sits at the bottom of the image.
      */
     val posterScrim: Brush = Brush.verticalGradient(
         colorStops = arrayOf(
@@ -150,21 +163,10 @@ object DreamStreamGradients {
     // ── Utility ───────────────────────────────────────────────────────────────
 
     /**
-     * Loading skeleton shimmer — three-stop left-to-right sweep.
-     * Animate the horizontal translation offset to create the shimmer effect.
-     */
-    val shimmer: Brush = Brush.linearGradient(
-        colors = listOf(
-            Color(0xFF1A1B2E),
-            Color(0xFF2D2E48),
-            Color(0xFF1A1B2E),
-        ),
-    )
-
-    /**
      * Radial card glow — violet bloom centered on a card for selection or
-     * hover state. Animate alpha from 0 → 1 via `graphicsLayer` to avoid
-     * recomposition.
+     * hover state.
+     *
+     * Animate alpha from 0 → 1 via `graphicsLayer` to avoid recomposition.
      */
     val cardGlow: Brush = Brush.radialGradient(
         colors = listOf(
@@ -173,3 +175,21 @@ object DreamStreamGradients {
         ),
     )
 }
+
+/**
+ * Gradient tint used on top of Haze blur for glassmorphic surfaces.
+ *
+ * This adds a subtle white + brand tint to the blurred content while
+ * keeping enough transparency so the background stays visible.
+ *
+ * Use as the default gradient for glass cards, bars, and surfaces.
+ */
+val GlassGradientTint: Brush = Brush.linearGradient(
+    colors = listOf(
+        Color.White.copy(alpha = 0.22f),
+        DreamStreamPalette.Primary.copy(alpha = 0.18f),
+        DreamStreamPalette.Secondary.copy(alpha = 0.14f),
+    ),
+    start = Offset(0f, 0f),
+    end = Offset(0f, 1000f),
+)

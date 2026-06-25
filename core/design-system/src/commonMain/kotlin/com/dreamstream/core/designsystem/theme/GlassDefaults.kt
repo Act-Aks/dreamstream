@@ -48,7 +48,9 @@ data class GlassStyle(
  */
 object GlassDefaults {
 
-    /** Barely-there glass — system bars, tooltips. */
+    /**
+     * Barely-there glass — system bars, tooltips.
+     */
     val ultraThin = GlassStyle(
         blurRadius       = 16.dp,
         backgroundAlpha  = 0.05f,
@@ -58,7 +60,9 @@ object GlassDefaults {
         noiseFactor      = 0.08f,
     )
 
-    /** Subtle glass — floating chips, tags. */
+    /**
+     * Subtle glass — floating chips, tags.
+     */
     val thin = GlassStyle(
         blurRadius       = 20.dp,
         backgroundAlpha  = 0.08f,
@@ -68,7 +72,9 @@ object GlassDefaults {
         noiseFactor      = 0.10f,
     )
 
-    /** Standard glass — cards, bottom-sheet headers. */
+    /**
+     * Standard glass — cards, bottom-sheet headers.
+     */
     val regular = GlassStyle(
         blurRadius       = 24.dp,
         backgroundAlpha  = 0.12f,
@@ -78,7 +84,9 @@ object GlassDefaults {
         noiseFactor      = 0.12f,
     )
 
-    /** Prominent glass — hero panels, modal surfaces. */
+    /**
+     * Prominent glass — hero panels, modal surfaces.
+     */
     val thick = GlassStyle(
         blurRadius       = 32.dp,
         backgroundAlpha  = 0.16f,
@@ -88,7 +96,9 @@ object GlassDefaults {
         noiseFactor      = 0.15f,
     )
 
-    /** Maximum glass — full-screen sheets, onboarding overlays. */
+    /**
+     * Maximum glass — full-screen sheets, onboarding overlays.
+     */
     val ultraThick = GlassStyle(
         blurRadius       = 40.dp,
         backgroundAlpha  = 0.20f,
@@ -106,14 +116,16 @@ object GlassDefaults {
  * 1. A white base tint — creates the frosted brightness.
  * 2. A violet brand tint — adds a faint DreamStream signature hue.
  *
- * [backgroundColor] doubles as the solid fallback on devices where
+ * [fallbackBackground] doubles as the solid fallback on devices where
  * `RenderEffect` blur is unavailable (Android < 12 / API < 31).
  */
-fun GlassStyle.toHazeStyle(): HazeStyle = HazeStyle(
+fun GlassStyle.toHazeStyle(
+    fallbackBackground: Color = DreamStreamPalette.AmbientBase,
+): HazeStyle = HazeStyle(
     blurRadius      = blurRadius,
-    backgroundColor = Color.White.copy(alpha = backgroundAlpha),
+    backgroundColor = fallbackBackground.copy(alpha = backgroundAlpha),
     tints           = listOf(
-        HazeTint(color = Color.White.copy(alpha = backgroundAlpha * 0.7f)),
+        HazeTint(color = DreamStreamPalette.GlassWhiteTint.copy(alpha = borderAlpha)),
         HazeTint(color = DreamStreamPalette.Primary.copy(alpha = primaryTintAlpha)),
     ),
     noiseFactor     = noiseFactor,

@@ -43,9 +43,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.components.GlassCard
-import com.dreamstream.core.designsystem.components.GlassTopBar
-import com.dreamstream.core.designsystem.components.GradientBackground
+import com.dreamstream.core.designsystem.components.glass.GlassCard
+import com.dreamstream.core.designsystem.components.glass.GlassTopBar
+import com.dreamstream.core.designsystem.components.glass.GradientBackground
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import com.dreamstream.core.designsystem.theme.GlassDefaults
 import com.dreamstream.core.presentation.resources.CoreRes

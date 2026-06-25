@@ -29,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dreamstream.core.designsystem.components.GlassCard
-import com.dreamstream.core.designsystem.components.GlassSurface
-import com.dreamstream.core.designsystem.components.GlassTopBar
-import com.dreamstream.core.designsystem.components.GradientBackground
+import com.dreamstream.core.designsystem.components.glass.GlassCard
+import com.dreamstream.core.designsystem.components.glass.GlassSurface
+import com.dreamstream.core.designsystem.components.glass.GlassTopBar
+import com.dreamstream.core.designsystem.components.glass.GradientBackground
 import com.dreamstream.core.designsystem.theme.GlassDefaults
 import com.dreamstream.core.presentation.resources.CoreRes
 import com.dreamstream.core.presentation.resources.action_back

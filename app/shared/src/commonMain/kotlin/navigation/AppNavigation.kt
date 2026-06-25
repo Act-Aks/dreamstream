@@ -20,7 +20,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.dreamstream.core.designsystem.components.GlassNavigationBar
+import com.dreamstream.core.designsystem.components.glass.GlassNavigationBar
 import com.dreamstream.core.presentation.navigation.NavigationItem
 import com.dreamstream.feature.details.presentation.DetailsRoot
 import com.dreamstream.feature.details.presentation.DetailsRoute

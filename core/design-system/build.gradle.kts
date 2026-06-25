@@ -25,18 +25,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                // Exposed as api: design-system components use UiText and NavigationItem
-                // from core:presentation in their public composable signatures.
                 api(projects.core.presentation)
-
-                // Glassmorphism — blur/frosted-glass visual effects.
-                // haze provides hazeSource / hazeChild modifiers and HazeStyle.
-                // Exposed as `api` so feature modules that use HazeState with glass
-                // components don't need to declare haze as a direct dependency.
                 api(libs.haze)
-                // haze-materials (HazeMaterials presets) and coil are intentionally
-                // NOT added here — neither is imported in the design-system source.
-                // Feature modules that need coil get it through the feature plugin.
+                implementation(libs.coil.core)
+                implementation(libs.coil.network.ktor3)
+                implementation(libs.coil.compose)
             }
         }
     }

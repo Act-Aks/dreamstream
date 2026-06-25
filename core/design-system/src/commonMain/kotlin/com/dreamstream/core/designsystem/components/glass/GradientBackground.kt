@@ -1,4 +1,4 @@
-package com.dreamstream.core.designsystem.components
+package com.dreamstream.core.designsystem.components.glass
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.dreamstream.core.designsystem.theme.DreamStreamPalette
 import com.dreamstream.core.designsystem.theme.DreamStreamTheme
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
@@ -47,8 +46,11 @@ fun GradientBackground(
 ) {
     val baseModifier = modifier
         .fillMaxSize()
-        .background(DreamStreamPalette.AmbientBase)
+        .background(DreamStreamTheme.colors.ambientBase)
         .let { m -> if (hazeState != null) m.hazeSource(hazeState) else m }
+    val ambientPurple = DreamStreamTheme.colors.ambientPurple
+    val ambientCyan = DreamStreamTheme.colors.ambientCyan
+    val ambientPink = DreamStreamTheme.colors.ambientPink
 
     Box(modifier = baseModifier) {
         // Ambient color glow blobs — painted once, never redrawn during scroll.
@@ -60,7 +62,7 @@ fun GradientBackground(
             drawRect(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        DreamStreamPalette.AmbientPurple,
+                        ambientPurple,
                         Color.Transparent,
                     ),
                     center = Offset(x = size.width * 0.15f, y = size.height * 0.10f),
@@ -73,7 +75,7 @@ fun GradientBackground(
             drawRect(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        DreamStreamPalette.AmbientCyan,
+                        ambientCyan,
                         Color.Transparent,
                     ),
                     center = Offset(x = size.width * 0.88f, y = size.height * 0.07f),
@@ -87,7 +89,7 @@ fun GradientBackground(
             drawRect(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        DreamStreamPalette.AmbientPink,
+                        ambientPink,
                         Color.Transparent,
                     ),
                     center = Offset(x = size.width * 0.88f, y = size.height * 0.90f),
