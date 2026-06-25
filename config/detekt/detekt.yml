@@ -132,7 +132,7 @@ naming:
   FunctionNaming:
     active: true
     functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
-    ignoreAnnotated: ['Composable']   # Composable functions use PascalCase
+    ignoreAnnotated: [ 'Composable' ]   # Composable functions use PascalCase
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
@@ -165,7 +165,7 @@ performance:
     active: true
   SpreadOperator:
     active: true
-    excludes: []
+    excludes: [ ]
   UnnecessaryPartOfBinaryExpression:
     active: true
 
@@ -187,7 +187,7 @@ potential-bugs:
   IgnoredReturnValue:
     active: true
     restrictToConfig: true
-    returnValueAnnotations: ['CheckResult', 'CheckReturnValue']
+    returnValueAnnotations: [ 'CheckResult', 'CheckReturnValue' ]
   ImplicitDefaultLocale:
     active: true
   MissingPackageDeclaration:
@@ -198,10 +198,10 @@ potential-bugs:
     active: true
   UnsafeCallOnNullableType:
     active: true
-    excludes: ['**/test/**', '**/*Test*']
+    excludes: [ '**/test/**', '**/*Test*' ]
   UnsafeCast:
     active: true
-    excludes: ['**/test/**']
+    excludes: [ '**/test/**' ]
   UnusedUnaryOperator:
     active: true
   UselessPostfixExpression:
@@ -257,8 +257,8 @@ style:
         reason: 'Use Kermit for logging.'
   MagicNumber:
     active: true
-    excludes: ['**/test/**', '**/*Test*', '**/Composable*', '**/*Composable*']
-    ignoreNumbers: ['-1', '0', '1', '2', '100', '1000']
+    excludes: [ '**/test/**', '**/*Test*', '**/Composable*', '**/*Composable*' ]
+    ignoreNumbers: [ '-1', '0', '1', '2', '100', '1000' ]
     ignorePropertyDeclaration: true
     ignoreAnnotation: true
     ignoreCompanionObjectPropertyDeclaration: true
@@ -279,7 +279,7 @@ style:
   ReturnCount:
     active: true
     max: 4
-    excludedFunctions: ['equals']
+    excludedFunctions: [ 'equals' ]
     excludeGuardClauses: true
   SpacingAfterPackageAndImports:
     active: true
@@ -313,4 +313,13 @@ style:
     ignoreLateinitVar: false
   WildcardImport:
     active: true
-    excludeImports: ['kotlinx.android.synthetic.*']
+    excludeImports: [ 'kotlinx.android.synthetic.*' ]
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      - value: 'androidx.compose.material3.MaterialTheme.typography'
+        reason: 'Use DreamStreamTheme.typography, not MaterialTheme.typography.'
+      - value: 'androidx.compose.material3.MaterialTheme.shapes'
+        reason: 'Use DreamStreamTheme.shapes, not MaterialTheme.shapes.'
+      - value: 'androidx.compose.material3.MaterialTheme.colorScheme'
+        reason: 'Use DreamStreamTheme.materialColors, not MaterialTheme.colorScheme.'
