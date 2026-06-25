@@ -35,7 +35,7 @@ desugar-jdk-libs            = "2.1.5"
 compose-lifecycle           = "2.10.0"
 compose-material3           = "1.12.0-alpha02"
 compose-material3-adaptive  = "1.3.0-beta02"    # Window size class (adaptive layouts)
-compose-multiplatform       = "1.12.0-alpha01"  # Compose Multiplatform governs the JB fork used for Desktop
+compose-multiplatform       = "1.12.0-alpha02"  # Compose Multiplatform governs the JB fork used for Desktop
 compose-navigation3         = "1.1.1"
 
 # ── DI ──────────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ ktor                        = "3.5.0"
 ksoup = "0.2.6"
 
 # ── Local Storage ───────────────────────────────────────────────────────────
-room                        = "3.0.0-alpha06"
+room                        = "3.0.0-rc01"
 sqlite                      = "2.6.2"
 datastore                   = "1.2.1"
 
