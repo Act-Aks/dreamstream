@@ -1,6 +1,5 @@
 package com.dreamstream.core.data.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.dreamstream.core.data.database.createDataStore
@@ -31,24 +30,21 @@ import org.koin.dsl.module
  */
 actual val platformCoreDataModule: Module = module {
 
-    // ── Android Context ────────────────────────────────────────────────────────
-    single<Context> { androidContext() }
-
     // ── HTTP engine ────────────────────────────────────────────────────────────
     single<HttpClientEngine> { OkHttp.create() }
 
     // ── DataStore ──────────────────────────────────────────────────────────────
     single<DataStore<Preferences>> {
-        createDataStore(get<Context>())
+        createDataStore(androidContext())
     }
 
     // ── Database ───────────────────────────────────────────────────────────────
     single<DreamstreamDatabase> {
-        createDreamstreamDatabase(get<Context>())
+        createDreamstreamDatabase(androidContext())
     }
 
     // ── PluginClassLoader ────────────────────────────────────────────────────
     single<PluginClassLoader> {
-        PluginClassLoader(get<Context>())
+        PluginClassLoader(androidContext())
     }
 }
