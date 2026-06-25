@@ -39,7 +39,7 @@ compose-multiplatform       = "1.12.0-alpha01"  # Compose Multiplatform governs 
 compose-navigation3         = "1.1.1"
 
 # ── DI ──────────────────────────────────────────────────────────────────────
-koin                        = "4.2.1"
+koin                        = "4.2.2"
 
 # ── Networking ──────────────────────────────────────────────────────────────
 ktor                        = "3.5.0"
