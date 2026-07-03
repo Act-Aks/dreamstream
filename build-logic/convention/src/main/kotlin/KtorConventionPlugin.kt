@@ -21,32 +21,32 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 class KtorConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            applyPlugins("dreamstream-serialization")
+            applyPlugins("dreamstream.serialization")
 
             val isKmp = extensions.findByType<KotlinMultiplatformExtension>() != null
             if (isKmp) {
                 extensions.configure<KotlinMultiplatformExtension> {
                     sourceSets.commonMain.dependencies {
-                        implementation(lib("ktor-client-core").get())
-                        implementation(lib("ktor-client-content-negotiation").get())
-                        implementation(lib("ktor-client-logging").get())
-                        implementation(lib("ktor-serialization-kotlinx-json").get())
+                        implementation(lib("ktor.client.core").get())
+                        implementation(lib("ktor.client.content.negotiation").get())
+                        implementation(lib("ktor.client.logging").get())
+                        implementation(lib("ktor.serialization.kotlinx.json").get())
                     }
                     sourceSets.androidMain.dependencies {
-                        implementation(lib("ktor-client-okhttp").get())
+                        implementation(lib("ktor.client.okhttp").get())
                     }
                     sourceSets.findByName("desktopMain")?.dependencies {
-                        implementation(lib("ktor-client-okhttp").get())
+                        implementation(lib("ktor.client.okhttp").get())
                     }
                     sourceSets.commonTest.dependencies {
-                        implementation(lib("ktor-client-mock").get())
+                        implementation(lib("ktor.client.mock").get())
                     }
                 }
             } else {
                 dependencies {
-                    bundle("ktor-common").get().forEach { "implementation"(it) }
-                    "implementation"(lib("ktor-client-okhttp").get())
-                    "testImplementation"(lib("ktor-client-mock").get())
+                    bundle("ktor.common").get().forEach { "implementation"(it) }
+                    "implementation"(lib("ktor.client.okhttp").get())
+                    "testImplementation"(lib("ktor.client.mock").get())
                 }
             }
         }

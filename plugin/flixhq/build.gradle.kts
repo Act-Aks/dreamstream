@@ -11,7 +11,7 @@
  */
 
 plugins {
-    alias(libs.plugins.dreamstream.domain)
+    alias(libs.plugins.dreamstream.kmp.library)
 }
 
 kotlin {

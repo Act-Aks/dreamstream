@@ -1,14 +1,9 @@
 import com.dreamstream.convention.applyPlugins
 import com.dreamstream.convention.configureKotlinJvm
-import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.compose.ComposeExtension
-import org.jetbrains.compose.desktop.application.dsl.JvmApplication
 
 /**
  * Desktop entry-point convention plugin.
@@ -22,25 +17,14 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "kotlin-jvm",
-                "compose-compiler",
-                "compose-multiplatform",
-                "dreamstream-detekt",
-                "dreamstream-testing",
+                "kotlin.jvm",
+                "compose.multiplatform",
+                "compose.compiler",
+                "dreamstream.detekt",
+                "dreamstream.testing",
             )
 
             configureKotlinJvm()
-
-            val compose = extensions.getByType<ComposeExtension>()
-            compose.extensions.findByType(JvmApplication::class.java)?.apply {
-                // App DSL is supplied by org.jetbrains.compose.desktop {} closure in the
-                // consuming module — kept intentionally minimal here.
-            }
-
-            dependencies {
-                "implementation"(lib("kotlinx-coroutines-swing").get())
-                "implementation"(lib("kermit").get())
-            }
 
             // Ensure Jar tasks are deterministic for reproducible desktop builds.
             tasks.withType<Jar>().configureEach {

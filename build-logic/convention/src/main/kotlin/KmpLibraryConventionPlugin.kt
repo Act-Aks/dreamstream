@@ -11,22 +11,21 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
  * Convention plugin for KMP library modules that need both an Android target and
  * a desktop (JVM) target — typically `:core:data` style modules whose Android
  * portion uses `com.android.kotlin.multiplatform.library`.
- *
- * Pure-domain modules should use [DomainModuleConventionPlugin] instead.
  */
 class KmpLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "kotlin-multiplatform",
-                "android-kotlin-multiplatform-library",
-                "dreamstream-detekt",
-                "dreamstream-testing",
+                "kotlin.multiplatform",
+                "android.kotlin.multiplatform.library",
+                "dreamstream.detekt",
+                "dreamstream.testing",
             ).also {
-                if (providers.gradleProperty("dreamstream.enableDependencyAnalysisForSubProjects")
-                        .map { it.toBoolean() }.orElse(false).get()
-                ) {
-                    applyPlugins("dreamstream-dependency-analysis")
+                val enableDependencyAnalysisForSubProjects =
+                    providers.gradleProperty("dreamstream.enableDependencyAnalysisForSubProjects")
+                        .map { it.toBoolean() }.orElse(false)
+                if (enableDependencyAnalysisForSubProjects.get()) {
+                    applyPlugins("dreamstream.dependency.analysis")
                 }
             }
 

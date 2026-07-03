@@ -16,7 +16,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 /** Debounce a flow by [waitMs] milliseconds */
 @OptIn(FlowPreview::class)
-fun <T> Flow<T>.debounceLatest(waitMs: Long): Flow<T> = debounce(waitMs)
+fun <T> Flow<T>.debounceLatest(waitMs: Long): Flow<T> = debounce(waitMs.milliseconds)
 
 /** Retry with exponential backoff */
 fun <T> Flow<T>.retryWithBackoff(
@@ -46,4 +46,3 @@ fun CoroutineScope.launchSafe(
 
 /** Collect multiple flows in parallel and merge results */
 fun <T> List<Flow<T>>.mergeAll(): Flow<T> = merge(*toTypedArray())
-

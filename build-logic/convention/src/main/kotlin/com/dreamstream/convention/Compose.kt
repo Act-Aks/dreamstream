@@ -30,25 +30,19 @@ internal fun Project.configureComposeDependencies() {
 
         sourceSets.apply {
             commonMain.dependencies {
-                implementation(lib("compose-runtime").get())
-                implementation(lib("compose-foundation").get())
-                implementation(lib("compose-material3").get())
-                implementation(lib("compose-material-icons-extended").get())
-                implementation(lib("compose-material-icons-core").get())
-                implementation(lib("compose-ui").get())
-                implementation(lib("compose-ui-graphics").get())
-                implementation(lib("compose-ui-tooling").get())
-                implementation(lib("compose-ui-tooling-preview").get())
-                // Exposed as api so feature/presentation modules can access string resources
-                // from the compose-components-resources artifact without re-declaring it.
-                api(lib("compose-components-resources").get())
-                // Lifecycle deps (runtime, viewmodel, etc.) are provided transitively by
-                // Compose Multiplatform. Adding them explicitly caused duplicate-class
-                // conflicts between androidx.lifecycle and org.jetbrains.androidx.lifecycle
-                // artifacts on the desktopMain classpath (LocalViewModelStoreOwner clash).
+                implementation(lib("compose.runtime").get())
+                implementation(lib("compose.foundation").get())
+                implementation(lib("compose.material3").get())
+                implementation(lib("compose.material.icons.extended").get())
+                implementation(lib("compose.material.icons.core").get())
+                implementation(lib("compose.ui").get())
+                implementation(lib("compose.ui.graphics").get())
+                implementation(lib("compose.ui.tooling").get())
+                implementation(lib("compose.ui.tooling.preview").get())
+                api(lib("compose.components.resources").get())
             }
             findByName("desktopMain")?.dependencies {
-                implementation(lib("compose-desktop-jvm").get())
+                implementation(lib("compose.desktop.jvm").get())
             }
         }
     }

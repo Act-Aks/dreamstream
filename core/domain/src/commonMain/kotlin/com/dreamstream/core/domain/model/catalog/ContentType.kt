@@ -45,8 +45,8 @@ import kotlinx.serialization.Serializable
  *
  * ## Related:
  * - Used in:
- *      [com.dreamstream.core.model.search.SearchResult]
- *      [com.dreamstream.core.model.detail.ContentDetail]
+ *      [com.dreamstream.core.domain.model.search.SearchResult]
+ *      [com.dreamstream.core.domain.model.detail.ContentDetail]
  * - Computed property: [isEpisodic]
  *
  * @since 1.0.0

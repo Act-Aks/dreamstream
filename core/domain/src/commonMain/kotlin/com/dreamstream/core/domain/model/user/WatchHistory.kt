@@ -1,5 +1,6 @@
 package com.dreamstream.core.domain.model.user
 
+import com.dreamstream.core.domain.extensions.toPercentageString
 import com.dreamstream.core.domain.model.catalog.ContentType
 import kotlinx.serialization.Serializable
 
@@ -347,5 +348,5 @@ data class WatchHistory(
      * ```
      */
     val displayProgress: String
-        get() = "${(percentageWatched * 100).toInt()}%"
+        get() = percentageWatched.toPercentageString()
 }

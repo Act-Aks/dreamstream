@@ -10,11 +10,11 @@ import kotlinx.serialization.Serializable
  * for boolean-based filters like "HD only", "Subtitled only", or "Dubbed only".
  *
  * This class extends [FilterOption] and adds a single boolean state:
- * - [isChecked]: Whether the filter is active (***required***)
+ * - [value]: Whether the filter is active (***required***)
  *
  * ## Key Properties:
  * - [name]: Filter label (***required***)
- * - [isChecked]: Toggle state (***optional, defaults to false***)
+ * - [value]: Toggle state (***optional, defaults to false***)
  *
  * ## Common Use Cases:
  * | Filter Name | isChecked = true | isChecked = false |
@@ -49,7 +49,7 @@ import kotlinx.serialization.Serializable
  *
  * ## UI Representation:
  * - Displayed as a checkbox in the filter sheet
- * - [isChecked] controls the checked state
+ * - [value] controls the checked state
  * - Toggling triggers a filter refresh via ***`FilterViewModel.applyFilters`***
  *
  * ## Related:

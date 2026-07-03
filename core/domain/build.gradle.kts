@@ -29,7 +29,8 @@
  */
 
 plugins {
-    alias(libs.plugins.dreamstream.domain)
+    alias(libs.plugins.dreamstream.kmp.library)
+    alias(libs.plugins.dreamstream.serialization)
 }
 
 kotlin {
@@ -38,6 +39,8 @@ kotlin {
     }
     sourceSets{
         commonMain.dependencies {
+            api(libs.kotlin.stdlib)
+            api(libs.kotlinx.coroutines.core)
             api(libs.okio)
         }
     }

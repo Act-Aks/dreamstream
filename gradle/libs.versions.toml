@@ -33,16 +33,16 @@ desugar-jdk-libs            = "2.1.5"
 
 # ── Compose (Multiplatform) ─────────────────────────────────────────────────
 compose-lifecycle           = "2.10.0"
-compose-material3           = "1.12.0-alpha02"
+compose-material3           = "1.12.0-alpha03"
 compose-material3-adaptive  = "1.3.0-beta02"    # Window size class (adaptive layouts)
-compose-multiplatform       = "1.12.0-alpha02"  # Compose Multiplatform governs the JB fork used for Desktop
+compose-multiplatform       = "1.12.0-beta01"  # Compose Multiplatform governs the JB fork used for Desktop
 compose-navigation3         = "1.1.1"
 
 # ── DI ──────────────────────────────────────────────────────────────────────
 koin                        = "4.2.2"
 
 # ── Networking ──────────────────────────────────────────────────────────────
-ktor                        = "3.5.0"
+ktor                        = "3.5.1"
 
 # ── HTML Parsing ──────────────────────────────────────────────────────────────
 ksoup = "0.2.6"
@@ -75,12 +75,12 @@ okio                        = "3.17.0"
 
 # ── Code Quality ────────────────────────────────────────────────────────────
 detekt                      = "2.0.0-alpha.5"
-dependency-analysis         = "3.15.0"   # Unused/misconfigured dep detection
+dependency-analysis         = "3.16.0"   # Unused/misconfigured dep detection
 module-graph                = "0.12.1"   # Mermaid module dependency visualization
 module-graph-assert         = "2.9.1"    # Architectural rule enforcement
 
 # ── Testing ─────────────────────────────────────────────────────────────────
-junit                       = "6.1.0"
+junit                       = "6.1.1"
 turbine                     = "1.2.1"
 assertk                     = "0.28.1"
 androidx-test-ext           = "1.3.0"
@@ -338,7 +338,6 @@ dreamstream-android-tv              = { id = "com.dreamstream.android.tv",      
 dreamstream-compose                 = { id = "com.dreamstream.compose",             version = "unspecified"  }
 dreamstream-desktop-app             = { id = "com.dreamstream.desktop.app",         version = "unspecified"  }
 dreamstream-detekt                  = { id = "com.dreamstream.detekt",              version = "unspecified"  }
-dreamstream-domain                  = { id = "com.dreamstream.domain",              version = "unspecified"  }
 dreamstream-feature                 = { id = "com.dreamstream.feature",             version = "unspecified"  }
 dreamstream-kmp-library             = { id = "com.dreamstream.kmp.library",         version = "unspecified"  }
 dreamstream-koin                    = { id = "com.dreamstream.koin",                version = "unspecified"  }

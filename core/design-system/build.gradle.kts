@@ -25,11 +25,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(projects.core.presentation)
-                api(libs.haze)
-                implementation(libs.coil.core)
-                implementation(libs.coil.network.ktor3)
-                implementation(libs.coil.compose)
             }
         }
     }

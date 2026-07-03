@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  * [SearchResult] is a lightweight list-level model — it carries just enough
  * information to render a content card in **Search Results**, **Home Sections**,
  * and **Recommendation Rows**. For full metadata (episodes, streams, description),
- * load the corresponding [com.dreamstream.core.model.detail.ContentDetail] using [url].
+ * load the corresponding [com.dreamstream.core.domain.model.detail.ContentDetail] using [url].
  *
  * This sealed class has four concrete subtypes:
  * - [AnimeResult]: Anime titles with episode count, year, sub/dub flags
@@ -125,7 +125,7 @@ import kotlinx.serialization.Serializable
  * - Movie result: [MovieResult]
  * - Series result: [SeriesResult]
  * - Live result: [LiveResult]
- * - Detail model: [com.dreamstream.core.model.detail.ContentDetail]
+ * - Detail model: [com.dreamstream.core.domain.model.detail.ContentDetail]
  * - Content type: [ContentType]
  *
  * @see MovieResult
@@ -150,7 +150,7 @@ sealed class SearchResult {
      * Provider-side URL for navigation to detail screen.
      *
      * ***Required***. Use this as the **navigation key** when loading
-     * [com.dreamstream.core.model.detail.ContentDetail]. Provider-specific format.
+     * [com.dreamstream.core.domain.model.detail.ContentDetail]. Provider-specific format.
      * Example: `"anime-provider://attack-on-titan"`, `"movie://inception"`
      */
     abstract val url: String

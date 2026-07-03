@@ -29,10 +29,10 @@ class RoomConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "commonMainImplementation"(lib("androidx-room3-runtime").get())
-                "commonMainImplementation"(lib("androidx-sqlite-bundled").get())
-                "kspAndroid"(lib("androidx-room3-compiler").get())
-                "kspDesktop"(lib("androidx-room3-compiler").get())
+                "commonMainImplementation"(lib("androidx.room3.runtime").get())
+                "commonMainImplementation"(lib("androidx.sqlite.bundled").get())
+                "kspAndroid"(lib("androidx.room3.compiler").get())
+                "kspDesktop"(lib("androidx.room3.compiler").get())
             }
         }
     }

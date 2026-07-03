@@ -46,8 +46,8 @@ import kotlinx.serialization.Serializable
  *
  * ## Related:
  * - Used in:
- *      [com.dreamstream.core.model.detail.SeriesDetail]
- *      [com.dreamstream.core.model.detail.AnimeDetail]
+ *      [com.dreamstream.core.domain.model.detail.SeriesDetail]
+ *      [com.dreamstream.core.domain.model.detail.AnimeDetail]
  * - Resolved via: ***`ContentProvider.loadLinks`***
  * - Computed property: [uniqueId]
  *

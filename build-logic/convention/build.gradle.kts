@@ -27,6 +27,13 @@ kotlin {
     }
 }
 
+tasks {
+    validatePlugins {
+        enableStricterValidation = true
+        failOnWarning = true
+    }
+}
+
 dependencies {
     /** Access libs.* version catalog accessors inside convention plugin code */
     compileOnly(libs.android.gradle.plugin)
@@ -67,10 +74,6 @@ gradlePlugin {
         }
 
         /**************  KMP libraries (the only kind we have)  ******************/
-        register("domain") {
-            id = "com.dreamstream.domain"
-            implementationClass = "DomainModuleConventionPlugin"
-        }
         register("kmpLibrary") {
             id = "com.dreamstream.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"

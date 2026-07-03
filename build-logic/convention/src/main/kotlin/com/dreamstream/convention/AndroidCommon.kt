@@ -51,13 +51,9 @@ internal fun Project.configureAndroid(extension: CommonExtension) {
  */
 private fun Project.configureDefaultConfig(defaultConfig: DefaultConfig) {
     defaultConfig.apply {
-        minSdk {
-            version = release(minSdkVersion)
-        }
+        minSdk { version = release(minSdkVersion) }
+        vectorDrawables { useSupportLibrary = true }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 }
 
@@ -121,7 +117,7 @@ private fun configureTestOptions(testOptions: TestOptions) {
  */
 internal fun Project.configureCoreLibraryDesugaring() {
     dependencies {
-        "coreLibraryDesugaring"(lib("android-desugarJdkLibs"))
+        "coreLibraryDesugaring"(lib("android.desugarJdkLibs").get())
     }
 }
 
@@ -130,11 +126,9 @@ internal fun Project.configureCoreLibraryDesugaring() {
  */
 private fun Project.configureAndroidCoreDependencies() {
     dependencies {
-        "implementation"(lib("androidx-activity-compose").get())
-        "implementation"(lib("androidx-appcompat").get())
-        "implementation"(lib("androidx-core-ktx").get())
-        "implementation"(lib("androidx-core-splashscreen").get())
-
-        "implementation"(lib("compose-navigation3-ui").get())
+        "implementation"(lib("androidx.activity.compose").get())
+        "implementation"(lib("androidx.appcompat").get())
+        "implementation"(lib("androidx.core.ktx").get())
+        "implementation"(lib("androidx.core.splashscreen").get())
     }
 }

@@ -7,7 +7,6 @@ import com.dreamstream.core.domain.model.user.BookmarkCategory.ON_HOLD
 import com.dreamstream.core.domain.model.user.BookmarkCategory.WATCHING
 import com.dreamstream.core.domain.model.user.BookmarkCategory.all
 
-
 /**
  * Predefined categories for organizing [Bookmark] entries.
  *

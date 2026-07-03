@@ -8,13 +8,12 @@ import com.dreamstream.core.domain.extensions.error
 import com.dreamstream.core.domain.logger.LoggerFactory
 import com.dreamstream.core.domain.model.catalog.ContentType
 import com.dreamstream.core.domain.model.catalog.Quality
-import com.dreamstream.core.domain.model.catalog.ThemeMode
+import com.dreamstream.core.domain.model.user.ThemeMode
 import com.dreamstream.core.domain.model.user.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
-
 
 /**
  * [UserPreferencesDataSource] implementation backed by DataStore.

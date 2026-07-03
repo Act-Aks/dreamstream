@@ -32,10 +32,10 @@ class ComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "dreamstream-kmp-library",
-                "compose-compiler",
-                "compose-multiplatform",
-                "dreamstream-localization",
+                "dreamstream.kmp.library",
+                "compose.compiler",
+                "compose.multiplatform",
+                "dreamstream.localization",
             )
 
             configureComposeCompiler()

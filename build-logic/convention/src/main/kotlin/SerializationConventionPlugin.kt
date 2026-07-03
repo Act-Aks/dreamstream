@@ -11,14 +11,11 @@ import org.gradle.kotlin.dsl.dependencies
 class SerializationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            applyPlugins("kotlin-serialization")
+            applyPlugins("kotlin.serialization")
 
             dependencies {
-                // Promoted to api: modules that apply dreamstream-serialization expose
-                // @Serializable types in their public API, so consumers need the
-                // kotlinx-serialization-core annotations on their compile classpath.
-                "commonMainApi"(lib("kotlinx-serialization-core").get())
-                "commonMainImplementation"(lib("kotlinx-serialization-json").get())
+                "commonMainApi"(lib("kotlinx.serialization.core").get())
+                "commonMainApi"(lib("kotlinx.serialization.json").get())
             }
         }
     }

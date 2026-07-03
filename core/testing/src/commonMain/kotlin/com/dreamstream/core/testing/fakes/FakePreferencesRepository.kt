@@ -1,7 +1,7 @@
 package com.dreamstream.core.testing.fakes
 
 import com.dreamstream.core.domain.model.catalog.Quality
-import com.dreamstream.core.domain.model.catalog.ThemeMode
+import com.dreamstream.core.domain.model.user.ThemeMode
 import com.dreamstream.core.domain.model.user.UserPreferences
 import com.dreamstream.core.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.Flow

@@ -10,9 +10,7 @@ interface WatchHistoryRepository {
     fun observeRecent(limit: Int = 20): Flow<List<WatchHistory>>
 
     suspend fun getByUrl(url: String, providerId: String): WatchHistory?
-
     suspend fun insert(entry: WatchHistory): EmptyResult<DreamError>
-
     suspend fun updateProgress(
         id: String,
         positionMs: Long,
@@ -20,6 +18,5 @@ interface WatchHistoryRepository {
     ): EmptyResult<DreamError>
 
     suspend fun deleteById(id: String): EmptyResult<DreamError>
-
     suspend fun clearAll(): EmptyResult<DreamError>
 }

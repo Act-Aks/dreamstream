@@ -1,4 +1,4 @@
-package com.dreamstream.core.domain.model.catalog
+package com.dreamstream.core.domain.model.user
 
 import kotlinx.serialization.Serializable
 

@@ -10,12 +10,8 @@ interface BookmarkRepository {
     fun observeByCategory(category: String): Flow<List<Bookmark>>
 
     suspend fun isBookmarked(url: String, providerId: String): Boolean
-
     suspend fun getByUrl(url: String, providerId: String): Bookmark?
-
     suspend fun addBookmark(bookmark: Bookmark): EmptyResult<DreamError>
-
     suspend fun removeBookmark(id: String): EmptyResult<DreamError>
-
     suspend fun updateCategory(id: String, category: String): EmptyResult<DreamError>
 }

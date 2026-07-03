@@ -26,13 +26,9 @@ internal fun Project.configureAndroidLibraryTarget(
         targets.withType<KotlinMultiplatformAndroidLibraryTarget> {
             compileSdk { version = release(compileSdkVersion) }
             minSdk { version = release(minSdkVersion) }
-            compilerOptions {
-                jvmTarget.set(project.jvmTarget)
-            }
+            compilerOptions { jvmTarget.set(project.jvmTarget) }
             withHostTest { }
-            androidResources{
-                enable = true
-            }
+            androidResources { enable = true }
             enableCoreLibraryDesugaring = true
         }
         configureCoreLibraryDesugaring()

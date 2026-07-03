@@ -1,10 +1,43 @@
 package com.dreamstream.core.designsystem.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.dreamstream.core.designsystem.resources.Res
+import com.dreamstream.core.designsystem.resources.poppins_bold
+import com.dreamstream.core.designsystem.resources.poppins_light
+import com.dreamstream.core.designsystem.resources.poppins_medium
+import com.dreamstream.core.designsystem.resources.poppins_regular
+import com.dreamstream.core.designsystem.resources.poppins_semibold
+import org.jetbrains.compose.resources.Font
+
+val Poppins: FontFamily
+    @Composable
+    get() = FontFamily(
+        Font(
+            resource = Res.font.poppins_light,
+            weight = FontWeight.Light
+        ),
+        Font(
+            resource = Res.font.poppins_regular,
+            weight = FontWeight.Normal
+        ),
+        Font(
+            resource = Res.font.poppins_medium,
+            weight = FontWeight.Medium
+        ),
+        Font(
+            resource = Res.font.poppins_semibold,
+            weight = FontWeight.SemiBold
+        ),
+        Font(
+            resource = Res.font.poppins_bold,
+            weight = FontWeight.Bold
+        ),
+    )
 
 /**
  * DreamStream typography ramp.

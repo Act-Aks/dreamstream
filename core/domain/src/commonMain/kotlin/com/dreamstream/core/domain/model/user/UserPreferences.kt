@@ -2,7 +2,6 @@ package com.dreamstream.core.domain.model.user
 
 import com.dreamstream.core.domain.model.catalog.ContentType
 import com.dreamstream.core.domain.model.catalog.Quality
-import com.dreamstream.core.domain.model.catalog.ThemeMode
 import kotlinx.serialization.Serializable
 
 /**
@@ -196,7 +195,7 @@ data class UserPreferences(
     val defaultQuality: Quality = Quality.Auto,
 
     /**
-     * Auto-play next episode.
+     * Autoplay next episode.
      *
      * ***Optional***. Defaults to `true`. When `true`, automatically starts
      * next episode in series after current one ends.
@@ -265,7 +264,7 @@ data class UserPreferences(
      * Enable adult/18+ content.
      *
      * ***Optional***. Defaults to `false`. Parental control flag.
-     * When `false`, hide plugins/content marked with [com.dreamstream.core.model.plugin.PluginManifest.isAdult].
+     * When `false`, hide plugins/content marked with [com.dreamstream.core.domain.model.plugin.PluginManifest.isAdult].
      * Show confirmation dialog when enabling.
      */
     val adultContentEnabled: Boolean = false,

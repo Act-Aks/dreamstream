@@ -1,6 +1,4 @@
 import com.dreamstream.convention.applyPlugins
-import com.dreamstream.convention.bundle
-import com.dreamstream.convention.lib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -24,10 +22,10 @@ class FeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "dreamstream-kmp-library",
-                "dreamstream-compose",
-                "dreamstream-koin",
-                "dreamstream-serialization",
+                "dreamstream.kmp.library",
+                "dreamstream.compose",
+                "dreamstream.koin",
+                "dreamstream.serialization",
             )
 
             val outer: Project = this
@@ -35,14 +33,8 @@ class FeatureConventionPlugin : Plugin<Project> {
             extensions.configure<KotlinMultiplatformExtension> {
                 sourceSets.commonMain.dependencies {
                     addProjectIfPresent(outer, ":core:domain")
-                    // Exposed as api: feature presentation modules leak UiText, ObserveAsEvents
-                    // and other core:presentation types through their public composable/ViewModel
-                    // signatures, so consumers need it on their compile classpath.
                     addProjectIfPresent(outer, ":core:presentation", asApi = true)
                     addProjectIfPresent(outer, ":core:design-system")
-
-                    implementation(lib("compose-navigation3-ui").get())
-                    bundle("coil").get().forEach { implementation(it) }
                 }
             }
         }

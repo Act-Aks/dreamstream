@@ -34,7 +34,7 @@ class DetektConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "detektPlugins"(lib("detekt-rules-ktlint-wrapper").get())
+                "detektPlugins"(lib("detekt.rules.ktlint.wrapper").get())
             }
 
             tasks.withType<Detekt>().configureEach {

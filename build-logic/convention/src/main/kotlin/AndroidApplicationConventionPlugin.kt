@@ -23,10 +23,10 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins(
-                "android-application",
-                "dreamstream-detekt",
-                "dreamstream-testing",
-                "dreamstream-dependency-analysis",
+                "android.application",
+                "dreamstream.detekt",
+                "dreamstream.testing",
+                "dreamstream.dependency.analysis",
             )
 
             extensions.configure<ApplicationExtension> {

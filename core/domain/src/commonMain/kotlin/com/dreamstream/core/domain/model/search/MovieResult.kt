@@ -110,7 +110,7 @@ data class MovieResult(
     /**
      * Deep link to the movie detail page.
      *
-     * ***Required***. URL used to load [com.dreamstream.core.model.detail.MovieDetail]
+     * ***Required***. URL used to load [com.dreamstream.core.domain.model.detail.MovieDetail]
      * when user taps this result. Provider-specific format.
      * Example: `"movie-provider://inception"`
      */

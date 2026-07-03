@@ -4,7 +4,7 @@ package com.dreamstream.core.domain.util
  * Generic typed result wrapper used across every layer of the app.
  *
  * Prefer [Result] over thrown exceptions for *expected* failures (network
- * errors, validation failures, missing local data, etc). Reserve exceptions
+ * errors, validation failures, missing local data, etc.). Reserve exceptions
  * for programmer errors or truly exceptional cases that should crash the
  * caller.
  *

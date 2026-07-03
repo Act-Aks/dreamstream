@@ -34,37 +34,32 @@ class KoinConventionPlugin : Plugin<Project> {
 
 private fun Project.wireKmpKoin() {
     extensions.configure(KotlinMultiplatformExtension::class.java) {
-        val bom: Provider<MinimalExternalModuleDependency> = lib("koin-bom")
+        val bom: Provider<MinimalExternalModuleDependency> = lib("koin.bom")
 
-        sourceSets.commonMain.dependencies {
-            implementation(project.dependencies.platform(bom))
-            bundle("koin-common").get().forEach { implementation(it) }
-        }
-        sourceSets.androidMain.dependencies {
-            implementation(project.dependencies.platform(bom))
-            implementation(lib("koin-android").get())
-        }
-        sourceSets.commonTest.dependencies {
-            implementation(project.dependencies.platform(bom))
-            implementation(lib("koin-test").get())
-        }
-        sourceSets.findByName("desktopTest")?.dependencies {
-            implementation(lib("koin-test-junit5").get())
+        sourceSets.apply {
+            commonMain.dependencies {
+                implementation(project.dependencies.platform(bom))
+                bundle("koin.common").get().forEach { implementation(it) }
+            }
+            androidMain.dependencies {
+                implementation(project.dependencies.platform(bom))
+                implementation(lib("koin.android").get())
+            }
         }
     }
 }
 
 private fun Project.wireAndroidKoin() {
     dependencies {
-        val bom = platform(lib("koin-bom"))
+        val bom = platform(lib("koin.bom").get())
         "implementation"(bom)
-        "implementation"(lib("koin-core").get())
-        "implementation"(lib("koin-android").get())
-        "implementation"(lib("koin-compose").get())
-        "implementation"(lib("koin-compose-viewmodel").get())
+        "implementation"(lib("koin.core").get())
+        "implementation"(lib("koin.android").get())
+        "implementation"(lib("koin.compose").get())
+        "implementation"(lib("koin.compose.viewmodel").get())
 
         "testImplementation"(bom)
-        "testImplementation"(lib("koin-test").get())
-        "testImplementation"(lib("koin-test-junit5").get())
+        "testImplementation"(lib("koin.test").get())
+        "testImplementation"(lib("koin.test.junit5").get())
     }
 }

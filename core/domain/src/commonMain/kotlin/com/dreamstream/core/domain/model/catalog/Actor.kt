@@ -46,9 +46,9 @@ import kotlinx.serialization.Serializable
  *
  * ## Related:
  * - Used in:
- *      [com.dreamstream.core.model.detail.ContentDetail]
- *      [com.dreamstream.core.model.detail.SeriesDetail]
- *      [com.dreamstream.core.model.detail.AnimeDetail]
+ *      [com.dreamstream.core.domain.model.detail.ContentDetail]
+ *      [com.dreamstream.core.domain.model.detail.SeriesDetail]
+ *      [com.dreamstream.core.domain.model.detail.AnimeDetail]
  *
  * @since 1.0.0
  * @author DreamStream Team

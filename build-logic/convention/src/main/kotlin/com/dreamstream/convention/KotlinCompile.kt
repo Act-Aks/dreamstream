@@ -1,7 +1,6 @@
 package com.dreamstream.convention
 
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -22,7 +21,7 @@ internal fun Project.configureKotlinCompile() {
 
             // Treat all Kotlin warnings as errors (disabled by default).
             // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties.
-            val warningsAsErrors: String? by project
+            val warningsAsErrors: String? = project.findProperty("warningsAsErrors") as String?
             allWarningsAsErrors.set(warningsAsErrors.toBoolean())
 
             freeCompilerArgs.addAll(

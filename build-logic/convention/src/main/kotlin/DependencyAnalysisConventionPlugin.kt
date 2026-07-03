@@ -22,7 +22,7 @@ import org.gradle.api.Project
 class DependencyAnalysisConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            applyPlugins("dependency-analysis")
+            applyPlugins("dependency.analysis")
         }
     }
 }

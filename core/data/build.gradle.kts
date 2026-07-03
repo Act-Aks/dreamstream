@@ -15,7 +15,6 @@ kotlin {
             api(projects.core.database)
             api(projects.core.pluginApi)
             api(projects.core.pluginLoader)
-            // Kermit — implements DreamLogger for structured logging.
             implementation(libs.kermit)
             implementation(libs.ktor.client.encoding)
             // DataStore (KMP-compatible artifact) — preferences persistence.

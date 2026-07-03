@@ -2,7 +2,7 @@ package com.dreamstream.core.data.preferences
 
 import com.dreamstream.core.domain.model.catalog.ContentType
 import com.dreamstream.core.domain.model.catalog.Quality
-import com.dreamstream.core.domain.model.catalog.ThemeMode
+import com.dreamstream.core.domain.model.user.ThemeMode
 import com.dreamstream.core.domain.model.user.UserPreferences
 import kotlinx.coroutines.flow.Flow
 

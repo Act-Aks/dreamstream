@@ -32,7 +32,7 @@ import kotlinx.serialization.Serializable
  * - **Newly added series**: Metadata may be incomplete
  *
  * Full episode and season structure is available on the corresponding
- * [com.dreamstream.core.model.detail.SeriesDetail] after loading:
+ * [com.dreamstream.core.domain.model.detail.SeriesDetail] after loading:
  * ```kotlin
  * // Search time – use totalSeasons for quick hints
  * val result = seriesResult
@@ -86,7 +86,7 @@ import kotlinx.serialization.Serializable
  * - Anime result: [AnimeResult]
  * - Movie result: [MovieResult]
  * - Live result: [LiveResult]
- * - Detail model: [com.dreamstream.core.model.detail.SeriesDetail]
+ * - Detail model: [com.dreamstream.core.domain.model.detail.SeriesDetail]
  * - Provider method: ***`ContentProvider.search(query)`***
  * - Content type: [ContentType.TvSeries]
  * - Extension: [year] (computed property)
@@ -114,7 +114,7 @@ data class SeriesResult(
     /**
      * Deep link to the series detail page.
      *
-     * ***Required***. URL used to load [com.dreamstream.core.model.detail.SeriesDetail]
+     * ***Required***. URL used to load [com.dreamstream.core.domain.model.detail.SeriesDetail]
      * when user taps this result. Provider-specific format.
      * Example: `"series-provider://breaking-bad"`
      */
@@ -158,7 +158,7 @@ data class SeriesResult(
      *
      * ***Optional***. Null when not available. May be inaccurate for ongoing
      * or newly added series. Displayed in search results (e.g., "5 seasons").
-     * Full season/episode structure is available in [com.dreamstream.core.model.detail.SeriesDetail].
+     * Full season/episode structure is available in [com.dreamstream.core.domain.model.detail.SeriesDetail].
      * Example: `5`, `10`, `2`
      */
     val totalSeasons: Int? = null,
