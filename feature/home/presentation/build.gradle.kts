@@ -27,6 +27,8 @@ kotlin {
                 // Exposed as api: HomeState, ContentUi, and HomeRoute reference domain
                 // types (Content, HomeError) that callers such as app:shared need to see.
                 api(projects.feature.home.domain)
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor3)
             }
         }
     }

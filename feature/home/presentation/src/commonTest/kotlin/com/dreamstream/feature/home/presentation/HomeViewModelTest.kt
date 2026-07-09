@@ -8,10 +8,8 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
-import assertk.assertions.isNull
-import assertk.assertions.isTrue
-import com.dreamstream.core.domain.util.Result
 import com.dreamstream.core.domain.model.search.MovieResult
+import com.dreamstream.core.domain.util.Result
 import com.dreamstream.feature.home.domain.error.HomeError
 import com.dreamstream.feature.home.domain.model.HomeSection
 import com.dreamstream.feature.home.domain.repository.HomeRepository
@@ -181,7 +179,7 @@ private class FakeHomeRepository : HomeRepository {
     var sections: List<HomeSection> = emptyList()
     var error: HomeError? = null
 
-    override suspend fun getHomeSections(): Result<List<HomeSection>, HomeError> {
+    override suspend fun getHomeSections(page: Int?): Result<List<HomeSection>, HomeError> {
         val err = error
         return if (err != null) Result.Error(err) else Result.Success(sections)
     }

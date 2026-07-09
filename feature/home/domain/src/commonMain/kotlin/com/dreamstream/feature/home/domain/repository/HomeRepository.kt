@@ -11,5 +11,5 @@ import com.dreamstream.feature.home.domain.model.HomeSection
  * without knowing about the data layer implementation.
  */
 interface HomeRepository {
-    suspend fun getHomeSections(): Result<List<HomeSection>, HomeError>
+    suspend fun getHomeSections(page: Int? = null): Result<List<HomeSection>, HomeError>
 }

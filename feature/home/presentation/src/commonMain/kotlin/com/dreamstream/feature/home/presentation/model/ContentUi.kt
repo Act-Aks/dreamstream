@@ -6,9 +6,9 @@ import com.dreamstream.core.presentation.ui.UiText
  * Presentation-layer model for a single piece of content.
  *
  * All fields are pre-formatted strings, ready for direct display in the UI.
- * Formatting is applied in [com.dreamstream.feature.home.presentation.util.HomeMappings].
+ * Formatting is applied in [com.dreamstream.feature.home.presentation.util].
  *
- * [id] is the provider-side [url] from [com.dreamstream.core.model.search.SearchResult], used as the stable
+ * [id] is the provider-side [url] from [com.dreamstream.core.domain.model.search.SearchResult], used as the stable
  * navigation key passed to the detail screen.
  */
 data class ContentUi(

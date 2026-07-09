@@ -58,7 +58,7 @@ package com.dreamstream.plugin.api.plugin
  * @property repositoryUrl Optional URL to the plugin's source or issue tracker.
  * @property iconUrl Optional URL to an icon used to represent the plugin.
  * @property language Primary language code used by the plugin (ISO 639-1). Default "en".
- * @property contentTypes Array of content categories the plugin provides (e.g., [com.dreamstream.core.model.catalog.ContentType]). Default empty.
+ * @property contentTypes Array of content categories the plugin provides (e.g., [com.dreamstream.core.domain.model.catalog.ContentType]). Default empty.
  * @property requiresAppVersion Minimum required host application version to load this plugin. Default 1.
  * @property isAdult True if the plugin exposes adult-restricted content; the host may filter these. Default false.
  */

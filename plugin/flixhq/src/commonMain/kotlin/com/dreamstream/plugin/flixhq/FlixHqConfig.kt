@@ -1,9 +1,5 @@
 package com.dreamstream.plugin.flixhq
 
-import com.dreamstream.plugin.flixhq.FlixHqConfig.MAIN_URL
-import com.dreamstream.plugin.flixhq.FlixHqConfig.SELECTOR_BLOCK
-
-
 /**
  * Central configuration for the FlixHQ plugin.
  *
@@ -14,18 +10,18 @@ object FlixHqConfig {
     /** Base URL. Override for regional mirrors or self-hosted instances. */
     const val MAIN_URL = "https://flixhq.to"
 
-    /** Provider ID used to populate [com.dreamstream.core.model.search.SearchResult.providerId]. */
+    /** Provider ID used to populate [com.dreamstream.core.domain.model.search.SearchResult.providerId]. */
     const val PROVIDER_ID = "flixhq"
 
     // ── Home page ─────────────────────────────────────────────────────────────
 
-    /** Home page path appended to [MAIN_URL]. */
+    /** Home page path appended to ***MAIN_URL***. */
     const val HOME_PATH = "/home"
 
     /** CSS selector for a content block/section on the home page. */
     const val SELECTOR_BLOCK = "div.block_area"
 
-    /** CSS selector for a block's title element (relative to [SELECTOR_BLOCK]). */
+    /** CSS selector for a block's title element (relative to ***SELECTOR_BLOCK***). */
     const val SELECTOR_BLOCK_TITLE = "h2.cat-heading"
 
     // ── Item cards (shared between home and search) ───────────────────────────

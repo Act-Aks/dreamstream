@@ -50,6 +50,7 @@ include(":core:testing")
 
 /************************ All The Plugins *******************************/
 include(":plugin:flixhq")
+include(":plugin:movieboxonline")
 
 /********************* All The Feature Modules **************************/
 include(":feature:home:data")

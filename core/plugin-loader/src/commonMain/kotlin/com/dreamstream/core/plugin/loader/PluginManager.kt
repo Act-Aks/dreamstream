@@ -181,6 +181,53 @@ class PluginManager(
 
     // ---- Plugin Loading ----
 
+    // ---- Bundled Plugin Registration ----
+
+    /**
+     * Register a bundled (compile-time) plugin that ships as part of the app's
+     * Gradle build rather than as a dynamically-loaded JAR.
+     *
+     * Unlike [loadPlugin], this path skips [PluginClassLoader] entirely and
+     * registers the already-instantiated [DreamPlugin] directly into the
+     * [PluginRegistry]. Use this for plugins that are Gradle modules under
+     * `:plugin:*` and are compiled into the app at build time.
+     *
+     * This call is synchronous and safe to invoke on any thread; directory
+     * creation is the only I/O performed.
+     */
+    fun registerBundledPlugin(pluginId: String, plugin: DreamPlugin) {
+        if (pluginRegistry.isPluginLoaded(pluginId)) {
+            logger.info { "Bundled plugin already loaded, skipping: $pluginId" }
+            return
+        }
+
+        runCatching {
+            val context = pluginContextFactory.create(pluginId)
+            plugin.initialize(context)
+
+            val providers = plugin.registerProviders().onEach { provider ->
+                provider.inject(httpClient, context)
+            }
+            val extractors = plugin.registerExtractors()
+
+            pluginRegistry.register(
+                LoadedPlugin(
+                    id = pluginId,
+                    plugin = plugin,
+                    providers = providers,
+                    extractors = extractors,
+                    isEnabled = true,
+                ),
+            )
+
+            logger.info { "Registered bundled plugin: $pluginId with ${providers.size} provider(s)" }
+        }.onFailure { throwable ->
+            logger.error(throwable) { "Failed to register bundled plugin: $pluginId" }
+        }
+    }
+
+    // ---- Installed Plugin Loading ----
+
     /**
      * Load all installed and enabled plugins at app startup.
      */

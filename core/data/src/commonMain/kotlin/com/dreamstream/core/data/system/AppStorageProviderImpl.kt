@@ -9,8 +9,8 @@ import okio.FileSystem
 import okio.Path
 
 class AppStorageProviderImpl : AppStorageProvider {
-    override val fileSystem: FileSystem = getAppFileSystem()
-    override val appStorageDir: Path = getAppStorageDir()
-    override val cacheDir: Path = getCacheDir()
-    override val pluginsDir: Path = getPluginsDir()
+    override val fileSystem: FileSystem by lazy { getAppFileSystem() }
+    override val appStorageDir: Path by lazy { getAppStorageDir() }
+    override val cacheDir: Path by lazy { getCacheDir() }
+    override val pluginsDir: Path by lazy { getPluginsDir() }
 }

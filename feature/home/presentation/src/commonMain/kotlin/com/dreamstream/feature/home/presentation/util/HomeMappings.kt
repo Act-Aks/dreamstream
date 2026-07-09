@@ -27,7 +27,7 @@ internal fun HomeSection.toHomeSectionUi(): HomeSectionUi = HomeSectionUi(
  * Maps a [SearchResult] to a [ContentUi].
  *
  * [ContentUi.id] is set to [SearchResult.url] — the provider-side stable
- * identifier — so the detail screen can look up the full [com.dreamstream.core.model.detail.ContentDetail] by URL.
+ * identifier — so the detail screen can look up the full [com.dreamstream.core.domain.model.detail.ContentDetail] by URL.
  *
  * Year and rating are extracted via shared extensions on [SearchResult].
  */

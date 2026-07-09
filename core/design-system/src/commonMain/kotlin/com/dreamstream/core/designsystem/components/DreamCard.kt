@@ -42,7 +42,10 @@ fun DreamCard(
             width = DreamStreamTheme.metrics.borderWidth.thick,
             color = borderColor
         ),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent,
+            contentColor = DreamStreamTheme.materialColors.onBackground
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Box(

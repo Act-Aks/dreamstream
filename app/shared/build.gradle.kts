@@ -24,9 +24,9 @@ kotlin {
             implementation(projects.core.presentation)
             implementation(projects.core.designSystem)
 
-            // Plugin infrastructure: runtime + first bundled plugin
-            implementation(projects.core.data)
-            implementation(projects.plugin.flixhq)
+            // Plugin infrastructure: runtime + bundled plugins
+            api(projects.core.data)
+            implementation(projects.plugin.movieboxonline)
 
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.data)

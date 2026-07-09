@@ -15,6 +15,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.dreamstream.feature.details.presentation.DetailsRoute
+import com.dreamstream.feature.home.presentation.HomeRoot
 import com.dreamstream.feature.home.presentation.HomeRoute
 import com.dreamstream.feature.search.presentation.SearchRoute
 import com.dreamstream.feature.settings.presentation.SettingsRoute
@@ -84,17 +85,17 @@ internal fun AppNavigation(modifier: Modifier = Modifier) {
             },
             entryProvider = entryProvider {
                 entry<HomeRoute> {
-//                    HomeRoot(
-//                        onNavigateToDetail = { contentId ->
-//                            backStack.add(DetailsRoute(contentId))
-//                        },
-//                        onNavigateToSearch = {
-//                            switchTab(BottomTab.Search)
-//                        },
-//                        onNavigateToSettings = {
-//                            switchTab(BottomTab.Settings)
-//                        },
-//                    )
+                    HomeRoot(
+                        onNavigateToDetail = { contentId ->
+                            backStack.add(DetailsRoute(contentId))
+                        },
+                        onNavigateToSearch = {
+                            switchTab(BottomTab.Search)
+                        },
+                        onNavigateToSettings = {
+                            switchTab(BottomTab.Settings)
+                        },
+                    )
                 }
                 entry<DetailsRoute> { route ->
 //                    DetailsRoot(
