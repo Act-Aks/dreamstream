@@ -69,7 +69,7 @@ kermit                      = "2.1.0"
 
 # ── UI Extras ───────────────────────────────────────────────────────────────
 lottie-compose              = "6.7.1"    # Lottie animations (Android)
-haze                        = "1.7.2"    # Blur / visual effects (Android 12+)
+haze                        = "1.7.3"    # Blur / visual effects (Android 12+)
 material-icons              = "1.7.3"
 okio                        = "3.17.0"
 
